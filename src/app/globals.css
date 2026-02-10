@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fafafa;
+  --foreground: #171717;
+  --border: #e5e5e5;
+  --muted: #f5f5f5;
+  --muted-foreground: #6b6b6b;
+}
+
+/* Landing page (dark) uses .dark or separate route */
+.dark,
+[data-theme="landing"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --border: #1e1e1e;
+  --muted: #111111;
+  --muted-foreground: #8a8a8a;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-geist-sans), Inter, -apple-system, "PingFang SC", "Noto Sans CJK SC", sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
