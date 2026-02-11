@@ -7,6 +7,7 @@ import { advisors } from "@/data/advisors";
 import { ActivityLogPanel } from "@/components/activity-log/ActivityLogPanel";
 import { AlexFollowupChat } from "@/components/chat/AlexFollowupChat";
 import { Button } from "@/components/ui/button";
+import { FileText, Presentation, FileCheck, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +44,7 @@ export default function ChatPage() {
         {isAlex ? (
           <AlexFollowupChat />
         ) : (
-          <div className="flex-1 overflow-auto p-4 space-y-4">
+          <div className="flex-1 overflow-auto p-4 space-y-6">
             {messages.map((msg) => (
               <MessageBubble key={msg.id} message={msg} />
             ))}
@@ -85,40 +86,75 @@ function MessageBubble({ message }: { message: (ReturnType<typeof getMessagesFor
   const isUser = message.role === "user";
   const advisor = message.advisorId ? advisors.find((a) => a.id === message.advisorId) : null;
 
+  if (isUser) {
+    return (
+      <div className="flex justify-end">
+        <div className="max-w-[80%]">
+          <div className="rounded-lg px-3 py-2 text-sm bg-foreground text-background">
+            {message.content.map((c, i) => {
+              if (c.type === "text") return <p key={i} className="whitespace-pre-wrap">{c.text}</p>;
+              return null;
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
-      <div className={cn("max-w-[80%] space-y-1", isUser ? "order-2" : "order-1")}>
+    <div className="flex items-start gap-3">
+      {/* Avatar column */}
+      {advisor && (
+        <div
+          className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0 mt-0.5"
+          style={{ border: `2px solid ${advisor.color}` }}
+        >
+          {advisor.name[0]}
+        </div>
+      )}
+      {/* Content column */}
+      <div className="flex-1 min-w-0 max-w-[85%]">
         {advisor && (
-          <div className="flex items-center gap-2">
-            <div
-              className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs"
-              style={{ border: `2px solid ${advisor.color}` }}
-            >
-              {advisor.name[0]}
-            </div>
-            <span className="text-sm font-medium">{advisor.name}</span>
-            <span className="text-xs text-muted-foreground truncate max-w-[120px]">{advisor.tagline}</span>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-sm font-semibold">{advisor.name}</span>
+            <span className="text-xs text-muted-foreground truncate max-w-[160px]">{advisor.tagline}</span>
           </div>
         )}
-        <div
-          className={cn(
-            "rounded-lg px-3 py-2 text-sm",
-            isUser ? "bg-foreground text-background" : "bg-muted border border-border"
-          )}
-        >
+        <div className="rounded-lg px-3 py-2.5 text-sm bg-muted border border-border space-y-1">
           {message.content.map((c, i) => {
             if (c.type === "text") return <p key={i} className="whitespace-pre-wrap">{c.text}</p>;
-            if (c.type === "doc_card" && c.docId)
+            if (c.type === "doc_card" && c.docId) {
+              const isSlides = c.docTitle?.toLowerCase().includes("deck") || c.docTitle?.toLowerCase().includes("slides");
+              const isProposal = c.docTitle?.toLowerCase().includes("proposal");
+              const DocIcon = isSlides ? Presentation : isProposal ? FileCheck : FileText;
               return (
-                <Link key={i} href={`/app/doc?id=${c.docId}`} className="block mt-2 p-2 rounded border bg-background text-sm font-medium hover:bg-muted/50">
-                  📄 {c.docTitle}
+                <Link
+                  key={i}
+                  href={`/app/doc?id=${c.docId}`}
+                  className="group flex items-center gap-3 mt-2 px-3 py-2.5 rounded-lg border bg-background hover:bg-muted/60 transition"
+                >
+                  <div className="h-9 w-9 rounded-md bg-muted flex items-center justify-center shrink-0">
+                    <DocIcon className="h-4.5 w-4.5 text-muted-foreground" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{c.docTitle}</p>
+                    {c.pageCount && <p className="text-xs text-muted-foreground">{c.pageCount} 页</p>}
+                  </div>
+                  <ExternalLink className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition shrink-0" />
                 </Link>
               );
+            }
             if (c.type === "action_buttons" && c.buttons)
               return (
-                <div key={i} className="flex gap-2 mt-2 flex-wrap">
-                  {c.buttons.map((b) => (
-                    <Button key={b.label} variant="outline" size="sm">{b.label}</Button>
+                <div key={i} className="flex gap-2 mt-3 flex-wrap">
+                  {c.buttons.map((b, bi) => (
+                    <Button
+                      key={b.label}
+                      variant={bi === c.buttons!.length - 1 ? "default" : "outline"}
+                      size="sm"
+                    >
+                      {b.label}
+                    </Button>
                   ))}
                 </div>
               );
@@ -135,3 +171,5 @@ function MessageBubble({ message }: { message: (ReturnType<typeof getMessagesFor
     </div>
   );
 }
+
+// (user bubble handled inline above)

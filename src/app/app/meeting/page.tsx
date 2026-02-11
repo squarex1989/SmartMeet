@@ -56,6 +56,9 @@ function MeetingPageContent() {
   const streamRef = useRef<MediaStream | null>(null);
 
   const startCamera = useCallback(async () => {
+    if (typeof window === "undefined" || !navigator.mediaDevices?.getUserMedia) {
+      return;
+    }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       streamRef.current = stream;

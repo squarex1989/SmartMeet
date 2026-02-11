@@ -2,7 +2,7 @@
 
 import { AppNav } from "@/components/layout/AppNav";
 import { SidebarByRoute } from "@/components/layout/SidebarByRoute";
-import { GuidedTour } from "@/components/tour/GuidedTour";
+import { GuidedTour, TourHint } from "@/components/tour/GuidedTour";
 import { useAppStore } from "@/store/useAppStore";
 
 export default function AppLayout({
@@ -37,6 +37,7 @@ export default function AppLayout({
         <main className="flex-1 overflow-auto bg-background min-w-0">{children}</main>
       </div>
       <GuidedTour />
+      <TourHint />
     </div>
   );
 }

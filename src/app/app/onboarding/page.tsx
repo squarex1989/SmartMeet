@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getPreFillForStep, getRepliesForStep } from "@/data/onboarding-script";
 import { advisors } from "@/data/advisors";
+import { useAppStore } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
 
 const TOTAL_STEPS = 7;
@@ -293,7 +294,10 @@ export default function OnboardingPage() {
           </div>
         ))}
       </div>
-      <Button className="mt-8" onClick={() => router.push("/app/calendar")}>
+      <Button className="mt-8" onClick={() => {
+        useAppStore.getState().setTourActive(true);
+        router.push("/app/chat");
+      }}>
         进入工作台
       </Button>
     </div>

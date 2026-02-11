@@ -45,8 +45,10 @@ interface AppState {
   // Guided Tour
   tourActive: boolean;
   tourStep: number;
+  showTourHint: boolean;
   setTourActive: (v: boolean) => void;
   setTourStep: (n: number) => void;
+  setShowTourHint: (v: boolean) => void;
 
   // Reset for "重新开始 Demo"
   reset: () => void;
@@ -66,6 +68,7 @@ const defaultState = {
   mobileLogOpen: false,
   tourActive: false,
   tourStep: 0,
+  showTourHint: false,
 };
 
 export const useAppStore = create<AppState>((set) => ({
@@ -101,6 +104,7 @@ export const useAppStore = create<AppState>((set) => ({
 
   setTourActive: (v) => set({ tourActive: v, tourStep: 0 }),
   setTourStep: (n) => set({ tourStep: n }),
+  setShowTourHint: (v) => set({ showTourHint: v }),
 
   reset: () => set(defaultState),
 }));

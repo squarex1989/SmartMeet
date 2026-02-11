@@ -47,7 +47,12 @@ export const groupChatMessages: ChatMessage[] = [
     conversationId: "group",
     role: "advisor",
     advisorId: "alex",
-    content: [{ type: "text", text: "TechVision 这边需求访谈已完成，纪要已发，Slides 初稿和 Proposal 更新都做好了，等 Sarah 确认。" }],
+    content: [
+      { type: "text", text: "TechVision 这边需求访谈已完成，产出了 3 份文档，请 review：" },
+      { type: "doc_card", docId: "doc-meeting-notes-techvision", docTitle: "TechVision 需求访谈纪要" },
+      { type: "doc_card", docId: "doc-slides-techvision", docTitle: "TechVision 产品定位 Deck (Draft)", pageCount: 8 },
+      { type: "doc_card", docId: "doc-proposal-techvision", docTitle: "TechVision Proposal - 定价方案" },
+    ],
     createdAt: "2026-02-11T09:01:00",
   },
   {
@@ -55,7 +60,12 @@ export const groupChatMessages: ChatMessage[] = [
     conversationId: "group",
     role: "advisor",
     advisorId: "jamie",
-    content: [{ type: "text", text: "RetailMax 营销策略工作坊的 Agenda 和客户摘要已准备好，下午会议可直接用。" }],
+    content: [
+      { type: "text", text: "RetailMax 营销策略工作坊下午 14:00 开始，以下材料已备好：" },
+      { type: "doc_card", docId: "doc-agenda-retailmax", docTitle: "RetailMax 营销策略工作坊 - Agenda" },
+      { type: "doc_card", docId: "doc-strategy-retailmax", docTitle: "RetailMax 营销策略文档" },
+      { type: "text", text: "已从上次会议记录中提取了 CMO Lisa 的核心关注点，融入了 Agenda 第 2 节。" },
+    ],
     createdAt: "2026-02-11T09:02:00",
   },
   {
@@ -63,7 +73,11 @@ export const groupChatMessages: ChatMessage[] = [
     conversationId: "group",
     role: "advisor",
     advisorId: "morgan",
-    content: [{ type: "text", text: "CloudFlow 周报草稿已生成，在 Doc 里，需要 Sarah 过目后发客户。" }],
+    content: [
+      { type: "text", text: "CloudFlow 周报草稿已生成，涵盖上周续约进展和本周计划，请过目后发给客户：" },
+      { type: "doc_card", docId: "doc-report-cloudflow", docTitle: "CloudFlow 周报 - 2026.02.10" },
+      { type: "text", text: "本周重点：续约材料定稿 + 周三客户拜访确认。如无修改，我可以直接发给 CloudFlow 方面的联系人。" },
+    ],
     createdAt: "2026-02-11T09:03:00",
   },
 ];
