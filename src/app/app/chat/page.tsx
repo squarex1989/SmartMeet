@@ -9,7 +9,6 @@ import { AlexFollowupChat } from "@/components/chat/AlexFollowupChat";
 import { Button } from "@/components/ui/button";
 import { FileText, Presentation, FileCheck, ExternalLink } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 export default function ChatPage() {
   const activeConversationId = useAppStore((s) => s.activeConversationId);
