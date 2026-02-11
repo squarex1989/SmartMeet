@@ -35,7 +35,7 @@ export default function OnboardingPage() {
   if (step === 0) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center p-8">
-        <h1 className="text-2xl font-bold tracking-tight">你好 Sarah，让我们为你的客户创建 Advisor</h1>
+        <h1 className="text-2xl font-bold tracking-tight">你好 Sarah，让我们为你的客户雇佣 Advisor</h1>
         <p className="mt-4 max-w-md text-center text-muted-foreground">
           为每个客户配置专属 AI 顾问，会前准备、会中协助、会后跟进，全部自动化。
         </p>
@@ -50,7 +50,7 @@ export default function OnboardingPage() {
   if (step === 1) {
     return (
       <div className="p-8 max-w-4xl mx-auto">
-        <h2 className="text-xl font-semibold mb-6">创建 Advisor</h2>
+        <h2 className="text-xl font-semibold mb-6">雇佣 Advisor</h2>
         <div className="grid gap-4 md:grid-cols-3">
           {advisors.map((a) => (
             <Card key={a.id}>
@@ -124,23 +124,40 @@ export default function OnboardingPage() {
             <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">对话</h3>
           </div>
           <div className="flex-1 overflow-auto">
-            <div className={cn("w-full border-b border-border px-3 py-3 bg-muted")}>
-              <p className="text-sm font-medium">All Advisors</p>
-              <p className="text-xs text-muted-foreground truncate">3 位成员: Alex, Jamie, Morgan</p>
-            </div>
-            {advisors.map((a) => (
-              <div key={a.id} className="w-full border-b border-border px-3 py-3">
-                <div className="flex items-center gap-2">
+            {/* All Advisors - 群聊，与 Chat 页一致 */}
+            <div className={cn("w-full border-b border-border px-3 py-3 bg-muted flex items-center gap-3")}>
+              <div className="relative shrink-0 flex items-center">
+                {advisors.slice(0, 3).map((a, i) => (
                   <div
-                    className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0"
-                    style={{ border: `2px solid ${a.color}` }}
+                    key={a.id}
+                    className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium border-2 border-background"
+                    style={{
+                      marginLeft: i === 0 ? 0 : -6,
+                      borderColor: a.color,
+                      zIndex: 3 - i,
+                    }}
                   >
                     {a.name[0]}
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium truncate">{a.name}</p>
-                    <p className="text-xs text-muted-foreground truncate">{a.tagline}</p>
-                  </div>
+                ))}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium truncate">All Advisors</p>
+                <p className="text-xs text-muted-foreground truncate">3 位成员: Alex, Jamie, Morgan</p>
+              </div>
+            </div>
+            {/* 各 Advisor 单聊，与 Chat 页一致 */}
+            {advisors.map((a) => (
+              <div key={a.id} className="w-full border-b border-border px-3 py-3 flex items-center gap-3">
+                <div
+                  className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0"
+                  style={{ border: `2px solid ${a.color}` }}
+                >
+                  {a.name[0]}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium truncate">{a.name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{a.tagline}</p>
                 </div>
               </div>
             ))}
