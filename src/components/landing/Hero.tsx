@@ -5,10 +5,10 @@ export function Hero() {
     <section className="relative pt-32 pb-24 px-6">
       <div className="max-w-3xl mx-auto text-center">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#EDEDED]">
-          Your advisors, always prepared
+          Your shadow, always prepared
         </h1>
         <p className="mt-6 text-lg text-[#8A8A8A] leading-relaxed">
-          AI advisors that prepare, assist, and follow up on every client meeting — so you can focus on strategy, not admin.
+          Shadow follows every meeting — your AI advisors prepare, assist, and follow up so you can focus on strategy, not admin.
         </p>
         <Link
           href="/app/onboarding"

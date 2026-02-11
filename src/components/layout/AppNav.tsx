@@ -25,7 +25,7 @@ export function AppNav() {
   return (
     <nav className="flex h-14 items-center border-b border-border bg-[#111111] px-4 text-[#EDEDED]">
       <Link href="/app/calendar" className="mr-8 flex items-center gap-2 font-semibold tracking-tight">
-        <span className="text-lg">SmartMeet</span>
+        <span className="text-lg">Shadow</span>
       </Link>
       <div className="flex gap-1">
         {tabs.map(({ tab, label, href, icon: Icon }) => {

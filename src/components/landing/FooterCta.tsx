@@ -5,7 +5,7 @@ export function FooterCta() {
     <section className="py-24 px-6 border-t border-[#1E1E1E]">
       <div className="max-w-2xl mx-auto text-center">
         <h2 className="text-2xl font-bold tracking-tight text-[#EDEDED]">
-          Ready to meet your advisors?
+          Ready to bring Shadow to your meetings?
         </h2>
         <Link
           href="/app/onboarding"

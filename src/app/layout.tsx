@@ -14,7 +14,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SmartMeet",
+  title: "Shadow",
   description: "AI advisors that prepare, assist, and follow up on every client meeting.",
 };
 
