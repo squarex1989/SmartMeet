@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 export default function ChatPage() {
   const activeConversationId = useAppStore((s) => s.activeConversationId);
   const setActiveConversationId = useAppStore((s) => s.setActiveConversationId);
+  const mobileLogOpen = useAppStore((s) => s.mobileLogOpen);
+  const setMobileLogOpen = useAppStore((s) => s.setMobileLogOpen);
 
   // Default to group when none selected
   useEffect(() => {
@@ -33,6 +35,11 @@ export default function ChatPage() {
   return (
     <div className="flex h-full">
       <div className="flex flex-1 flex-col min-w-0">
+        <div className="flex md:hidden items-center justify-end px-3 py-2 border-b border-border shrink-0">
+          <Button variant="outline" size="sm" onClick={() => setMobileLogOpen(true)}>
+            Activity Log
+          </Button>
+        </div>
         {isAlex ? (
           <AlexFollowupChat />
         ) : (
@@ -57,7 +64,19 @@ export default function ChatPage() {
           </div>
         )}
       </div>
-      <ActivityLogPanel />
+      <ActivityLogPanel className="hidden md:flex" />
+      {mobileLogOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/50 md:hidden"
+            onClick={() => setMobileLogOpen(false)}
+            aria-hidden
+          />
+          <div className="fixed inset-y-0 right-0 z-50 w-72 max-w-[85vw] flex flex-col bg-background border-l border-border shadow-xl md:hidden">
+            <ActivityLogPanel onClose={() => setMobileLogOpen(false)} className="flex-1 min-h-0" />
+          </div>
+        </>
+      )}
     </div>
   );
 }

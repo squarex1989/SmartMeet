@@ -12,11 +12,14 @@ export default function CalendarPage() {
   const selectedEvent = selectedEventId ? getEventById(selectedEventId) : null;
 
   return (
-    <div className="h-full overflow-auto p-6">
+    <div className="h-full overflow-auto p-4 md:p-6">
       {selectedEvent ? (
         <EventDetailPanel event={selectedEvent} />
       ) : (
-        <p className="text-muted-foreground">在左侧选择日期和会议查看详情</p>
+        <p className="text-muted-foreground text-sm md:text-base">
+          <span className="md:hidden">点击左上角菜单选择日期和会议查看详情</span>
+          <span className="hidden md:inline">在左侧选择日期和会议查看详情</span>
+        </p>
       )}
     </div>
   );
@@ -27,9 +30,9 @@ function EventDetailPanel({ event }: { event: NonNullable<ReturnType<typeof getE
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-xl font-semibold">{event.title}</h2>
+          <h2 className="text-lg md:text-xl font-semibold">{event.title}</h2>
           <p className="text-sm text-muted-foreground">
             {event.start.slice(0, 16).replace("T", " ")} - {event.end.slice(11, 16)}
           </p>
@@ -47,12 +50,12 @@ function EventDetailPanel({ event }: { event: NonNullable<ReturnType<typeof getE
           )}
         </div>
         {!event.isPast && (
-          <div className="flex flex-col gap-2 shrink-0">
-            <Link href={`/app/meeting?id=${event.id}`}>
+          <div className="flex flex-col sm:flex-row gap-2 shrink-0">
+            <Link href={`/app/meeting?id=${event.id}`} className="w-full sm:w-auto">
               <Button className="w-full">加入会议</Button>
             </Link>
             {getEventStatus(event, "2026-02-09T14:30:00") === "ongoing" && (
-              <Link href={`/app/meeting?id=${event.id}&mode=doc`}>
+              <Link href={`/app/meeting?id=${event.id}&mode=doc`} className="w-full sm:w-auto">
                 <Button variant="outline" className="w-full">文档参会</Button>
               </Link>
             )}

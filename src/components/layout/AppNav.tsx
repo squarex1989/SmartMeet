@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Calendar, MessageSquare, FileText, Inbox, Users, Video, FileEdit, X } from "lucide-react";
+import { Calendar, MessageSquare, FileText, Inbox, Users, Video, FileEdit, X, Menu } from "lucide-react";
 import { useAppStore, type AppTab } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
 import { USER_AVATAR } from "@/data/advisors";
@@ -21,13 +21,22 @@ export function AppNav() {
   const inboxPendingCount = useAppStore((s) => s.inboxPendingCount);
   const activeMeetings = useAppStore((s) => s.activeMeetings);
   const removeActiveMeeting = useAppStore((s) => s.removeActiveMeeting);
+  const setMobileSidebarOpen = useAppStore((s) => s.setMobileSidebarOpen);
 
   return (
-    <nav className="flex h-14 items-center border-b border-border bg-[#111111] px-4 text-[#EDEDED]">
-      <Link href="/app/calendar" className="mr-8 flex items-center gap-2 font-semibold tracking-tight">
-        <span className="text-lg">Shadow</span>
+    <nav className="flex h-14 items-center border-b border-border bg-[#111111] px-2 md:px-4 text-[#EDEDED] shrink-0">
+      <button
+        type="button"
+        onClick={() => setMobileSidebarOpen(true)}
+        className="md:hidden p-2 -ml-1 mr-1 text-[#8A8A8A] hover:text-white"
+        aria-label="打开侧边栏"
+      >
+        <Menu className="h-5 w-5" />
+      </button>
+      <Link href="/app/calendar" className="mr-4 md:mr-8 flex items-center gap-2 font-semibold tracking-tight shrink-0">
+        <span className="text-base md:text-lg">Shadow</span>
       </Link>
-      <div className="flex gap-1">
+      <div className="flex gap-1 overflow-x-auto min-w-0 flex-1 md:flex-initial scrollbar-none">
         {tabs.map(({ tab, label, href, icon: Icon }) => {
           const isActive = pathname.startsWith(href) || (href === "/app/calendar" && pathname === "/app");
           return (
@@ -35,16 +44,17 @@ export function AppNav() {
               key={tab}
               href={href}
               className={cn(
-                "relative flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "relative flex items-center gap-2 rounded-md px-2 md:px-3 py-2 text-sm font-medium transition-colors shrink-0",
                 isActive && !pathname.startsWith("/app/meeting")
                   ? "bg-white/10 text-white"
                   : "text-[#8A8A8A] hover:text-white hover:bg-white/5"
               )}
+              title={label}
             >
-              <Icon className="h-4 w-4" />
-              {label}
+              <Icon className="h-4 w-4 shrink-0" />
+              <span className="hidden md:inline">{label}</span>
               {tab === "inbox" && inboxPendingCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-medium text-white">
+                <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-medium text-white">
                   {inboxPendingCount}
                 </span>
               )}
@@ -53,23 +63,24 @@ export function AppNav() {
         })}
       </div>
 
-      {/* Active meeting tabs */}
+      {/* Active meeting tabs — compact on mobile */}
       {activeMeetings.length > 0 && (
-        <div className="flex gap-1 ml-3 pl-3 border-l border-white/10">
+        <div className="flex gap-1 ml-2 md:ml-3 pl-2 md:pl-3 border-l border-white/10 shrink-0 overflow-x-auto">
           {activeMeetings.map((m) => {
             const isActive = pathname.startsWith("/app/meeting") && new URLSearchParams(typeof window !== "undefined" ? window.location.search : "").get("id") === m.id;
             const MeetingIcon = m.docMode ? FileEdit : Video;
             return (
-              <div key={m.id} className="flex items-center">
+              <div key={m.id} className="flex items-center shrink-0">
                 <Link
                   href={m.href}
                   className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 text-sm font-medium transition-colors border",
+                    "flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 text-sm font-medium transition-colors border",
                     m.ongoing ? "rounded-md" : "rounded-l-md",
                     isActive
                       ? "bg-green-600/20 border-green-500/40 text-green-400"
                       : "bg-white/5 border-white/10 text-[#8A8A8A] hover:text-white hover:bg-white/10"
                   )}
+                  title={m.title}
                 >
                   {m.ongoing && (
                     <span className="relative flex h-2 w-2 shrink-0">
@@ -77,8 +88,8 @@ export function AppNav() {
                       <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
                     </span>
                   )}
-                  <MeetingIcon className="h-3.5 w-3.5" />
-                  <span className="max-w-[120px] truncate">{m.title}</span>
+                  <MeetingIcon className="h-3.5 w-3.5 shrink-0" />
+                  <span className="max-w-[80px] md:max-w-[120px] truncate hidden sm:inline">{m.title}</span>
                 </Link>
                 {!m.ongoing && (
                   <button
@@ -100,7 +111,7 @@ export function AppNav() {
           })}
         </div>
       )}
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-2 shrink-0">
         <button
           type="button"
           className="rounded-full ring-2 ring-border transition hover:ring-[#6B6B6B] overflow-hidden"

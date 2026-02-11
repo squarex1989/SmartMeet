@@ -7,7 +7,9 @@ import { advisors } from "@/data/advisors";
 import { useAppStore } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
 
-export function SidebarByRoute() {
+type SidebarByRouteProps = { onClose?: () => void };
+
+export function SidebarByRoute({ onClose }: SidebarByRouteProps) {
   const pathname = usePathname();
   const selectedDate = useAppStore((s) => s.selectedDate);
   const setSelectedDate = useAppStore((s) => s.setSelectedDate);
@@ -23,8 +25,10 @@ export function SidebarByRoute() {
 
   if (!isCalendar && !isChat && !isDoc) return null;
 
+  const closeIfMobile = () => { onClose?.(); };
+
   return (
-    <aside className="w-64 shrink-0 border-r border-border bg-background flex flex-col overflow-hidden">
+    <aside className={cn("border-r border-border bg-background flex flex-col overflow-hidden", onClose ? "w-full h-full" : "w-64 shrink-0")}>
       {isCalendar && (
         <>
           <div className="border-b border-border p-3">
@@ -47,7 +51,7 @@ export function SidebarByRoute() {
                   <button
                     key={ev.id}
                     type="button"
-                    onClick={() => setSelectedEventId(ev.id)}
+                    onClick={() => { setSelectedEventId(ev.id); closeIfMobile(); }}
                     className={cn(
                       "mb-2 w-full rounded-lg border p-3 text-left transition",
                       isSelected ? "border-foreground/30 bg-muted" : "border-border hover:bg-muted/50",
@@ -100,7 +104,7 @@ export function SidebarByRoute() {
               memberSummary="3 位成员: Alex, Jamie, Morgan"
               advisors={advisors}
               isActive={activeConversationId === "group"}
-              onClick={() => setActiveConversationId("group")}
+              onClick={() => { setActiveConversationId("group"); closeIfMobile(); }}
             />
             {advisors.map((a) => (
               <ConversationItem
@@ -110,7 +114,7 @@ export function SidebarByRoute() {
                 tagline={a.tagline}
                 advisor={a}
                 isActive={activeConversationId === a.id}
-                onClick={() => setActiveConversationId(a.id)}
+                onClick={() => { setActiveConversationId(a.id); closeIfMobile(); }}
               />
             ))}
           </div>
@@ -134,6 +138,7 @@ export function SidebarByRoute() {
               <Link
                 key={id}
                 href={`/app/doc?id=${id}`}
+                onClick={closeIfMobile}
                 className={cn(
                   "block rounded-md px-2 py-2 text-sm transition",
                   openDocumentId === id ? "bg-muted font-medium" : "hover:bg-muted/50"

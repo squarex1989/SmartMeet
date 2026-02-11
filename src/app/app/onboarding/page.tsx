@@ -118,8 +118,8 @@ export default function OnboardingPage() {
 
     return (
       <div className="flex h-[calc(100vh-3.5rem)] w-full">
-        {/* 左侧：群聊会话列表，与 Chat 页一致 */}
-        <aside className="w-64 shrink-0 border-r border-border bg-background flex flex-col overflow-hidden">
+        {/* 左侧：群聊会话列表，与 Chat 页一致 — 移动端隐藏 */}
+        <aside className="hidden md:flex w-64 shrink-0 border-r border-border bg-background flex-col overflow-hidden">
           <div className="border-b border-border p-3">
             <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">对话</h3>
           </div>
@@ -283,7 +283,7 @@ export default function OnboardingPage() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center p-8">
       <h2 className="text-2xl font-bold tracking-tight">你的 3 位 Advisor 已经就绪！</h2>
-      <div className="flex gap-4 mt-6">
+      <div className="flex flex-wrap gap-4 justify-center mt-6">
         {advisors.map((a) => (
           <div key={a.id} className="flex flex-col items-center">
             <div className="h-14 w-14 rounded-full bg-muted flex items-center justify-center text-lg font-medium" style={{ border: `2px solid ${a.color}` }}>

@@ -5,10 +5,13 @@ import { logsByAdvisor, allLogsMixed } from "@/data/logs";
 import type { AdvisorId } from "@/data/advisors";
 import { advisors } from "@/data/advisors";
 import Link from "next/link";
-import { Loader2, Check, Clock } from "lucide-react";
+import { Loader2, Check, Clock, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
-export function ActivityLogPanel() {
+type ActivityLogPanelProps = { onClose?: () => void; className?: string };
+
+export function ActivityLogPanel({ onClose, className }: ActivityLogPanelProps) {
   const activeConversationId = useAppStore((s) => s.activeConversationId);
 
   const logs =
@@ -19,11 +22,16 @@ export function ActivityLogPanel() {
         : [];
 
   return (
-    <div className="flex h-full flex-col border-l border-border bg-background w-72 shrink-0">
-      <div className="border-b border-border p-3">
+    <div className={cn("flex h-full flex-col bg-background", onClose ? "w-full" : "w-72 shrink-0 border-l border-border", className)}>
+      <div className="border-b border-border p-3 flex items-center justify-between">
         <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
           Activity Log
         </h3>
+        {onClose && (
+          <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0" onClick={onClose} aria-label="关闭">
+            <X className="h-4 w-4" />
+          </Button>
+        )}
       </div>
       <div className="flex-1 overflow-auto p-2 space-y-2">
         {logs.length === 0 && (

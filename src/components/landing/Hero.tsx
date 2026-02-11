@@ -2,24 +2,34 @@ import Link from "next/link";
 
 export function Hero() {
   return (
-    <section className="relative pt-32 pb-24 px-6">
+    <section className="relative pt-24 md:pt-32 pb-16 md:pb-24 px-4 md:px-6">
       <div className="max-w-3xl mx-auto text-center">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#EDEDED]">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-[#EDEDED]">
           Your shadow, always prepared
         </h1>
-        <p className="mt-6 text-lg text-[#8A8A8A] leading-relaxed">
+        <p className="mt-4 md:mt-6 text-base md:text-lg text-[#8A8A8A] leading-relaxed">
           Shadow follows every meeting — your AI advisors prepare, assist, and follow up so you can focus on strategy, not admin.
         </p>
         <Link
           href="/app/onboarding"
-          className="mt-10 inline-block rounded-md bg-white px-6 py-3 text-sm font-medium text-black hover:opacity-90 transition"
+          className="mt-8 md:mt-10 inline-block rounded-md bg-white px-6 py-3 text-sm font-medium text-black hover:opacity-90 transition"
         >
           Try the demo
         </Link>
       </div>
 
-      {/* Mock product UI */}
-      <div className="mt-16 max-w-5xl mx-auto rounded-xl border border-[#1E1E1E] bg-[#0D0D0D] overflow-hidden shadow-2xl">
+      {/* Mobile: simple concept card */}
+      <div className="mt-10 md:hidden max-w-sm mx-auto rounded-xl border border-[#1E1E1E] bg-[#111111] p-5 text-left">
+        <p className="text-sm font-medium text-[#EDEDED] mb-3">One place for every meeting</p>
+        <ul className="text-xs text-[#8A8A8A] space-y-2">
+          <li>· Command Room — chat with AI advisors</li>
+          <li>· Activity Log — see what they did</li>
+          <li>· Calendar, Doc, Inbox — all in sync</li>
+        </ul>
+      </div>
+
+      {/* Mock product UI — desktop only */}
+      <div className="mt-16 max-w-5xl mx-auto rounded-xl border border-[#1E1E1E] bg-[#0D0D0D] overflow-hidden shadow-2xl hidden md:block">
         {/* Top bar */}
         <div className="flex items-center h-10 px-4 border-b border-[#1E1E1E] bg-[#111111]">
           <div className="flex gap-1.5">

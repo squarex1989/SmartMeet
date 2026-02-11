@@ -36,6 +36,12 @@ interface AppState {
   alexSlidesGenerated: boolean;
   setAlexSlidesGenerated: (v: boolean) => void;
 
+  // Mobile UI
+  mobileSidebarOpen: boolean;
+  mobileLogOpen: boolean;
+  setMobileSidebarOpen: (v: boolean) => void;
+  setMobileLogOpen: (v: boolean) => void;
+
   // Reset for "重新开始 Demo"
   reset: () => void;
 }
@@ -50,6 +56,8 @@ const defaultState = {
   activeMeetings: [] as { id: string; title: string; href: string; ongoing?: boolean; docMode?: boolean }[],
   alexFollowupStepIndex: 0,
   alexSlidesGenerated: false,
+  mobileSidebarOpen: false,
+  mobileLogOpen: false,
 };
 
 export const useAppStore = create<AppState>((set) => ({
@@ -79,6 +87,9 @@ export const useAppStore = create<AppState>((set) => ({
   setAlexFollowupStepIndex: (n) => set({ alexFollowupStepIndex: n }),
 
   setAlexSlidesGenerated: (v) => set({ alexSlidesGenerated: v }),
+
+  setMobileSidebarOpen: (v) => set({ mobileSidebarOpen: v }),
+  setMobileLogOpen: (v) => set({ mobileLogOpen: v }),
 
   reset: () => set(defaultState),
 }));

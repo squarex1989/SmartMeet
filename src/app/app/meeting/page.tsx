@@ -91,9 +91,9 @@ function MeetingPageContent() {
           </Link>
         </div>
 
-        <div className="flex flex-1 min-h-0">
+        <div className="flex flex-col md:flex-row flex-1 min-h-0">
           {/* Left: Transcript */}
-          <div className="w-1/2 flex flex-col border-r border-border min-h-0">
+          <div className="w-full md:w-1/2 flex flex-col border-r border-border min-h-[200px] md:min-h-0">
             <div className="px-3 py-2 border-b border-border shrink-0">
               <h4 className="text-xs font-medium text-muted-foreground">实时 Transcript</h4>
             </div>
@@ -110,7 +110,10 @@ function MeetingPageContent() {
           </div>
 
           {/* Right: Doc + actions */}
-          <div className="w-1/2 flex flex-col min-h-0">
+          <div className="w-full md:w-1/2 flex flex-col min-h-0">
+            <div className="px-3 py-2 border-b border-border shrink-0">
+              <h4 className="text-xs font-medium text-muted-foreground">My Notes</h4>
+            </div>
             <div className="flex-1 overflow-auto p-4 min-h-0">
               <div className="prose prose-sm max-w-none">
                 {docLines.map((line, i) => (
@@ -129,12 +132,12 @@ function MeetingPageContent() {
                 </ul>
               )}
             </div>
-            <div className="border-t border-border p-4 flex gap-2 shrink-0 bg-background">
+            <div className="border-t border-border p-4 flex flex-wrap gap-2 shrink-0 bg-background">
               <Button size="sm" onClick={handleNote}>Snap</Button>
               <Button size="sm" variant="outline" onClick={() => setShowQuestions(!showQuestions)}>
                 Smart Question
               </Button>
-              <Button size="sm" variant="outline" className="ml-auto" onClick={handleEndMeeting}>
+              <Button size="sm" variant="outline" className="md:ml-auto" onClick={handleEndMeeting}>
                 离开
               </Button>
             </div>
@@ -163,9 +166,9 @@ function MeetingPageContent() {
 
   // === Full meeting mode (with video) ===
   return (
-    <div className="flex h-full">
-      <div className="w-1/2 flex flex-col border-r border-border min-h-0">
-        <div className="flex-1 flex items-center justify-center min-h-0 bg-[#111111] text-[#8A8A8A]">
+    <div className="flex flex-col md:flex-row h-full">
+      <div className="w-full md:w-1/2 flex flex-col border-r border-border min-h-0 flex-1 md:flex-initial">
+        <div className="flex-1 min-h-[180px] md:min-h-0 flex items-center justify-center bg-[#111111] text-[#8A8A8A]">
           <div className="text-center">
             <div className="h-20 w-20 rounded-full bg-white/10 mx-auto flex items-center justify-center text-2xl font-bold text-white mb-2">
               TV
@@ -187,14 +190,17 @@ function MeetingPageContent() {
         </div>
       </div>
 
-      <div className="w-1/2 flex flex-col min-h-0">
-        <div className="h-40 shrink-0 border-b border-border overflow-auto p-3 bg-muted/30">
+      <div className="w-full md:w-1/2 flex flex-col min-h-0 flex-1 md:flex-initial">
+        <div className="h-32 md:h-40 shrink-0 border-b border-border overflow-auto p-3 bg-muted/30">
           <h4 className="text-xs font-medium text-muted-foreground mb-2">实时 Transcript</h4>
           {transcriptLines.map((line, i) => (
             <p key={i} className="text-sm">
               <span className="font-medium">{line.speaker}</span> {line.text}
             </p>
           ))}
+        </div>
+        <div className="px-3 py-2 border-b border-border shrink-0">
+          <h4 className="text-xs font-medium text-muted-foreground">My Notes</h4>
         </div>
         <div className="flex-1 overflow-auto p-4 min-h-0">
           <div className="prose prose-sm max-w-none">
@@ -214,7 +220,7 @@ function MeetingPageContent() {
             </ul>
           )}
         </div>
-        <div className="border-t border-border p-4 flex gap-2 shrink-0 bg-background">
+        <div className="border-t border-border p-4 flex flex-wrap gap-2 shrink-0 bg-background">
           <Button size="sm" onClick={handleNote}>Snap</Button>
           <Button size="sm" variant="outline" onClick={() => setShowQuestions(!showQuestions)}>
             Smart Question
