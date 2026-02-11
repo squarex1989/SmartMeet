@@ -2,9 +2,10 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { getAdvisorById } from "@/data/advisors";
+import { getAdvisorById, type KnowledgeIndexType } from "@/data/advisors";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { FileText, Mail, Database, Video } from "lucide-react";
 
 export default function AdvisorProfilePage() {
   const params = useParams();
@@ -72,10 +73,23 @@ export default function AdvisorProfilePage() {
       <Card>
         <CardHeader>
           <h3 className="font-semibold">记忆 / 知识索引</h3>
-          <p className="text-sm text-muted-foreground">已索引 {advisor.indexedFilesCount} 个文件</p>
+          <p className="text-sm text-muted-foreground">已索引 {advisor.indexedFilesCount} 个资源</p>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground">该 Advisor 已建立项目文件索引，可快速检索与引用。</p>
+          <ul className="space-y-4">
+            {advisor.knowledgeIndex.map((item, i) => (
+              <li key={i} className="flex gap-3 text-sm border-b border-border pb-4 last:border-0 last:pb-0">
+                <span className="shrink-0 text-muted-foreground mt-0.5">
+                  <KnowledgeIcon type={item.type} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium">{item.name}</p>
+                  <p className="text-muted-foreground mt-0.5">{item.summary}</p>
+                  <p className="text-xs text-muted-foreground mt-1 truncate" title={item.path}>{item.path}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </CardContent>
       </Card>
 
@@ -84,4 +98,19 @@ export default function AdvisorProfilePage() {
       </div>
     </div>
   );
+}
+
+function KnowledgeIcon({ type }: { type: KnowledgeIndexType }) {
+  switch (type) {
+    case "doc":
+      return <FileText className="h-4 w-4" />;
+    case "email":
+      return <Mail className="h-4 w-4" />;
+    case "crm":
+      return <Database className="h-4 w-4" />;
+    case "meeting":
+      return <Video className="h-4 w-4" />;
+    default:
+      return <FileText className="h-4 w-4" />;
+  }
 }

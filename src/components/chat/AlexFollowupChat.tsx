@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { alexFollowupScript } from "@/data/followups";
 import type { FollowupContent } from "@/data/followups";
@@ -54,6 +54,11 @@ export function AlexFollowupChat() {
     if (replies[i]) flatMessages.push({ type: "reply", content: replies[i] });
   }
 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [displayedSteps.length, replies.length]);
+
   return (
     <div className="flex-1 overflow-auto p-4 space-y-4">
       {flatMessages.map((item, idx) => {
@@ -104,6 +109,7 @@ export function AlexFollowupChat() {
           <div className="rounded-lg bg-muted border px-3 py-2 text-sm text-muted-foreground">...</div>
         </div>
       )}
+      <div ref={messagesEndRef} />
     </div>
   );
 }

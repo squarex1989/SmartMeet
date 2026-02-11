@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppStore } from "@/store/useAppStore";
-import { getEventById } from "@/data/calendar";
+import { getEventById, getEventStatus } from "@/data/calendar";
 import { advisors } from "@/data/advisors";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -47,9 +47,16 @@ function EventDetailPanel({ event }: { event: NonNullable<ReturnType<typeof getE
           )}
         </div>
         {!event.isPast && (
-          <Link href="/app/meeting">
-            <Button>加入会议</Button>
-          </Link>
+          <div className="flex flex-col gap-2 shrink-0">
+            <Link href={`/app/meeting?id=${event.id}`}>
+              <Button className="w-full">加入会议</Button>
+            </Link>
+            {getEventStatus(event, "2026-02-09T14:30:00") === "ongoing" && (
+              <Link href={`/app/meeting?id=${event.id}&mode=doc`}>
+                <Button variant="outline" className="w-full">文档参会</Button>
+              </Link>
+            )}
+          </div>
         )}
       </CardHeader>
       <CardContent className="space-y-4">

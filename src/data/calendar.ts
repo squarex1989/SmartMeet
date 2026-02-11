@@ -100,6 +100,21 @@ export const calendarEvents: CalendarEvent[] = [
   },
 ];
 
+export type EventStatus = "past" | "ongoing" | "upcoming";
+
+/** Derive status from event times. Pass optional now (ISO string) for demo/testing. */
+export function getEventStatus(
+  event: CalendarEvent,
+  nowStr?: string
+): EventStatus {
+  const now = nowStr ? new Date(nowStr).getTime() : Date.now();
+  const start = new Date(event.start).getTime();
+  const end = new Date(event.end).getTime();
+  if (now > end) return "past";
+  if (now >= start && now <= end) return "ongoing";
+  return "upcoming";
+}
+
 export const getEventsForDate = (dateStr: string): CalendarEvent[] =>
   calendarEvents.filter((e) => e.start.startsWith(dateStr.slice(0, 10)));
 

@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { calendarEvents } from "@/data/calendar";
+import { calendarEvents, getEventStatus } from "@/data/calendar";
 import { advisors } from "@/data/advisors";
 import { useAppStore } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
@@ -42,6 +42,7 @@ export function SidebarByRoute() {
               .map((ev) => {
                 const advisor = advisors.find((a) => a.id === ev.advisorId);
                 const isSelected = selectedEventId === ev.id;
+                const status = getEventStatus(ev, `${selectedDate.slice(0, 10)}T14:30:00`);
                 return (
                   <button
                     key={ev.id}
@@ -49,20 +50,33 @@ export function SidebarByRoute() {
                     onClick={() => setSelectedEventId(ev.id)}
                     className={cn(
                       "mb-2 w-full rounded-lg border p-3 text-left transition",
-                      isSelected ? "border-foreground/30 bg-muted" : "border-border hover:bg-muted/50"
+                      isSelected ? "border-foreground/30 bg-muted" : "border-border hover:bg-muted/50",
+                      status === "past" && "opacity-60"
                     )}
                   >
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium"
-                        style={{ border: `2px solid ${advisor?.color ?? "#ccc"}` }}
-                      >
-                        {advisor?.name[0] ?? "?"}
-                      </div>
-                      <span className="text-sm font-medium truncate">{ev.title}</span>
+                    <p className={cn(
+                      "text-sm font-medium",
+                      status === "past" && "text-muted-foreground"
+                    )}>
+                      {ev.title}
+                    </p>
+                    <div className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground">
+                      <span>{ev.start.slice(11, 16)} - {ev.end.slice(11, 16)}</span>
+                      {status === "ongoing" && (
+                        <span className="flex items-center gap-1">
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-75" />
+                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-600" />
+                          </span>
+                          <span className="text-green-700 dark:text-green-400 font-medium">进行中</span>
+                        </span>
+                      )}
+                      {status === "past" && (
+                        <span className="text-muted-foreground/70">已结束</span>
+                      )}
                     </div>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {ev.start.slice(11, 16)} - {ev.end.slice(11, 16)}
+                      Organizer: {advisor?.name ?? "Unknown"}
                     </p>
                   </button>
                 );
@@ -81,15 +95,20 @@ export function SidebarByRoute() {
           </div>
           <div className="flex-1 overflow-auto">
             <ConversationItem
+              variant="group"
               label="All Advisors"
+              memberSummary="3 位成员: Alex, Jamie, Morgan"
+              advisors={advisors}
               isActive={activeConversationId === "group"}
               onClick={() => setActiveConversationId("group")}
             />
             {advisors.map((a) => (
               <ConversationItem
                 key={a.id}
+                variant="single"
                 label={a.name}
                 tagline={a.tagline}
+                advisor={a}
                 isActive={activeConversationId === a.id}
                 onClick={() => setActiveConversationId(a.id)}
               />
@@ -101,7 +120,7 @@ export function SidebarByRoute() {
       {isDoc && (
         <>
           <div className="border-b border-border p-3">
-            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">最近编辑</h3>
+            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">最近访问</h3>
           </div>
           <div className="flex-1 overflow-auto p-2">
             {[
@@ -135,14 +154,24 @@ export function SidebarByRoute() {
   );
 }
 
+type AdvisorItem = { id: string; name: string; tagline: string; color: string };
+
 function ConversationItem({
+  variant,
   label,
   tagline,
+  memberSummary,
+  advisor,
+  advisors,
   isActive,
   onClick,
 }: {
+  variant: "group" | "single";
   label: string;
   tagline?: string;
+  memberSummary?: string;
+  advisor?: AdvisorItem;
+  advisors?: AdvisorItem[];
   isActive: boolean;
   onClick: () => void;
 }) {
@@ -151,12 +180,40 @@ function ConversationItem({
       type="button"
       onClick={onClick}
       className={cn(
-        "w-full border-b border-border px-3 py-3 text-left transition",
+        "w-full border-b border-border px-3 py-3 text-left transition flex items-center gap-3",
         isActive ? "bg-muted" : "hover:bg-muted/50"
       )}
     >
-      <p className="text-sm font-medium">{label}</p>
-      {tagline && <p className="text-xs text-muted-foreground truncate">{tagline}</p>}
+      {variant === "group" && advisors && advisors.length > 0 && (
+        <div className="relative shrink-0 flex items-center">
+          {advisors.slice(0, 3).map((a, i) => (
+            <div
+              key={a.id}
+              className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium border-2 border-background"
+              style={{
+                marginLeft: i === 0 ? 0 : -6,
+                borderColor: a.color,
+                zIndex: 3 - i,
+              }}
+            >
+              {a.name[0]}
+            </div>
+          ))}
+        </div>
+      )}
+      {variant === "single" && advisor && (
+        <div
+          className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0"
+          style={{ border: `2px solid ${advisor.color}` }}
+        >
+          {advisor.name[0]}
+        </div>
+      )}
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-medium truncate">{label}</p>
+        {memberSummary && <p className="text-xs text-muted-foreground truncate">{memberSummary}</p>}
+        {tagline && <p className="text-xs text-muted-foreground truncate">{tagline}</p>}
+      </div>
     </button>
   );
 }

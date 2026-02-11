@@ -1,5 +1,14 @@
 export type AdvisorId = "alex" | "jamie" | "morgan";
 
+export type KnowledgeIndexType = "doc" | "email" | "crm" | "meeting";
+
+export interface KnowledgeIndexItem {
+  name: string;
+  summary: string;
+  path: string;
+  type: KnowledgeIndexType;
+}
+
 export interface Advisor {
   id: AdvisorId;
   name: string;
@@ -13,6 +22,7 @@ export interface Advisor {
   preferences: string[];
   indexedFilesCount: number;
   stats: { tasksCompletedThisWeek: number; meetingsProcessed: number };
+  knowledgeIndex: KnowledgeIndexItem[];
 }
 
 export interface AutomationRule {
@@ -82,6 +92,14 @@ export const advisors: Advisor[] = [
     preferences: ["邮件风格：简洁直接", "纪要 30 分钟内交付", "融资内容脱敏"],
     indexedFilesCount: 18,
     stats: { tasksCompletedThisWeek: 12, meetingsProcessed: 4 },
+    knowledgeIndex: [
+      { name: "TechVision Q4 Board Deck", summary: "产品路线图与融资进展", path: "Google Drive / Clients / TechVision / Decks", type: "doc" },
+      { name: "TechVision 需求访谈纪要", summary: "2026-02-09 需求访谈会议记录", path: "SmartMeet / Docs / doc-meeting-notes-techvision", type: "meeting" },
+      { name: "TechVision 产品定位 Deck", summary: "AI 差异化与定价草案", path: "Google Drive / Clients / TechVision / Decks", type: "doc" },
+      { name: "TechVision Proposal", summary: "定价与下一步方案", path: "SmartMeet / Docs / doc-proposal-techvision", type: "doc" },
+      { name: "Tom & Lisa 跟进邮件", summary: "会议纪要与下一步行动", path: "Gmail / Sent / TechVision", type: "email" },
+      { name: "TechVision CRM 记录", summary: "客户阶段、联系人、备注", path: "HubSpot / Companies / TechVision", type: "crm" },
+    ],
   },
   {
     id: "jamie",
@@ -130,6 +148,14 @@ export const advisors: Advisor[] = [
     preferences: ["邮件风格：温暖、重视感"],
     indexedFilesCount: 23,
     stats: { tasksCompletedThisWeek: 8, meetingsProcessed: 3 },
+    knowledgeIndex: [
+      { name: "RetailMax 工作坊 Agenda", summary: "Q3 营销策略与落地节奏", path: "SmartMeet / Docs / doc-agenda-retailmax", type: "doc" },
+      { name: "RetailMax 营销策略", summary: "全渠道协同与会员运营", path: "SmartMeet / Docs / doc-strategy-retailmax", type: "doc" },
+      { name: "RetailMax 用户画像 2026", summary: "年轻群体与复购洞察", path: "Google Drive / RetailMax / Research", type: "doc" },
+      { name: "Lisa & David 工作坊邀请", summary: "营销策略工作坊日程确认", path: "Gmail / Sent / RetailMax", type: "email" },
+      { name: "RetailMax CRM", summary: "CMO Lisa、电商 David 联系人", path: "HubSpot / Companies / RetailMax", type: "crm" },
+      { name: "RetailMax 营销策略工作坊", summary: "2026-02-09 工作坊会议", path: "SmartMeet / Meetings", type: "meeting" },
+    ],
   },
   {
     id: "morgan",
@@ -178,6 +204,14 @@ export const advisors: Advisor[] = [
     preferences: ["邮件风格：专业严谨"],
     indexedFilesCount: 18,
     stats: { tasksCompletedThisWeek: 10, meetingsProcessed: 3 },
+    knowledgeIndex: [
+      { name: "CloudFlow 周报", summary: "企业客户成功与续约进展", path: "SmartMeet / Docs / doc-report-cloudflow", type: "doc" },
+      { name: "CloudFlow 续约沟通", summary: "2026-02-09 续约沟通会议", path: "SmartMeet / Meetings", type: "meeting" },
+      { name: "CloudFlow 价值案例库", summary: "客户成功案例与 ROI", path: "Google Drive / CloudFlow / Sales", type: "doc" },
+      { name: "续约决策时间线", summary: "客户成功团队内部备忘", path: "Notion / CloudFlow / Renewals", type: "doc" },
+      { name: "CloudFlow 客户成功邮件", summary: "本期成果同步与续约计划", path: "Gmail / Sent / CloudFlow", type: "email" },
+      { name: "CloudFlow CRM", summary: "企业版续约阶段与联系人", path: "HubSpot / Companies / CloudFlow", type: "crm" },
+    ],
   },
 ];
 

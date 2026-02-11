@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -17,7 +17,8 @@ export default function OnboardingPage() {
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<{ speaker: string; text: string; advisorId?: string }[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [privateChatAdvisor, setPrivateChatAdvisor] = useState<"alex" | "jamie" | "morgan" | null>(null);
+  // privateChatAdvisor removed — users can DM advisors in Command Room
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (step === 2) {
@@ -25,6 +26,10 @@ export default function OnboardingPage() {
       setInputValue(pre ?? "");
     }
   }, [step, chatStepIndex]);
+
+  useEffect(() => {
+    if (step === 2) messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [step, messages.length, isTyping]);
 
   // Step 0: Welcome
   if (step === 0) {
@@ -109,70 +114,110 @@ export default function OnboardingPage() {
       }, delay + 200);
     };
 
-    const isStep7 = chatStepIndex === 6;
     const nextPreFill = getPreFillForStep(chatStepIndex);
 
     return (
-      <div className="flex h-[calc(100vh-3.5rem)] flex-col p-6 max-w-3xl mx-auto">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex gap-1">
-            {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-              <div
-                key={i}
-                className={cn("h-2 w-2 rounded-full", i === chatStepIndex ? "bg-foreground" : "bg-muted")}
-              />
-            ))}
+      <div className="flex h-[calc(100vh-3.5rem)] w-full">
+        {/* 左侧：群聊会话列表，与 Chat 页一致 */}
+        <aside className="w-64 shrink-0 border-r border-border bg-background flex flex-col overflow-hidden">
+          <div className="border-b border-border p-3">
+            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">对话</h3>
           </div>
-          <Button variant="ghost" size="sm" onClick={() => setStep(3)}>跳过</Button>
-        </div>
-
-        <div className="flex-1 overflow-auto space-y-4 border rounded-lg p-4 bg-muted/20">
-          {messages.map((m, i) => (
-            <div key={i} className={cn("flex", m.speaker === "Sarah" ? "justify-end" : "justify-start")}>
-              <div className={cn("max-w-[85%] rounded-lg px-3 py-2", m.speaker === "Sarah" ? "bg-foreground text-background" : "bg-background border")}>
-                {m.advisorId && (
-                  <p className="text-xs font-medium text-muted-foreground mb-0.5">{m.speaker}</p>
-                )}
-                <p className="text-sm whitespace-pre-wrap">{m.text}</p>
-              </div>
+          <div className="flex-1 overflow-auto">
+            <div className={cn("w-full border-b border-border px-3 py-3 bg-muted")}>
+              <p className="text-sm font-medium">All Advisors</p>
+              <p className="text-xs text-muted-foreground truncate">3 位成员: Alex, Jamie, Morgan</p>
             </div>
-          ))}
-          {isTyping && <p className="text-sm text-muted-foreground">...</p>}
-        </div>
-
-        {isStep7 && !messages.some((m) => m.text.includes("TechVision 的 CTO Tom")) && (
-          <p className="text-sm text-muted-foreground mt-2">点击一个 Advisor 进行私聊叮嘱</p>
-        )}
-        {isStep7 && privateChatAdvisor === null && (
-          <div className="flex gap-2 mt-2">
             {advisors.map((a) => (
-              <Button
-                key={a.id}
-                variant="outline"
-                size="sm"
-                onClick={() => setPrivateChatAdvisor(a.id)}
-              >
-                {a.name}
-              </Button>
+              <div key={a.id} className="w-full border-b border-border px-3 py-3">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0"
+                    style={{ border: `2px solid ${a.color}` }}
+                  >
+                    {a.name[0]}
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">{a.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{a.tagline}</p>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
-        )}
+        </aside>
 
-        <div className="flex gap-2 mt-4">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder="输入消息..."
-            className="flex-1 rounded-md border border-border px-3 py-2 text-sm"
-            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          />
-          <Button onClick={handleSend} disabled={isTyping || (!inputValue.trim() && !nextPreFill)}>
-            发送
-          </Button>
-          {chatStepIndex === 6 && messages.some((m) => m.text.includes("我会把这两条加进我的工作规划")) && (
-            <Button variant="outline" onClick={() => setStep(3)}>下一步：Review 工作规划</Button>
-          )}
+        {/* 右侧：消息区 + 输入 */}
+        <div className="flex flex-1 flex-col min-w-0">
+          <div className="flex items-center justify-between px-4 py-2 border-b border-border">
+            <div className="flex gap-1">
+              {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
+                <div
+                  key={i}
+                  className={cn("h-2 w-2 rounded-full", i === chatStepIndex ? "bg-foreground" : "bg-muted")}
+                />
+              ))}
+            </div>
+            <Button variant="ghost" size="sm" onClick={() => setStep(3)}>跳过</Button>
+          </div>
+
+          <div className="flex-1 overflow-auto p-4 space-y-4">
+            {messages.map((m, i) => (
+              <div key={i} className={cn("flex", m.speaker === "Sarah" ? "justify-end" : "justify-start")}>
+                <div className={cn("max-w-[80%] space-y-1", m.speaker === "Sarah" ? "order-2" : "order-1")}>
+                  {m.advisorId && (() => {
+                    const advisor = advisors.find((a) => a.id === m.advisorId);
+                    return advisor ? (
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs"
+                          style={{ border: `2px solid ${advisor.color}` }}
+                        >
+                          {advisor.name[0]}
+                        </div>
+                        <span className="text-sm font-medium">{advisor.name}</span>
+                        <span className="text-xs text-muted-foreground truncate max-w-[120px]">{advisor.tagline}</span>
+                      </div>
+                    ) : null;
+                  })()}
+                  <div
+                    className={cn(
+                      "rounded-lg px-3 py-2 text-sm",
+                      m.speaker === "Sarah" ? "bg-foreground text-background" : "bg-muted border border-border"
+                    )}
+                  >
+                    <p className="whitespace-pre-wrap">{m.text}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {isTyping && <p className="text-sm text-muted-foreground">...</p>}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="border-t border-border p-4 flex gap-2">
+            <textarea
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="输入消息..."
+              rows={5}
+              className="flex-1 min-h-0 max-h-[12rem] resize-none rounded-md border border-border px-3 py-2 text-sm"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+            />
+            <div className="flex flex-col gap-2 shrink-0">
+              <Button onClick={handleSend} disabled={isTyping || (!inputValue.trim() && !nextPreFill)}>
+                发送
+              </Button>
+              {chatStepIndex === 6 && messages.some((m) => m.text.includes("我会把这两条加进我的工作规划")) && (
+                <Button variant="outline" onClick={() => setStep(3)}>下一步：Review 工作规划</Button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     );

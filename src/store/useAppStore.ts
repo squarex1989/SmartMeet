@@ -25,6 +25,11 @@ interface AppState {
   inboxPendingCount: number;
   setInboxPendingCount: (n: number) => void;
 
+  // Active meeting tabs (temporary tabs in nav)
+  activeMeetings: { id: string; title: string; href: string; ongoing?: boolean; docMode?: boolean }[];
+  addActiveMeeting: (meeting: { id: string; title: string; href: string; ongoing?: boolean; docMode?: boolean }) => void;
+  removeActiveMeeting: (id: string) => void;
+
   // Alex followup script progress (for Chat view)
   alexFollowupStepIndex: number;
   setAlexFollowupStepIndex: (n: number) => void;
@@ -42,6 +47,7 @@ const defaultState = {
   selectedEventId: null as string | null,
   openDocumentId: null as string | null,
   inboxPendingCount: 4,
+  activeMeetings: [] as { id: string; title: string; href: string; ongoing?: boolean; docMode?: boolean }[],
   alexFollowupStepIndex: 0,
   alexSlidesGenerated: false,
 };
@@ -60,6 +66,15 @@ export const useAppStore = create<AppState>((set) => ({
   setOpenDocumentId: (id) => set({ openDocumentId: id }),
 
   setInboxPendingCount: (n) => set({ inboxPendingCount: n }),
+
+  addActiveMeeting: (meeting) =>
+    set((s) => ({
+      activeMeetings: s.activeMeetings.some((m) => m.id === meeting.id)
+        ? s.activeMeetings.map((m) => m.id === meeting.id ? { ...m, ...meeting } : m)
+        : [...s.activeMeetings, meeting],
+    })),
+  removeActiveMeeting: (id) =>
+    set((s) => ({ activeMeetings: s.activeMeetings.filter((m) => m.id !== id) })),
 
   setAlexFollowupStepIndex: (n) => set({ alexFollowupStepIndex: n }),
 

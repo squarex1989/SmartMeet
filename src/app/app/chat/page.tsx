@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppStore } from "@/store/useAppStore";
 import { getMessagesForConversation } from "@/data/chats";
 import { advisors } from "@/data/advisors";
@@ -24,6 +24,11 @@ export default function ChatPage() {
   const conversationId = activeConversationId ?? "group";
   const messages = getMessagesForConversation(conversationId);
   const isAlex = conversationId === "alex";
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isAlex) messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [isAlex, messages.length]);
 
   return (
     <div className="flex h-full">
@@ -35,14 +40,18 @@ export default function ChatPage() {
             {messages.map((msg) => (
               <MessageBubble key={msg.id} message={msg} />
             ))}
+            <div ref={messagesEndRef} />
           </div>
         )}
         {!isAlex && (
           <div className="border-t border-border p-4">
-            <input
-              type="text"
+            <textarea
               placeholder="输入消息..."
-              className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
+              rows={5}
+              className="w-full min-h-0 max-h-[12rem] resize-none rounded-md border border-border bg-background px-3 py-2 text-sm"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) e.preventDefault();
+              }}
             />
             <Button className="mt-2" size="sm">发送</Button>
           </div>

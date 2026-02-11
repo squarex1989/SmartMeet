@@ -50,18 +50,28 @@ function LogEntryRow({ entry }: { entry: (typeof allLogsMixed)[0] }) {
       )}
     >
       <div className="flex items-start gap-2">
-        <div className="shrink-0 mt-0.5">
-          {isProcessing ? (
-            <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-          ) : entry.status === "completed" || entry.status === "auto_done" ? (
-            <Check className="h-4 w-4 text-green-600" />
-          ) : (
-            <Clock className="h-4 w-4 text-amber-500" />
-          )}
+        <div
+          className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-medium shrink-0 mt-0.5"
+          style={{ border: `2px solid ${advisor?.color ?? "#ccc"}` }}
+          title={advisor?.name}
+        >
+          {advisor?.name[0] ?? "?"}
         </div>
         <div className="min-w-0 flex-1">
-          <p className="text-xs text-muted-foreground">{entry.timestamp}</p>
-          <p className="font-medium">{entry.description}</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium">{advisor?.name}</span>
+            <span className="text-xs text-muted-foreground">{entry.timestamp}</span>
+            <span className="ml-auto shrink-0">
+              {isProcessing ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-muted-foreground" />
+              ) : entry.status === "completed" || entry.status === "auto_done" ? (
+                <Check className="h-3.5 w-3.5 text-green-600" />
+              ) : (
+                <Clock className="h-3.5 w-3.5 text-amber-500" />
+              )}
+            </span>
+          </div>
+          <p className="text-sm">{entry.description}</p>
           {entry.resourceId && (
             <Link
               href={`/app/doc?id=${entry.resourceId}`}
@@ -71,15 +81,6 @@ function LogEntryRow({ entry }: { entry: (typeof allLogsMixed)[0] }) {
             </Link>
           )}
         </div>
-        {entry.resourceType === "doc" && advisor && (
-          <div
-            className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs shrink-0"
-            style={{ border: `2px solid ${advisor.color}` }}
-            title={advisor.name}
-          >
-            {advisor.name[0]}
-          </div>
-        )}
       </div>
     </div>
   );
