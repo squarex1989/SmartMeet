@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Calendar, MessageSquare, FileText, Inbox, Users, Video, FileEdit, X, Menu } from "lucide-react";
+import { Calendar, MessageSquare, FileText, Inbox, Users, Video, FileEdit, X, Menu, HelpCircle } from "lucide-react";
 import { useAppStore, type AppTab } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
 import { USER_AVATAR } from "@/data/advisors";
@@ -22,6 +22,7 @@ export function AppNav() {
   const activeMeetings = useAppStore((s) => s.activeMeetings);
   const removeActiveMeeting = useAppStore((s) => s.removeActiveMeeting);
   const setMobileSidebarOpen = useAppStore((s) => s.setMobileSidebarOpen);
+  const setTourActive = useAppStore((s) => s.setTourActive);
 
   return (
     <nav className="flex h-14 items-center border-b border-border bg-[#111111] px-2 md:px-4 text-[#EDEDED] shrink-0">
@@ -43,6 +44,7 @@ export function AppNav() {
             <Link
               key={tab}
               href={href}
+              data-tour-id={`tour-${tab}`}
               className={cn(
                 "relative flex items-center gap-2 rounded-md px-2 md:px-3 py-2 text-sm font-medium transition-colors shrink-0",
                 isActive && !pathname.startsWith("/app/meeting")
@@ -112,6 +114,23 @@ export function AppNav() {
         </div>
       )}
       <div className="ml-auto flex items-center gap-2 shrink-0">
+        <button
+          type="button"
+          onClick={() => setTourActive(true)}
+          className="hidden md:flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-[#8A8A8A] hover:text-white hover:bg-white/5 transition-colors"
+          title="Guided Tour"
+        >
+          <HelpCircle className="h-4 w-4" />
+          <span>Guide</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setTourActive(true)}
+          className="md:hidden p-2 text-[#8A8A8A] hover:text-white"
+          title="Guided Tour"
+        >
+          <HelpCircle className="h-4 w-4" />
+        </button>
         <button
           type="button"
           className="rounded-full ring-2 ring-border transition hover:ring-[#6B6B6B] overflow-hidden"

@@ -42,6 +42,12 @@ interface AppState {
   setMobileSidebarOpen: (v: boolean) => void;
   setMobileLogOpen: (v: boolean) => void;
 
+  // Guided Tour
+  tourActive: boolean;
+  tourStep: number;
+  setTourActive: (v: boolean) => void;
+  setTourStep: (n: number) => void;
+
   // Reset for "重新开始 Demo"
   reset: () => void;
 }
@@ -58,6 +64,8 @@ const defaultState = {
   alexSlidesGenerated: false,
   mobileSidebarOpen: false,
   mobileLogOpen: false,
+  tourActive: false,
+  tourStep: 0,
 };
 
 export const useAppStore = create<AppState>((set) => ({
@@ -90,6 +98,9 @@ export const useAppStore = create<AppState>((set) => ({
 
   setMobileSidebarOpen: (v) => set({ mobileSidebarOpen: v }),
   setMobileLogOpen: (v) => set({ mobileLogOpen: v }),
+
+  setTourActive: (v) => set({ tourActive: v, tourStep: 0 }),
+  setTourStep: (n) => set({ tourStep: n }),
 
   reset: () => set(defaultState),
 }));

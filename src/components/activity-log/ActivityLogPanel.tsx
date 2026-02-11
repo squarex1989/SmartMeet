@@ -22,7 +22,7 @@ export function ActivityLogPanel({ onClose, className }: ActivityLogPanelProps) 
         : [];
 
   return (
-    <div className={cn("flex h-full flex-col bg-background", onClose ? "w-full" : "w-72 shrink-0 border-l border-border", className)}>
+    <div data-tour-id="tour-activity-log" className={cn("flex h-full flex-col bg-background", onClose ? "w-full" : "w-72 shrink-0 border-l border-border", className)}>
       <div className="border-b border-border p-3 flex items-center justify-between">
         <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
           Activity Log
