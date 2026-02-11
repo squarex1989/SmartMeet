@@ -1,16 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { advisors } from "@/data/advisors";
+import { assistants } from "@/data/assistants";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-export default function AdvisorsPage() {
+export default function AssistantsPage() {
   return (
     <div className="p-6">
-      <h2 className="text-xl font-semibold mb-6">Advisors</h2>
+      <h2 className="text-xl font-semibold mb-6">Assistants</h2>
       <div className="grid gap-4 md:grid-cols-3">
-        {advisors.map((a) => (
-          <Link key={a.id} href={`/app/advisor/${a.id}`}>
+        {assistants.map((a) => (
+          <Link key={a.id} href={`/app/assistant/${a.id}`}>
             <Card className="hover:bg-muted/50 transition">
               <CardHeader>
                 <div className="flex items-center gap-3">

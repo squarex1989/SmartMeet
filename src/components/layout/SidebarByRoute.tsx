@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { calendarEvents, getEventStatus } from "@/data/calendar";
-import { advisors } from "@/data/advisors";
+import { assistants } from "@/data/assistants";
 import { useAppStore } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +44,7 @@ export function SidebarByRoute({ onClose }: SidebarByRouteProps) {
             {calendarEvents
               .filter((e) => e.start.startsWith(selectedDate.slice(0, 10)))
               .map((ev) => {
-                const advisor = advisors.find((a) => a.id === ev.advisorId);
+                const assistant = assistants.find((a) => a.id === ev.assistantId);
                 const isSelected = selectedEventId === ev.id;
                 const status = getEventStatus(ev, `${selectedDate.slice(0, 10)}T14:30:00`);
                 return (
@@ -80,7 +80,7 @@ export function SidebarByRoute({ onClose }: SidebarByRouteProps) {
                       )}
                     </div>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      Organizer: {advisor?.name ?? "Unknown"}
+                      Organizer: {assistant?.name ?? "Unknown"}
                     </p>
                   </button>
                 );
@@ -100,19 +100,19 @@ export function SidebarByRoute({ onClose }: SidebarByRouteProps) {
           <div className="flex-1 overflow-auto">
             <ConversationItem
               variant="group"
-              label="All Advisors"
+              label="All Assistants"
               memberSummary="3 位成员: Alex, Jamie, Morgan"
-              advisors={advisors}
+              assistants={assistants}
               isActive={activeConversationId === "group"}
               onClick={() => { setActiveConversationId("group"); closeIfMobile(); }}
             />
-            {advisors.map((a) => (
+            {assistants.map((a) => (
               <ConversationItem
                 key={a.id}
                 variant="single"
                 label={a.name}
                 tagline={a.tagline}
-                advisor={a}
+                assistant={a}
                 isActive={activeConversationId === a.id}
                 onClick={() => { setActiveConversationId(a.id); closeIfMobile(); }}
               />
@@ -159,15 +159,15 @@ export function SidebarByRoute({ onClose }: SidebarByRouteProps) {
   );
 }
 
-type AdvisorItem = { id: string; name: string; tagline: string; color: string };
+type AssistantItem = { id: string; name: string; tagline: string; color: string };
 
 function ConversationItem({
   variant,
   label,
   tagline,
   memberSummary,
-  advisor,
-  advisors,
+  assistant,
+  assistants,
   isActive,
   onClick,
 }: {
@@ -175,8 +175,8 @@ function ConversationItem({
   label: string;
   tagline?: string;
   memberSummary?: string;
-  advisor?: AdvisorItem;
-  advisors?: AdvisorItem[];
+  assistant?: AssistantItem;
+  assistants?: AssistantItem[];
   isActive: boolean;
   onClick: () => void;
 }) {
@@ -189,9 +189,9 @@ function ConversationItem({
         isActive ? "bg-muted" : "hover:bg-muted/50"
       )}
     >
-      {variant === "group" && advisors && advisors.length > 0 && (
+      {variant === "group" && assistants && assistants.length > 0 && (
         <div className="relative shrink-0 flex items-center">
-          {advisors.slice(0, 3).map((a, i) => (
+          {assistants.slice(0, 3).map((a, i) => (
             <div
               key={a.id}
               className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium border-2 border-background"
@@ -206,12 +206,12 @@ function ConversationItem({
           ))}
         </div>
       )}
-      {variant === "single" && advisor && (
+      {variant === "single" && assistant && (
         <div
           className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0"
-          style={{ border: `2px solid ${advisor.color}` }}
+          style={{ border: `2px solid ${assistant.color}` }}
         >
-          {advisor.name[0]}
+          {assistant.name[0]}
         </div>
       )}
       <div className="min-w-0 flex-1">

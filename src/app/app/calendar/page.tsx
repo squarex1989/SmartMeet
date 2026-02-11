@@ -2,7 +2,7 @@
 
 import { useAppStore } from "@/store/useAppStore";
 import { getEventById, getEventStatus } from "@/data/calendar";
-import { advisors } from "@/data/advisors";
+import { assistants } from "@/data/assistants";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -26,7 +26,7 @@ export default function CalendarPage() {
 }
 
 function EventDetailPanel({ event }: { event: NonNullable<ReturnType<typeof getEventById>> }) {
-  const advisor = advisors.find((a) => a.id === event.advisorId);
+  const assistant = assistants.find((a) => a.id === event.assistantId);
 
   return (
     <Card>
@@ -36,16 +36,16 @@ function EventDetailPanel({ event }: { event: NonNullable<ReturnType<typeof getE
           <p className="text-sm text-muted-foreground">
             {event.start.slice(0, 16).replace("T", " ")} - {event.end.slice(11, 16)}
           </p>
-          {advisor && (
+          {assistant && (
             <div className="flex items-center gap-2 mt-2">
               <div
                 className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs"
-                style={{ border: `2px solid ${advisor.color}` }}
+                style={{ border: `2px solid ${assistant.color}` }}
               >
-                {advisor.name[0]}
+                {assistant.name[0]}
               </div>
-              <span className="text-sm">{advisor.name}</span>
-              <span className="text-xs text-muted-foreground">{advisor.tagline}</span>
+              <span className="text-sm">{assistant.name}</span>
+              <span className="text-xs text-muted-foreground">{assistant.tagline}</span>
             </div>
           )}
         </div>

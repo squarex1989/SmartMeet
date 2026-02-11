@@ -25,7 +25,7 @@ export default function InboxPage() {
   return (
     <div className="p-6 max-w-2xl">
       <h2 className="text-xl font-semibold mb-4">待办</h2>
-      <p className="text-sm text-muted-foreground mb-6">Advisor 等待你确认的操作</p>
+      <p className="text-sm text-muted-foreground mb-6">Assistant 等待你确认的操作</p>
       <div className="space-y-4">
         {inboxItems.map((item) => (
           <Card key={item.id}>

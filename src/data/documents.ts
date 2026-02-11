@@ -1,11 +1,11 @@
-import type { AdvisorId } from "./advisors";
+import type { AssistantId } from "./assistants";
 
 export type DocumentId = string;
 
 export interface DocumentMeta {
   id: DocumentId;
   title: string;
-  advisorId: AdvisorId;
+  assistantId: AssistantId;
   type: "notes" | "agenda" | "report" | "strategy" | "slides" | "proposal";
   updatedAt: string;
   pageCount?: number;
@@ -20,7 +20,7 @@ export interface DocumentContent {
 export interface TrackChange {
   id: string;
   type: "insert" | "delete" | "replace";
-  authorId: AdvisorId;
+  authorId: AssistantId;
   // For insert: afterText is the anchor, newFragment is inserted after it
   afterText?: string;
   newFragment?: string;
@@ -32,12 +32,12 @@ export interface TrackChange {
 }
 
 export const documentsMeta: DocumentMeta[] = [
-  { id: "doc-meeting-notes-techvision", title: "TechVision 需求访谈纪要 - 2026.02.11", advisorId: "alex", type: "notes", updatedAt: "2026-02-11T10:45:00" },
-  { id: "doc-slides-techvision", title: "TechVision 产品定位 Deck (Draft)", advisorId: "alex", type: "slides", updatedAt: "2026-02-11T11:00:00", pageCount: 8 },
-  { id: "doc-proposal-techvision", title: "TechVision Proposal - 定价方案", advisorId: "alex", type: "proposal", updatedAt: "2026-02-11T11:10:00" },
-  { id: "doc-agenda-retailmax", title: "RetailMax 营销策略工作坊 - Agenda", advisorId: "jamie", type: "agenda", updatedAt: "2026-02-10T18:00:00" },
-  { id: "doc-report-cloudflow", title: "CloudFlow 周报 - 2026.02.10", advisorId: "morgan", type: "report", updatedAt: "2026-02-10T08:00:00" },
-  { id: "doc-strategy-retailmax", title: "RetailMax 营销策略文档", advisorId: "jamie", type: "strategy", updatedAt: "2026-02-08T14:00:00" },
+  { id: "doc-meeting-notes-techvision", title: "TechVision 需求访谈纪要 - 2026.02.11", assistantId: "alex", type: "notes", updatedAt: "2026-02-11T10:45:00" },
+  { id: "doc-slides-techvision", title: "TechVision 产品定位 Deck (Draft)", assistantId: "alex", type: "slides", updatedAt: "2026-02-11T11:00:00", pageCount: 8 },
+  { id: "doc-proposal-techvision", title: "TechVision Proposal - 定价方案", assistantId: "alex", type: "proposal", updatedAt: "2026-02-11T11:10:00" },
+  { id: "doc-agenda-retailmax", title: "RetailMax 营销策略工作坊 - Agenda", assistantId: "jamie", type: "agenda", updatedAt: "2026-02-10T18:00:00" },
+  { id: "doc-report-cloudflow", title: "CloudFlow 周报 - 2026.02.10", assistantId: "morgan", type: "report", updatedAt: "2026-02-10T08:00:00" },
+  { id: "doc-strategy-retailmax", title: "RetailMax 营销策略文档", assistantId: "jamie", type: "strategy", updatedAt: "2026-02-08T14:00:00" },
 ];
 
 const meetingNotesBody = `# TechVision 需求访谈纪要

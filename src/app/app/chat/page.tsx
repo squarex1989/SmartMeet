@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useAppStore } from "@/store/useAppStore";
 import { getMessagesForConversation } from "@/data/chats";
-import { advisors } from "@/data/advisors";
+import { assistants } from "@/data/assistants";
 import { ActivityLogPanel } from "@/components/activity-log/ActivityLogPanel";
 import { AlexFollowupChat } from "@/components/chat/AlexFollowupChat";
 import { Button } from "@/components/ui/button";
@@ -83,7 +83,7 @@ export default function ChatPage() {
 
 function MessageBubble({ message }: { message: (ReturnType<typeof getMessagesForConversation>[0]) }) {
   const isUser = message.role === "user";
-  const advisor = message.advisorId ? advisors.find((a) => a.id === message.advisorId) : null;
+  const assistant = message.assistantId ? assistants.find((a) => a.id === message.assistantId) : null;
 
   if (isUser) {
     return (
@@ -103,20 +103,20 @@ function MessageBubble({ message }: { message: (ReturnType<typeof getMessagesFor
   return (
     <div className="flex items-start gap-3">
       {/* Avatar column */}
-      {advisor && (
+      {assistant && (
         <div
           className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0 mt-0.5"
-          style={{ border: `2px solid ${advisor.color}` }}
+          style={{ border: `2px solid ${assistant.color}` }}
         >
-          {advisor.name[0]}
+          {assistant.name[0]}
         </div>
       )}
       {/* Content column */}
       <div className="flex-1 min-w-0 max-w-[85%]">
-        {advisor && (
+        {assistant && (
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-sm font-semibold">{advisor.name}</span>
-            <span className="text-xs text-muted-foreground truncate max-w-[160px]">{advisor.tagline}</span>
+            <span className="text-sm font-semibold">{assistant.name}</span>
+            <span className="text-xs text-muted-foreground truncate max-w-[160px]">{assistant.tagline}</span>
           </div>
         )}
         <div className="rounded-lg px-3 py-2.5 text-sm bg-muted border border-border space-y-1">

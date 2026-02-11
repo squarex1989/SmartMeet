@@ -4,11 +4,11 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { alexFollowupScript } from "@/data/followups";
 import type { FollowupContent } from "@/data/followups";
-import { advisors } from "@/data/advisors";
+import { assistants } from "@/data/assistants";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-const alex = advisors.find((a) => a.id === "alex")!;
+const alex = assistants.find((a) => a.id === "alex")!;
 
 export function AlexFollowupChat() {
   const router = useRouter();

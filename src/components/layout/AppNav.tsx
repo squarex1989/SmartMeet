@@ -6,14 +6,14 @@ import { usePathname } from "next/navigation";
 import { Calendar, MessageSquare, FileText, Inbox, Users, Video, FileEdit, X, Menu, HelpCircle } from "lucide-react";
 import { useAppStore, type AppTab } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
-import { USER_AVATAR } from "@/data/advisors";
+import { USER_AVATAR } from "@/data/assistants";
 
 const tabs: { tab: AppTab; label: string; href: string; icon: React.ElementType }[] = [
   { tab: "chat", label: "Command Room", href: "/app/chat", icon: MessageSquare },
   { tab: "calendar", label: "Calendar", href: "/app/calendar", icon: Calendar },
   { tab: "doc", label: "Doc", href: "/app/doc", icon: FileText },
   { tab: "inbox", label: "Inbox", href: "/app/inbox", icon: Inbox },
-  { tab: "advisors", label: "Advisors", href: "/app/advisors", icon: Users },
+  { tab: "assistants", label: "Assistants", href: "/app/assistants", icon: Users },
 ];
 
 export function AppNav() {

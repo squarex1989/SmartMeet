@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { ConversationId } from "@/data/chats";
 
-export type AppTab = "calendar" | "chat" | "doc" | "inbox" | "advisors";
+export type AppTab = "calendar" | "chat" | "doc" | "inbox" | "assistants";
 
 interface AppState {
   currentTab: AppTab;

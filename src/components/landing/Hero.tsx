@@ -8,7 +8,7 @@ export function Hero() {
           Your shadow, always prepared
         </h1>
         <p className="mt-4 md:mt-6 text-base md:text-lg text-[#8A8A8A] leading-relaxed">
-          Shadow follows every meeting — your AI advisors prepare, assist, and follow up so you can focus on strategy, not admin.
+          Shadow follows every meeting — your AI assistants prepare, assist, and follow up so you can focus on strategy, not admin.
         </p>
         <Link
           href="/app/onboarding"
@@ -22,7 +22,7 @@ export function Hero() {
       <div className="mt-10 md:hidden max-w-sm mx-auto rounded-xl border border-[#1E1E1E] bg-[#111111] p-5 text-left">
         <p className="text-sm font-medium text-[#EDEDED] mb-3">One place for every meeting</p>
         <ul className="text-xs text-[#8A8A8A] space-y-2">
-          <li>· Command Room — chat with AI advisors</li>
+          <li>· Command Room — chat with AI assistants</li>
           <li>· Activity Log — see what they did</li>
           <li>· Calendar, Doc, Inbox — all in sync</li>
         </ul>
@@ -56,7 +56,7 @@ export function Hero() {
                   <span className="h-5 w-5 rounded-full bg-[#3B8C6E]/20 border border-[#3B8C6E] flex items-center justify-center text-[8px] text-[#3B8C6E]">J</span>
                   <span className="h-5 w-5 rounded-full bg-[#5B7BC0]/20 border border-[#5B7BC0] flex items-center justify-center text-[8px] text-[#5B7BC0]">M</span>
                 </div>
-                <span className="text-xs text-[#ccc]">All Advisors</span>
+                <span className="text-xs text-[#ccc]">All Assistants</span>
               </div>
             </div>
             {[
@@ -82,7 +82,7 @@ export function Hero() {
           {/* Center: Chat area */}
           <div className="flex-1 flex flex-col min-w-0">
             <div className="flex-1 overflow-hidden p-4 space-y-3">
-              {/* Advisor message */}
+              {/* Assistant message */}
               <div className="flex gap-2">
                 <span className="h-6 w-6 rounded-full bg-[#E5684E]/20 border border-[#E5684E] flex items-center justify-center text-[9px] text-[#E5684E] shrink-0 mt-0.5">A</span>
                 <div>
@@ -104,7 +104,7 @@ export function Hero() {
                   <p className="text-xs text-[#111]">确认更新 CRM</p>
                 </div>
               </div>
-              {/* Advisor reply */}
+              {/* Assistant reply */}
               <div className="flex gap-2">
                 <span className="h-6 w-6 rounded-full bg-[#E5684E]/20 border border-[#E5684E] flex items-center justify-center text-[9px] text-[#E5684E] shrink-0 mt-0.5">A</span>
                 <div>

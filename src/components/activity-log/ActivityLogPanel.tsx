@@ -1,9 +1,9 @@
 "use client";
 
 import { useAppStore } from "@/store/useAppStore";
-import { logsByAdvisor, allLogsMixed } from "@/data/logs";
-import type { AdvisorId } from "@/data/advisors";
-import { advisors } from "@/data/advisors";
+import { logsByAssistant, allLogsMixed } from "@/data/logs";
+import type { AssistantId } from "@/data/assistants";
+import { assistants } from "@/data/assistants";
 import Link from "next/link";
 import { Loader2, Check, Clock, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,7 +18,7 @@ export function ActivityLogPanel({ onClose, className }: ActivityLogPanelProps) 
     activeConversationId === "group"
       ? allLogsMixed
       : activeConversationId
-        ? logsByAdvisor[activeConversationId as AdvisorId] ?? []
+        ? logsByAssistant[activeConversationId as AssistantId] ?? []
         : [];
 
   return (
@@ -46,7 +46,7 @@ export function ActivityLogPanel({ onClose, className }: ActivityLogPanelProps) 
 }
 
 function LogEntryRow({ entry }: { entry: (typeof allLogsMixed)[0] }) {
-  const advisor = advisors.find((a) => a.id === entry.advisorId);
+  const assistant = assistants.find((a) => a.id === entry.assistantId);
   const isProcessing = entry.status === "processing";
   const isWaiting = entry.status === "waiting";
 
@@ -60,14 +60,14 @@ function LogEntryRow({ entry }: { entry: (typeof allLogsMixed)[0] }) {
       <div className="flex items-start gap-2">
         <div
           className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-[10px] font-medium shrink-0 mt-0.5"
-          style={{ border: `2px solid ${advisor?.color ?? "#ccc"}` }}
-          title={advisor?.name}
+          style={{ border: `2px solid ${assistant?.color ?? "#ccc"}` }}
+          title={assistant?.name}
         >
-          {advisor?.name[0] ?? "?"}
+          {assistant?.name[0] ?? "?"}
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium">{advisor?.name}</span>
+            <span className="text-xs font-medium">{assistant?.name}</span>
             <span className="text-xs text-muted-foreground">{entry.timestamp}</span>
             <span className="ml-auto shrink-0">
               {isProcessing ? (

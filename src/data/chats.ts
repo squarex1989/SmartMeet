@@ -1,8 +1,8 @@
-import type { AdvisorId } from "./advisors";
+import type { AssistantId } from "./assistants";
 
-export type ConversationId = "group" | AdvisorId;
+export type ConversationId = "group" | AssistantId;
 
-export type MessageRole = "user" | "advisor";
+export type MessageRole = "user" | "assistant";
 
 export type MessageContentType =
   | "text"
@@ -26,7 +26,7 @@ export interface ChatMessage {
   id: string;
   conversationId: ConversationId;
   role: MessageRole;
-  advisorId?: AdvisorId;
+  assistantId?: AssistantId;
   content: MessageContent[];
   createdAt: string;
   // For scripted flow: next step triggered by button click
@@ -45,8 +45,8 @@ export const groupChatMessages: ChatMessage[] = [
   {
     id: "g2",
     conversationId: "group",
-    role: "advisor",
-    advisorId: "alex",
+    role: "assistant",
+    assistantId: "alex",
     content: [
       { type: "text", text: "TechVision 这边需求访谈已完成，产出了 3 份文档，请 review：" },
       { type: "doc_card", docId: "doc-meeting-notes-techvision", docTitle: "TechVision 需求访谈纪要" },
@@ -58,8 +58,8 @@ export const groupChatMessages: ChatMessage[] = [
   {
     id: "g3",
     conversationId: "group",
-    role: "advisor",
-    advisorId: "jamie",
+    role: "assistant",
+    assistantId: "jamie",
     content: [
       { type: "text", text: "RetailMax 营销策略工作坊下午 14:00 开始，以下材料已备好：" },
       { type: "doc_card", docId: "doc-agenda-retailmax", docTitle: "RetailMax 营销策略工作坊 - Agenda" },
@@ -71,8 +71,8 @@ export const groupChatMessages: ChatMessage[] = [
   {
     id: "g4",
     conversationId: "group",
-    role: "advisor",
-    advisorId: "morgan",
+    role: "assistant",
+    assistantId: "morgan",
     content: [
       { type: "text", text: "CloudFlow 周报草稿已生成，涵盖上周续约进展和本周计划，请过目后发给客户：" },
       { type: "doc_card", docId: "doc-report-cloudflow", docTitle: "CloudFlow 周报 - 2026.02.10" },
@@ -94,8 +94,8 @@ export const jamieChatMessages: ChatMessage[] = [
   {
     id: "j2",
     conversationId: "jamie",
-    role: "advisor",
-    advisorId: "jamie",
+    role: "assistant",
+    assistantId: "jamie",
     content: [
       { type: "text", text: "RetailMax 的 CMO Lisa 在上次工作坊里提到，他们最大的痛点是" },
       { type: "transcript_quote", quote: { speaker: "Lisa", text: "全渠道数据分散，很难有一张统一的用户视图来做决策。" } },
@@ -110,8 +110,8 @@ export const morganChatMessages: ChatMessage[] = [
   {
     id: "mo1",
     conversationId: "morgan",
-    role: "advisor",
-    advisorId: "morgan",
+    role: "assistant",
+    assistantId: "morgan",
     content: [
       { type: "text", text: "CloudFlow 的周报草稿已经准备好了，请查收。" },
       { type: "doc_card", docId: "doc-report-cloudflow", docTitle: "CloudFlow 周报 - 2026.02.10" },

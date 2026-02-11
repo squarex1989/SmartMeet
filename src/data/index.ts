@@ -1,4 +1,4 @@
-export * from "./advisors";
+export * from "./assistants";
 export * from "./calendar";
 export * from "./chats";
 export * from "./documents";

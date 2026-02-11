@@ -1,4 +1,4 @@
-import type { AdvisorId } from "./advisors";
+import type { AssistantId } from "./assistants";
 
 export type MeetingId = string;
 
@@ -7,7 +7,7 @@ export interface CalendarEvent {
   title: string;
   start: string; // ISO
   end: string;
-  advisorId: AdvisorId;
+  assistantId: AssistantId;
   type: "client" | "internal" | "follow-up";
   isPast: boolean;
   // For future meetings
@@ -47,7 +47,7 @@ export const calendarEvents: CalendarEvent[] = [
     title: "TechVision 需求访谈",
     start: `${baseDate}T10:00:00`,
     end: `${baseDate}T11:00:00`,
-    advisorId: "alex",
+    assistantId: "alex",
     type: "client",
     isPast: true,
     outcome: {
@@ -69,7 +69,7 @@ export const calendarEvents: CalendarEvent[] = [
     title: "RetailMax 营销策略工作坊",
     start: `${baseDate}T14:00:00`,
     end: `${baseDate}T15:30:00`,
-    advisorId: "jamie",
+    assistantId: "jamie",
     type: "client",
     isPast: false,
     prep: {
@@ -87,7 +87,7 @@ export const calendarEvents: CalendarEvent[] = [
     title: "CloudFlow 续约沟通",
     start: `${baseDate}T16:00:00`,
     end: `${baseDate}T16:45:00`,
-    advisorId: "morgan",
+    assistantId: "morgan",
     type: "client",
     isPast: false,
     prep: {

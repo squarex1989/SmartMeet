@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getPreFillForStep, getRepliesForStep } from "@/data/onboarding-script";
-import { advisors } from "@/data/advisors";
+import { assistants } from "@/data/assistants";
 import { useAppStore } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
 
@@ -16,9 +16,9 @@ export default function OnboardingPage() {
   const [step, setStep] = useState(0);
   const [chatStepIndex, setChatStepIndex] = useState(0);
   const [inputValue, setInputValue] = useState("");
-  const [messages, setMessages] = useState<{ speaker: string; text: string; advisorId?: string }[]>([]);
+  const [messages, setMessages] = useState<{ speaker: string; text: string; assistantId?: string }[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  // privateChatAdvisor removed — users can DM advisors in Command Room
+  // privateChatAssistant removed — users can DM assistants in Command Room
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function OnboardingPage() {
   if (step === 0) {
     return (
       <div className="flex min-h-[60vh] flex-col items-center justify-center p-8">
-        <h1 className="text-2xl font-bold tracking-tight">你好 Sarah，让我们为你的客户雇佣 Advisor</h1>
+        <h1 className="text-2xl font-bold tracking-tight">你好 Sarah，让我们为你的客户雇佣 Assistant</h1>
         <p className="mt-4 max-w-md text-center text-muted-foreground">
           为每个客户配置专属 AI 顾问，会前准备、会中协助、会后跟进，全部自动化。
         </p>
@@ -47,13 +47,13 @@ export default function OnboardingPage() {
     );
   }
 
-  // Step 1: Create Advisor (3 cards, pre-filled)
+  // Step 1: Create Assistant (3 cards, pre-filled)
   if (step === 1) {
     return (
       <div className="p-8 max-w-4xl mx-auto">
-        <h2 className="text-xl font-semibold mb-6">雇佣 Advisor</h2>
+        <h2 className="text-xl font-semibold mb-6">雇佣 Assistant</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          {advisors.map((a) => (
+          {assistants.map((a) => (
             <Card key={a.id}>
               <CardHeader className="pb-2">
                 <div className="flex items-center gap-2">
@@ -95,12 +95,12 @@ export default function OnboardingPage() {
       setInputValue("");
       setIsTyping(true);
 
-      // Simulate advisor replies
+      // Simulate assistant replies
       let delay = 0;
       replies.forEach((r) => {
-        const advisor = r.advisorId ? advisors.find((a) => a.id === r.advisorId) : null;
+        const assistant = r.assistantId ? assistants.find((a) => a.id === r.assistantId) : null;
         setTimeout(() => {
-          setMessages((prev) => [...prev, { speaker: advisor?.name ?? r.speaker, text: r.message, advisorId: r.advisorId }]);
+          setMessages((prev) => [...prev, { speaker: assistant?.name ?? r.speaker, text: r.message, assistantId: r.assistantId }]);
         }, delay);
         delay += 400;
       });
@@ -125,10 +125,10 @@ export default function OnboardingPage() {
             <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">对话</h3>
           </div>
           <div className="flex-1 overflow-auto">
-            {/* All Advisors - 群聊，与 Chat 页一致 */}
+            {/* All Assistants - 群聊，与 Chat 页一致 */}
             <div className={cn("w-full border-b border-border px-3 py-3 bg-muted flex items-center gap-3")}>
               <div className="relative shrink-0 flex items-center">
-                {advisors.slice(0, 3).map((a, i) => (
+                {assistants.slice(0, 3).map((a, i) => (
                   <div
                     key={a.id}
                     className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium border-2 border-background"
@@ -143,12 +143,12 @@ export default function OnboardingPage() {
                 ))}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium truncate">All Advisors</p>
+                <p className="text-sm font-medium truncate">All Assistants</p>
                 <p className="text-xs text-muted-foreground truncate">3 位成员: Alex, Jamie, Morgan</p>
               </div>
             </div>
-            {/* 各 Advisor 单聊，与 Chat 页一致 */}
-            {advisors.map((a) => (
+            {/* 各 Assistant 单聊，与 Chat 页一致 */}
+            {assistants.map((a) => (
               <div key={a.id} className="w-full border-b border-border px-3 py-3 flex items-center gap-3">
                 <div
                   className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0"
@@ -183,18 +183,18 @@ export default function OnboardingPage() {
             {messages.map((m, i) => (
               <div key={i} className={cn("flex", m.speaker === "Sarah" ? "justify-end" : "justify-start")}>
                 <div className={cn("max-w-[80%] space-y-1", m.speaker === "Sarah" ? "order-2" : "order-1")}>
-                  {m.advisorId && (() => {
-                    const advisor = advisors.find((a) => a.id === m.advisorId);
-                    return advisor ? (
+                  {m.assistantId && (() => {
+                    const assistant = assistants.find((a) => a.id === m.assistantId);
+                    return assistant ? (
                       <div className="flex items-center gap-2">
                         <div
                           className="h-6 w-6 rounded-full bg-muted flex items-center justify-center text-xs"
-                          style={{ border: `2px solid ${advisor.color}` }}
+                          style={{ border: `2px solid ${assistant.color}` }}
                         >
-                          {advisor.name[0]}
+                          {assistant.name[0]}
                         </div>
-                        <span className="text-sm font-medium">{advisor.name}</span>
-                        <span className="text-xs text-muted-foreground truncate max-w-[120px]">{advisor.tagline}</span>
+                        <span className="text-sm font-medium">{assistant.name}</span>
+                        <span className="text-xs text-muted-foreground truncate max-w-[120px]">{assistant.tagline}</span>
                       </div>
                     ) : null;
                   })()}
@@ -247,7 +247,7 @@ export default function OnboardingPage() {
       <div className="p-8 max-w-5xl mx-auto">
         <h2 className="text-xl font-semibold mb-6">Review 工作规划</h2>
         <div className="grid gap-6 md:grid-cols-3">
-          {advisors.map((a) => (
+          {assistants.map((a) => (
             <Card key={a.id}>
               <CardHeader>
                 <div className="flex items-center gap-2">
@@ -283,9 +283,9 @@ export default function OnboardingPage() {
   // Step 4: Done
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center p-8">
-      <h2 className="text-2xl font-bold tracking-tight">你的 3 位 Advisor 已经就绪！</h2>
+      <h2 className="text-2xl font-bold tracking-tight">你的 3 位 Assistant 已经就绪！</h2>
       <div className="flex flex-wrap gap-4 justify-center mt-6">
-        {advisors.map((a) => (
+        {assistants.map((a) => (
           <div key={a.id} className="flex flex-col items-center">
             <div className="h-14 w-14 rounded-full bg-muted flex items-center justify-center text-lg font-medium" style={{ border: `2px solid ${a.color}` }}>
               {a.name[0]}

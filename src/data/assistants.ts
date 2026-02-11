@@ -1,4 +1,4 @@
-export type AdvisorId = "alex" | "jamie" | "morgan";
+export type AssistantId = "alex" | "jamie" | "morgan";
 
 export type KnowledgeIndexType = "doc" | "email" | "crm" | "meeting";
 
@@ -9,8 +9,8 @@ export interface KnowledgeIndexItem {
   type: KnowledgeIndexType;
 }
 
-export interface Advisor {
-  id: AdvisorId;
+export interface Assistant {
+  id: AssistantId;
   name: string;
   tagline: string;
   avatar: string;
@@ -43,7 +43,7 @@ export interface RecurringTask {
   outputLocation?: string;
 }
 
-export const advisors: Advisor[] = [
+export const assistants: Assistant[] = [
   {
     id: "alex",
     name: "Alex",
@@ -215,7 +215,7 @@ export const advisors: Advisor[] = [
   },
 ];
 
-export const getAdvisorById = (id: AdvisorId): Advisor | undefined =>
-  advisors.find((a) => a.id === id);
+export const getAssistantById = (id: AssistantId): Assistant | undefined =>
+  assistants.find((a) => a.id === id);
 
 export const USER_AVATAR = "https://ui-avatars.com/api/?name=Sarah&background=6B6B6B&color=fff&size=128";

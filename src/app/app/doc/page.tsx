@@ -4,7 +4,7 @@ import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useAppStore } from "@/store/useAppStore";
 import { getDocumentMeta, getDocumentContent, documentsMeta } from "@/data/documents";
-import { advisors } from "@/data/advisors";
+import { assistants } from "@/data/assistants";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -20,7 +20,7 @@ function DocPageContent() {
 
   const meta = id ? getDocumentMeta(id) : null;
   const content = id ? getDocumentContent(id) : null;
-  const advisor = meta ? advisors.find((a) => a.id === meta.advisorId) : null;
+  const assistant = meta ? assistants.find((a) => a.id === meta.assistantId) : null;
 
   if (!id) {
     return (
@@ -59,9 +59,9 @@ function DocPageContent() {
           </Link>
           <span className="text-muted-foreground">|</span>
           <h1 className="font-semibold">{meta?.title}</h1>
-          {advisor && (
-            <span className="text-xs text-muted-foreground" style={{ borderLeft: `2px solid ${advisor.color}`, paddingLeft: 8 }}>
-              {advisor.name}
+          {assistant && (
+            <span className="text-xs text-muted-foreground" style={{ borderLeft: `2px solid ${assistant.color}`, paddingLeft: 8 }}>
+              {assistant.name}
             </span>
           )}
         </div>

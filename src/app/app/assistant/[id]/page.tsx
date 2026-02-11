@@ -2,22 +2,22 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { getAdvisorById, type KnowledgeIndexType } from "@/data/advisors";
+import { getAssistantById, type KnowledgeIndexType } from "@/data/assistants";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { FileText, Mail, Database, Video } from "lucide-react";
 
-export default function AdvisorProfilePage() {
+export default function AssistantProfilePage() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
-  const advisor = getAdvisorById(id as "alex" | "jamie" | "morgan");
+  const assistant = getAssistantById(id as "alex" | "jamie" | "morgan");
 
-  if (!advisor) {
+  if (!assistant) {
     return (
       <div className="p-8">
-        <p className="text-muted-foreground">Advisor 不存在。</p>
-        <Link href="/app/advisors" className="text-blue-600 hover:underline mt-2 inline-block">返回列表</Link>
+        <p className="text-muted-foreground">Assistant 不存在。</p>
+        <Link href="/app/assistants" className="text-blue-600 hover:underline mt-2 inline-block">返回列表</Link>
       </div>
     );
   }
@@ -27,14 +27,14 @@ export default function AdvisorProfilePage() {
       <div className="flex items-center gap-4 mb-8">
         <div
           className="h-16 w-16 rounded-full bg-muted flex items-center justify-center text-2xl font-semibold"
-          style={{ border: `2px solid ${advisor.color}` }}
+          style={{ border: `2px solid ${assistant.color}` }}
         >
-          {advisor.name[0]}
+          {assistant.name[0]}
         </div>
         <div>
-          <h1 className="text-2xl font-bold">{advisor.name}</h1>
-          <p className="text-muted-foreground">{advisor.tagline}</p>
-          <p className="text-sm text-muted-foreground mt-1">{advisor.client} · {advisor.clientIndustry}</p>
+          <h1 className="text-2xl font-bold">{assistant.name}</h1>
+          <p className="text-muted-foreground">{assistant.tagline}</p>
+          <p className="text-sm text-muted-foreground mt-1">{assistant.client} · {assistant.clientIndustry}</p>
         </div>
         <Button variant="outline" onClick={() => router.push("/app/chat")}>发消息</Button>
       </div>
@@ -46,7 +46,7 @@ export default function AdvisorProfilePage() {
         <CardContent className="space-y-4">
           <div>
             <p className="text-sm font-medium text-muted-foreground mb-2">自动化规则</p>
-            {advisor.automationRules.map((r) => (
+            {assistant.automationRules.map((r) => (
               <div key={r.id} className="flex items-center justify-between py-2 border-b border-border last:border-0">
                 <span className="text-sm">{r.description}</span>
                 <span className="text-xs rounded bg-muted px-2 py-0.5">{r.enabled ? "启用" : "禁用"}</span>
@@ -55,14 +55,14 @@ export default function AdvisorProfilePage() {
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground mb-2">定期任务</p>
-            {advisor.recurringTasks.map((t) => (
+            {assistant.recurringTasks.map((t) => (
               <p key={t.id} className="text-sm py-1">{t.description}</p>
             ))}
           </div>
           <div>
             <p className="text-sm font-medium text-muted-foreground mb-2">已知偏好</p>
             <ul className="list-disc pl-4 text-sm">
-              {advisor.preferences.map((p, i) => (
+              {assistant.preferences.map((p, i) => (
                 <li key={i}>{p}</li>
               ))}
             </ul>
@@ -73,11 +73,11 @@ export default function AdvisorProfilePage() {
       <Card>
         <CardHeader>
           <h3 className="font-semibold">记忆 / 知识索引</h3>
-          <p className="text-sm text-muted-foreground">已索引 {advisor.indexedFilesCount} 个资源</p>
+          <p className="text-sm text-muted-foreground">已索引 {assistant.indexedFilesCount} 个资源</p>
         </CardHeader>
         <CardContent>
           <ul className="space-y-4">
-            {advisor.knowledgeIndex.map((item, i) => (
+            {assistant.knowledgeIndex.map((item, i) => (
               <li key={i} className="flex gap-3 text-sm border-b border-border pb-4 last:border-0 last:pb-0">
                 <span className="shrink-0 text-muted-foreground mt-0.5">
                   <KnowledgeIcon type={item.type} />
@@ -94,7 +94,7 @@ export default function AdvisorProfilePage() {
       </Card>
 
       <div className="mt-6">
-        <Link href="/app/advisors" className="text-sm text-blue-600 hover:underline">← 返回 Advisors 列表</Link>
+        <Link href="/app/assistants" className="text-sm text-blue-600 hover:underline">← 返回 Assistants 列表</Link>
       </div>
     </div>
   );

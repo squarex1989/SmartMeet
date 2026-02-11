@@ -1,5 +1,5 @@
 const steps = [
-  { title: "Create advisors for each client", detail: "为每个客户配置专属 Advisor" },
+  { title: "Create assistants for each client", detail: "为每个客户配置专属 Assistant" },
   { title: "Tell them how you work", detail: "在群聊中交代工作流程与偏好" },
   { title: "They handle the rest", detail: "会前准备、会中协助、会后跟进自动执行" },
 ];
