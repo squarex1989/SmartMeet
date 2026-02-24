@@ -1,5 +1,9 @@
+"use client";
+
+import { MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getTopicById } from "@/data/topics";
+import { useAppStore } from "@/store/useAppStore";
 import type { Insight } from "@/data/insights";
 
 function formatTimeAgo(iso: string): string {
@@ -27,9 +31,20 @@ interface SignalCardProps {
 }
 
 export function SignalCard({ insight, showTopic }: SignalCardProps) {
+  const setCurrentContext = useAppStore((s) => s.setCurrentContext);
+  const setCommandRoomOverlay = useAppStore((s) => s.setCommandRoomOverlay);
+  const setChatInputValue = useAppStore((s) => s.setChatInputValue);
+
   const dotColor = severityDot[insight.severity] ?? "bg-muted-foreground";
   const topic =
     showTopic && insight.topicId ? getTopicById(insight.topicId) : null;
+
+  const handleFollowUp = () => {
+    if (!insight.followUpQuestion) return;
+    setCurrentContext(insight.topicId ?? "all");
+    setCommandRoomOverlay(null);
+    setChatInputValue(insight.followUpQuestion);
+  };
 
   return (
     <div className="interactive-subtle rounded-lg bg-surface-1 px-3 py-2.5 hover:bg-surface-2 transition-colors">
@@ -48,11 +63,21 @@ export function SignalCard({ insight, showTopic }: SignalCardProps) {
             <span>{formatTimeAgo(insight.createdAt)}</span>
             {topic && (
               <>
-                <span className="text-border">·</span>
+                <span className="text-border">&middot;</span>
                 <span>{topic.name}</span>
               </>
             )}
           </div>
+          {insight.followUpQuestion && (
+            <button
+              type="button"
+              onClick={handleFollowUp}
+              className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent/5 px-2 py-1 text-[11px] text-accent hover:bg-accent/10 hover:border-accent/40 transition-colors max-w-full"
+            >
+              <MessageSquare className="h-3 w-3 shrink-0" />
+              <span className="truncate">{insight.followUpQuestion}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>

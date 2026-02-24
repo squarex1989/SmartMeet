@@ -9,7 +9,13 @@ export type MessageContentType =
   | "transcript_quote"
   | "status_update"
   | "meeting_list"
-  | "alert_card";
+  | "alert_card"
+  | "overdue_followups";
+
+export interface MeetingPrepDoc {
+  docId: string;
+  docTitle: string;
+}
 
 export interface MeetingListItem {
   eventId: string;
@@ -18,6 +24,15 @@ export interface MeetingListItem {
   topicId: string;
   status: "ready" | "preparing" | "upcoming";
   statusText: string;
+  prepDocs?: MeetingPrepDoc[];
+}
+
+export interface OverdueTask {
+  id: string;
+  label: string;
+  topicId: string;
+  daysOverdue: number;
+  action: string;
 }
 
 export interface MessageContent {
@@ -33,6 +48,7 @@ export interface MessageContent {
   statusIcon?: "loading" | "success" | "error";
   meetings?: MeetingListItem[];
   alertLevel?: "info" | "warning" | "critical";
+  overdueTasks?: OverdueTask[];
 }
 
 export interface ChatMessage {
@@ -64,21 +80,57 @@ export const chatMessages: ChatMessage[] = [
       {
         type: "meeting_list",
         meetings: [
-          { eventId: "m1", title: "TechVision 需求访谈", time: "10:00 — 11:00", topicId: "techvision", status: "ready", statusText: "Agenda 和客户 research 已就绪" },
-          { eventId: "m2", title: "RetailMax 营销策略工作坊", time: "14:00 — 15:30", topicId: "retailmax", status: "ready", statusText: "Agenda 和策略文档已准备好" },
-          { eventId: "m3", title: "CloudFlow 续约沟通", time: "明天 14:00", topicId: "cloudflow", status: "upcoming", statusText: "续约材料正在准备" },
+          {
+            eventId: "m1",
+            title: "TechVision 需求访谈",
+            time: "10:00 — 11:00",
+            topicId: "techvision",
+            status: "ready",
+            statusText: "Agenda 和客户 research 已就绪",
+            prepDocs: [
+              { docId: "doc-agenda-techvision", docTitle: "需求访谈 Agenda" },
+              { docId: "doc-meeting-notes-techvision", docTitle: "客户背景 Research" },
+            ],
+          },
+          {
+            eventId: "m2",
+            title: "RetailMax 营销策略工作坊",
+            time: "14:00 — 15:30",
+            topicId: "retailmax",
+            status: "ready",
+            statusText: "Agenda 和策略文档已准备好",
+            prepDocs: [
+              { docId: "doc-agenda-retailmax", docTitle: "工作坊 Agenda" },
+              { docId: "doc-strategy-retailmax", docTitle: "营销策略文档" },
+            ],
+          },
+          {
+            eventId: "m3",
+            title: "CloudFlow 续约沟通",
+            time: "明天 14:00",
+            topicId: "cloudflow",
+            status: "upcoming",
+            statusText: "续约材料正在准备",
+            prepDocs: [
+              { docId: "doc-report-cloudflow", docTitle: "CloudFlow 周报" },
+            ],
+          },
         ],
       },
       {
-        type: "alert_card",
+        type: "overdue_followups",
         alertLevel: "warning",
-        text: "CloudFlow 有 2 个逾期 follow-up 需要关注，建议优先处理。",
+        text: "CloudFlow 有 2 个逾期 follow-up 需要关注：",
+        overdueTasks: [
+          { id: "od-1", label: "发送续约提案给客户", topicId: "cloudflow", daysOverdue: 3, action: "send_proposal" },
+          { id: "od-2", label: "更新 CRM 续约状态", topicId: "cloudflow", daysOverdue: 2, action: "update_crm" },
+        ],
       },
     ],
     createdAt: "2026-02-24T09:00:30",
   },
 
-  // TechVision conversation
+  // TechVision conversation — pre-meeting prep
   {
     id: "tv-1",
     topicId: "techvision",
@@ -86,13 +138,13 @@ export const chatMessages: ChatMessage[] = [
     content: [
       {
         type: "text",
-        text: "TechVision 需求访谈已结束。我正在处理会后任务...",
+        text: "TechVision 需求访谈将在今天 10:00 开始。我已完成会前准备：",
       },
-      { type: "status_update", text: "正在分析会议 transcript...", statusIcon: "success" },
-      { type: "status_update", text: "识别到 4 个 follow-up 任务", statusIcon: "success" },
-      { type: "status_update", text: "会议纪要已生成", statusIcon: "success" },
+      { type: "status_update", text: "客户背景调研已完成", statusIcon: "success" },
+      { type: "status_update", text: "Agenda 已生成", statusIcon: "success" },
+      { type: "status_update", text: "CRM 历史记录已整理", statusIcon: "success" },
     ],
-    createdAt: "2026-02-24T10:32:00",
+    createdAt: "2026-02-24T08:30:00",
   },
   {
     id: "tv-2",
@@ -101,15 +153,20 @@ export const chatMessages: ChatMessage[] = [
     content: [
       {
         type: "text",
-        text: "会议纪要已经准备好了，请 review：",
+        text: "以下是会前材料，请在会议前 review：",
+      },
+      {
+        type: "doc_card",
+        docId: "doc-agenda-techvision",
+        docTitle: "TechVision 需求访谈 - Agenda",
       },
       {
         type: "doc_card",
         docId: "doc-meeting-notes-techvision",
-        docTitle: "TechVision 需求访谈纪要 - 2026.02.24",
+        docTitle: "TechVision 客户背景 Research",
       },
     ],
-    createdAt: "2026-02-24T10:33:00",
+    createdAt: "2026-02-24T08:31:00",
   },
   {
     id: "tv-3",
@@ -118,93 +175,47 @@ export const chatMessages: ChatMessage[] = [
     content: [
       {
         type: "text",
-        text: "CRM 记录需要更新几个字段：",
+        text: "根据上次沟通记录，Tom 特别提到了 AI 差异化定位。建议今天重点讨论以下话题：",
       },
       {
-        type: "crm_preview",
-        crmFields: [
-          { name: "客户阶段", from: "需求调研中", to: "方案制定中" },
-          { name: "关键联系人", from: "Tom (CTO)", to: "Tom (CTO), Lisa (CMO)" },
-          { name: "最近沟通", from: "2026-02-05", to: "2026-02-24" },
-        ],
+        type: "transcript_quote",
+        quote: {
+          speaker: "Tom (上次沟通)",
+          text: "我们需要一份新的产品定位 deck，下周三董事会前给到，重点突出 AI 功能的差异化。",
+        },
       },
       {
-        type: "action_buttons",
-        buttons: [
-          { label: "确认更新", action: "confirm_crm" },
-          { label: "需要修改", action: "edit_crm" },
-        ],
+        type: "text",
+        text: "建议的讨论重点：\n1. AI 功能差异化核心卖点\n2. 董事会融资节奏期望\n3. 竞品分析需求",
       },
     ],
-    createdAt: "2026-02-24T10:34:00",
+    createdAt: "2026-02-24T08:32:00",
   },
   {
     id: "tv-4",
     topicId: "techvision",
     role: "user",
-    content: [{ type: "text", text: "确认更新 CRM" }],
-    createdAt: "2026-02-24T10:35:00",
+    content: [{ type: "text", text: "好的，我看一下 Agenda" }],
+    createdAt: "2026-02-24T09:00:00",
   },
   {
     id: "tv-5",
     topicId: "techvision",
     role: "shadow",
     content: [
-      { type: "status_update", text: "CRM 已更新 ✓", statusIcon: "success" },
       {
         type: "text",
-        text: "Tom 提到需要一份产品定位 Deck，要我生成初稿吗？",
-      },
-      {
-        type: "transcript_quote",
-        quote: {
-          speaker: "Tom",
-          text: "我们需要一份新的产品定位 deck，下周三董事会前给到，重点突出 AI 功能的差异化。",
-        },
+        text: "还有一件事 — Lisa 上周发了一封邮件提到会员运营数据，我已整合到 Agenda 第 3 节。如果需要调整，可以在这里告诉我。",
       },
       {
         type: "action_buttons",
         buttons: [
-          { label: "帮我生成", action: "generate_slides" },
-          { label: "先不用", action: "skip_slides" },
+          { label: "Agenda 没问题", action: "confirm_agenda" },
+          { label: "我要调整", action: "edit_agenda" },
         ],
       },
     ],
-    createdAt: "2026-02-24T10:35:30",
-  },
-  {
-    id: "tv-6",
-    topicId: "techvision",
-    role: "user",
-    content: [{ type: "text", text: "帮我生成" }],
-    createdAt: "2026-02-24T10:36:00",
-  },
-  {
-    id: "tv-7",
-    topicId: "techvision",
-    role: "shadow",
-    content: [
-      { type: "status_update", text: "正在生成产品定位 Deck...", statusIcon: "loading" },
-    ],
-    createdAt: "2026-02-24T10:36:30",
-  },
-  {
-    id: "tv-8",
-    topicId: "techvision",
-    role: "shadow",
-    content: [
-      {
-        type: "text",
-        text: "产品定位 Slides 初稿已完成，共 8 页。",
-      },
-      {
-        type: "doc_card",
-        docId: "doc-slides-techvision",
-        docTitle: "TechVision 产品定位 Deck (Draft)",
-        pageCount: 8,
-      },
-    ],
-    createdAt: "2026-02-24T10:38:00",
+    createdAt: "2026-02-24T09:01:00",
   },
 
   // Older TechVision messages (previous session)
@@ -280,6 +291,164 @@ export const chatMessages: ChatMessage[] = [
       },
     ],
     createdAt: "2026-02-24T09:15:00",
+  },
+
+  // Fundraising 2026 conversation
+  {
+    id: "fr-1",
+    topicId: "fundraising",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "Fundraising 2026 进展更新：我已整理好近期投资人沟通的关键信息。",
+      },
+      { type: "status_update", text: "Pitch Deck 草稿已生成 (12 页)", statusIcon: "success" },
+      { type: "status_update", text: "Financial Model 已更新至 Q1 数据", statusIcon: "success" },
+      { type: "status_update", text: "投资人名单已筛选 — 8 家目标机构", statusIcon: "success" },
+    ],
+    createdAt: "2026-02-24T07:30:00",
+  },
+  {
+    id: "fr-2",
+    topicId: "fundraising",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "以下材料供你 review，路演彩排安排在 2/26：",
+      },
+      {
+        type: "doc_card",
+        docId: "doc-pitch-deck",
+        docTitle: "Fundraising 2026 - Pitch Deck (Draft)",
+        pageCount: 12,
+      },
+      {
+        type: "doc_card",
+        docId: "doc-financial-model",
+        docTitle: "Financial Model - 2026 Q1 Update",
+      },
+    ],
+    createdAt: "2026-02-24T07:31:00",
+  },
+  {
+    id: "fr-3",
+    topicId: "fundraising",
+    role: "user",
+    content: [{ type: "text", text: "Pitch Deck 里面有包含竞品对比吗？" }],
+    createdAt: "2026-02-24T08:10:00",
+  },
+  {
+    id: "fr-4",
+    topicId: "fundraising",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "有的，在第 7 页「竞争格局」中包含了与 3 家主要竞品的对比分析。数据来源是最近的 AI Positioning 研究。如果需要补充更多维度，我可以更新。",
+      },
+      {
+        type: "action_buttons",
+        buttons: [
+          { label: "内容没问题", action: "confirm_pitch" },
+          { label: "补充更多竞品数据", action: "add_competitor" },
+        ],
+      },
+    ],
+    createdAt: "2026-02-24T08:11:00",
+  },
+
+  // Fundraising older messages
+  {
+    id: "fr-old-1",
+    topicId: "fundraising",
+    role: "user",
+    content: [{ type: "text", text: "融资的目标金额确定了吗？" }],
+    createdAt: "2026-02-18T14:00:00",
+  },
+  {
+    id: "fr-old-2",
+    topicId: "fundraising",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "根据 Financial Model，建议 A 轮融资目标为 $5M-$8M，主要用于产品研发和市场拓展。董事会已初步同意这个范围。",
+      },
+    ],
+    createdAt: "2026-02-18T14:01:00",
+  },
+
+  // AI Positioning conversation
+  {
+    id: "ap-1",
+    topicId: "ai-positioning",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "AI Positioning 最新进展：市场分析报告已完成，竞品调研数据已更新。",
+      },
+      { type: "status_update", text: "市场分析报告已生成", statusIcon: "success" },
+      { type: "status_update", text: "竞品功能对比矩阵已更新", statusIcon: "success" },
+    ],
+    createdAt: "2026-02-24T07:45:00",
+  },
+  {
+    id: "ap-2",
+    topicId: "ai-positioning",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "以下是 AI 定位相关材料，2/27 的策略研讨会会用到：",
+      },
+      {
+        type: "doc_card",
+        docId: "doc-market-analysis",
+        docTitle: "AI 市场分析报告 - 2026",
+      },
+      {
+        type: "doc_card",
+        docId: "doc-ai-positioning-strategy",
+        docTitle: "AI 差异化定位策略",
+      },
+    ],
+    createdAt: "2026-02-24T07:46:00",
+  },
+  {
+    id: "ap-3",
+    topicId: "ai-positioning",
+    role: "user",
+    content: [{ type: "text", text: "竞品方面主要关注哪几家？" }],
+    createdAt: "2026-02-24T08:20:00",
+  },
+  {
+    id: "ap-4",
+    topicId: "ai-positioning",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "目前重点跟踪 3 家：\n\n1. **AlphaAI** — 企业级 AI 平台，融资领先但产品通用性强\n2. **NeuralEdge** — 垂直行业 AI，与我们客群有重叠\n3. **DataMind** — 数据分析起家，正在向 AI 转型\n\n我们的差异化优势主要在「行业知识图谱」和「端到端自动化」两个方向。",
+      },
+    ],
+    createdAt: "2026-02-24T08:21:00",
+  },
+
+  // AI Positioning older messages
+  {
+    id: "ap-old-1",
+    topicId: "ai-positioning",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "已收集到最新的 AI 行业报告，正在整理核心洞察。预计本周内完成市场分析初稿。",
+      },
+    ],
+    createdAt: "2026-02-19T10:00:00",
   },
 ];
 

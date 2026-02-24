@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, AlertTriangle, Info } from "lucide-react";
+import { ArrowLeft, MessageSquare } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import { getInsightsForContext } from "@/data/insights";
 import { getTopicById } from "@/data/topics";
@@ -9,22 +9,11 @@ import type { Insight, InsightSeverity } from "@/data/insights";
 import { cn } from "@/lib/utils";
 
 const severityOrder: InsightSeverity[] = ["critical", "warning", "info"];
-const severityConfig = {
-  critical: {
-    border: "border-l-red-500",
-    icon: AlertTriangle,
-    iconClass: "text-red-500",
-  },
-  warning: {
-    border: "border-l-orange-500",
-    icon: AlertTriangle,
-    iconClass: "text-orange-500",
-  },
-  info: {
-    border: "border-l-blue-500",
-    icon: Info,
-    iconClass: "text-blue-500",
-  },
+
+const severityDot: Record<string, string> = {
+  critical: "bg-red-500",
+  warning: "bg-amber-500",
+  info: "bg-blue-400",
 };
 
 function formatTime(iso: string): string {
@@ -41,36 +30,56 @@ function formatTime(iso: string): string {
 }
 
 function InsightCard({ insight }: { insight: Insight }) {
-  const config = severityConfig[insight.severity];
-  const Icon = config.icon;
+  const setCurrentContext = useAppStore((s) => s.setCurrentContext);
+  const setCommandRoomOverlay = useAppStore((s) => s.setCommandRoomOverlay);
+  const setChatInputValue = useAppStore((s) => s.setChatInputValue);
+
+  const dotColor = severityDot[insight.severity] ?? "bg-muted-foreground";
   const topic = insight.topicId ? getTopicById(insight.topicId) : null;
 
+  const handleFollowUp = () => {
+    if (!insight.followUpQuestion) return;
+    setCurrentContext(insight.topicId ?? "all");
+    setCommandRoomOverlay(null);
+    setChatInputValue(insight.followUpQuestion);
+  };
+
   return (
-    <div
-      className={cn(
-        "rounded-lg border border-border border-l-4 bg-background p-4",
-        config.border
-      )}
-    >
-      <div className="flex items-start gap-3">
-        <Icon className={cn("h-5 w-5 shrink-0 mt-0.5", config.iconClass)} />
+    <div className="interactive-subtle rounded-lg bg-surface-1 px-3 py-2.5 hover:bg-surface-2 transition-colors">
+      <div className="flex items-start gap-2.5">
+        <span
+          className={cn(
+            "mt-[7px] h-[6px] w-[6px] shrink-0 rounded-full",
+            dotColor
+          )}
+        />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-medium">{insight.message}</span>
+            <span className="text-sm leading-snug">{insight.message}</span>
             {topic && (
-              <span className="rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
                 {topic.name}
               </span>
             )}
           </div>
           {insight.detail && (
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">
               {insight.detail}
             </p>
           )}
-          <p className="mt-2 text-xs text-muted-foreground">
-            {formatTime(insight.createdAt)}
-          </p>
+          <div className="mt-1.5 flex items-center gap-2 text-[10px] text-muted-foreground">
+            <span>{formatTime(insight.createdAt)}</span>
+          </div>
+          {insight.followUpQuestion && (
+            <button
+              type="button"
+              onClick={handleFollowUp}
+              className="mt-2 inline-flex items-center gap-1.5 rounded-md border border-accent/20 bg-accent/5 px-2.5 py-1.5 text-xs text-accent hover:bg-accent/10 hover:border-accent/40 transition-colors"
+            >
+              <MessageSquare className="h-3 w-3 shrink-0" />
+              <span className="truncate">{insight.followUpQuestion}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -119,7 +128,7 @@ export function InsightsExpandedView() {
             <option value="critical">Critical</option>
           </select>
         </div>
-        <div className="mt-4 flex-1 space-y-3 overflow-auto">
+        <div className="mt-4 flex-1 space-y-2 overflow-auto">
           {sorted.map((insight) => (
             <InsightCard key={insight.id} insight={insight} />
           ))}

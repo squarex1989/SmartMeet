@@ -1,6 +1,21 @@
 export type TopicId = string;
 export type TopicType = "client" | "project" | "goal";
 
+export interface TopicTag {
+  id: string;
+  name: string;
+  color: string;
+}
+
+export const topicTags: TopicTag[] = [
+  { id: "tag-client", name: "客户", color: "#6366f1" },
+  { id: "tag-project", name: "项目", color: "#8b5cf6" },
+  { id: "tag-goal", name: "目标", color: "#ec4899" },
+  { id: "tag-career", name: "职业发展", color: "#f59e0b" },
+  { id: "tag-strategy", name: "策略", color: "#10b981" },
+  { id: "tag-finance", name: "财务", color: "#06b6d4" },
+];
+
 export interface AutomationOverride {
   id: string;
   description: string;
