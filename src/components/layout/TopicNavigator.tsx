@@ -31,6 +31,7 @@ function usePendingCounts() {
 export function TopicNavigator() {
   const currentContext = useAppStore((s) => s.currentContext);
   const setCurrentContext = useAppStore((s) => s.setCurrentContext);
+  const setMobileSidebarOpen = useAppStore((s) => s.setMobileSidebarOpen);
   const [collapsed, setCollapsed] = useState<Record<TopicType, boolean>>({
     client: false,
     project: false,
@@ -39,6 +40,11 @@ export function TopicNavigator() {
   const [newTopicOpen, setNewTopicOpen] = useState(false);
 
   const { byTopic, total } = usePendingCounts();
+
+  const selectContext = (ctx: "all" | TopicId) => {
+    setCurrentContext(ctx);
+    setMobileSidebarOpen(false);
+  };
 
   const toggleSection = (type: TopicType) => {
     setCollapsed((c) => ({ ...c, [type]: !c[type] }));
@@ -52,7 +58,7 @@ export function TopicNavigator() {
       <div className="flex flex-col py-2 px-2">
         <button
           type="button"
-          onClick={() => setCurrentContext("all")}
+          onClick={() => selectContext("all")}
           className={cn(
             "interactive-subtle flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium text-left",
             currentContext === "all"
@@ -90,7 +96,7 @@ export function TopicNavigator() {
                     <button
                       key={topic.id}
                       type="button"
-                      onClick={() => setCurrentContext(topic.id)}
+                      onClick={() => selectContext(topic.id)}
                       className={cn(
                         "interactive-subtle flex items-center gap-2 w-full px-3 py-2 rounded-md text-sm font-medium text-left",
                         isActive

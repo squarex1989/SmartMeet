@@ -82,7 +82,7 @@ export function EventDetail({ event }: EventDetailProps) {
   };
 
   return (
-    <div className="p-6 max-w-2xl">
+    <div className="p-4 sm:p-6 max-w-2xl">
       <div className="flex flex-col gap-4 mb-8">
         <h1 className="text-2xl font-semibold">{event.title}</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">

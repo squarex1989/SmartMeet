@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MessageSquare, Calendar, Layers, Settings, Menu, Zap } from "lucide-react";
+import { MessageSquare, Calendar, Layers, Settings, Menu, Zap, PanelRight } from "lucide-react";
 import { useAppStore, type MainView } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
 
@@ -17,10 +17,12 @@ export function TopBar() {
   const setMainView = useAppStore((s) => s.setMainView);
   const mobileSidebarOpen = useAppStore((s) => s.mobileSidebarOpen);
   const setMobileSidebarOpen = useAppStore((s) => s.setMobileSidebarOpen);
+  const mobileWorkPanelOpen = useAppStore((s) => s.mobileWorkPanelOpen);
+  const setMobileWorkPanelOpen = useAppStore((s) => s.setMobileWorkPanelOpen);
 
   return (
     <nav className="flex h-14 items-center bg-surface-2 text-foreground border-b border-border shrink-0">
-      <div className="flex items-center gap-4 px-4 w-full">
+      <div className="flex items-center gap-1 sm:gap-4 px-2 sm:px-4 w-full">
         <button
           type="button"
           onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
@@ -31,11 +33,11 @@ export function TopBar() {
         </button>
         <Link
           href="/"
-          className="interactive-base font-semibold tracking-tight shrink-0 text-foreground hover:text-accent"
+          className="interactive-base font-semibold tracking-tight shrink-0 text-foreground hover:text-accent hidden sm:block"
         >
           Shadow
         </Link>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5 sm:gap-1 flex-1 min-w-0">
           {views.map(({ view, label, icon: Icon }) => (
             <button
               key={view}
@@ -43,18 +45,28 @@ export function TopBar() {
               data-tour-id={`tour-view-${view}`}
               onClick={() => setMainView(view)}
               className={cn(
-                "interactive-base flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium",
+                "interactive-base flex items-center gap-1.5 rounded-md px-2 sm:px-3 py-2 text-sm font-medium shrink-0",
                 mainView === view
                   ? "bg-accent/15 text-accent"
                   : "text-muted-foreground hover:text-foreground hover:bg-surface-3"
               )}
             >
               <Icon className="h-4 w-4" />
-              {label}
+              <span className="hidden sm:inline">{label}</span>
             </button>
           ))}
         </div>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1 sm:gap-2 shrink-0">
+          {mainView === "command-room" && (
+            <button
+              type="button"
+              onClick={() => setMobileWorkPanelOpen(!mobileWorkPanelOpen)}
+              className="interactive-base lg:hidden p-2 text-muted-foreground hover:text-foreground hover:bg-surface-3 rounded-md"
+              aria-label="Toggle work panel"
+            >
+              <PanelRight className="h-4 w-4" />
+            </button>
+          )}
           <button
             type="button"
             className="interactive-base p-2 text-muted-foreground hover:text-foreground hover:bg-surface-3 rounded-md"

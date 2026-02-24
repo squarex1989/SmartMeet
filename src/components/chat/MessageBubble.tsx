@@ -76,21 +76,21 @@ function ContentBlock({
 
           return (
             <div key={m.eventId} className="space-y-1">
-              <div className="flex items-center gap-2.5 py-1.5 text-sm">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 py-1.5 text-sm">
                 <Calendar className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
-                <span className="text-xs text-muted-foreground tabular-nums w-14 shrink-0">{m.time}</span>
+                <span className="text-xs text-muted-foreground tabular-nums shrink-0">{m.time}</span>
                 <span className={cn("inline-block h-1.5 w-1.5 rounded-full shrink-0", statusDot)} />
                 <span className="font-medium truncate">{m.title}</span>
-                {topic && (
-                  <button
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); onTopicClick(m.topicId); }}
-                    className="interactive-subtle shrink-0 rounded-full bg-surface-2 px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground"
-                  >
-                    {topic.name}
-                  </button>
-                )}
-                <span className="ml-auto">
+                <span className="flex items-center gap-1.5 ml-auto">
+                  {topic && (
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); onTopicClick(m.topicId); }}
+                      className="interactive-subtle shrink-0 rounded-full bg-surface-2 px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground"
+                    >
+                      {topic.name}
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={(e) => {
@@ -106,7 +106,7 @@ function ContentBlock({
                 </span>
               </div>
               {m.prepDocs && m.prepDocs.length > 0 && (
-                <div className="ml-[4.5rem] flex flex-wrap gap-1.5 pb-1">
+                <div className="ml-6 sm:ml-[4.5rem] flex flex-wrap gap-1.5 pb-1">
                   {m.prepDocs.map((doc) => (
                     <button
                       key={doc.docId}
@@ -118,7 +118,7 @@ function ContentBlock({
                       className="interactive-subtle inline-flex items-center gap-1 rounded border border-border bg-background px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted/80"
                     >
                       <FileText className="h-3 w-3 shrink-0" />
-                      <span className="truncate">{doc.docTitle}</span>
+                      <span className="truncate max-w-[120px] sm:max-w-none">{doc.docTitle}</span>
                     </button>
                   ))}
                 </div>
@@ -154,7 +154,7 @@ function ContentBlock({
         </div>
         <div className="space-y-1.5">
           {content.overdueTasks.map((task) => (
-            <div key={task.id} className="flex items-center justify-between gap-2 rounded-md bg-white/60 dark:bg-white/5 px-2.5 py-1.5">
+            <div key={task.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 rounded-md bg-white/60 dark:bg-white/5 px-2.5 py-1.5">
               <div className="flex items-center gap-2 min-w-0">
                 <Clock className="h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
                 <span className="text-xs font-medium truncate">{task.label}</span>
@@ -166,7 +166,7 @@ function ContentBlock({
                   e.stopPropagation();
                   toast.success(`已发起 Follow Up: ${task.label}`);
                 }}
-                className="interactive-base shrink-0 inline-flex items-center gap-1 rounded-md bg-amber-600 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-amber-700"
+                className="interactive-base shrink-0 self-end sm:self-auto inline-flex items-center gap-1 rounded-md bg-amber-600 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-amber-700"
               >
                 <Send className="h-2.5 w-2.5" />
                 一键 Follow Up

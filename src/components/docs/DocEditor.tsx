@@ -38,34 +38,34 @@ export function DocEditor() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="shrink-0 border-b border-border bg-background px-4 py-3 flex items-center gap-4">
+      <div className="shrink-0 border-b border-border bg-background px-3 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-4">
         <button
           type="button"
           onClick={() => setOpenDocumentId(null)}
-          className="interactive-base p-2 -ml-1 rounded-md hover:bg-surface-2 text-muted-foreground hover:text-foreground"
+          className="interactive-base p-2 -ml-1 rounded-md hover:bg-surface-2 text-muted-foreground hover:text-foreground hidden md:flex"
           aria-label="Back to docs"
         >
           <ArrowLeft className="h-4 w-4" />
         </button>
-        <nav className="flex items-center gap-2 text-sm text-muted-foreground">
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground min-w-0">
           <button
             type="button"
             onClick={() => setOpenDocumentId(null)}
-            className="interactive-base hover:text-accent"
+            className="interactive-base hover:text-accent hidden md:inline"
           >
             Docs
           </button>
-          <span>/</span>
-          <span className="text-foreground">{meta.title}</span>
+          <span className="hidden md:inline">/</span>
+          <span className="text-foreground truncate">{meta.title}</span>
         </nav>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5 sm:gap-2 shrink-0">
           <ExportMenu documentId={openDocumentId} title={meta.title} />
           <div className="flex rounded-md border border-border overflow-hidden">
             <button
               type="button"
               onClick={() => setMode("view")}
               className={cn(
-                "interactive-subtle px-3 py-1.5 text-sm",
+                "interactive-subtle px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm",
                 mode === "view"
                   ? "bg-accent text-accent-foreground"
                   : "bg-surface-1 text-muted-foreground hover:bg-surface-2"
@@ -77,7 +77,7 @@ export function DocEditor() {
               type="button"
               onClick={() => setMode("edit")}
               className={cn(
-                "interactive-subtle px-3 py-1.5 text-sm",
+                "interactive-subtle px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm",
                 mode === "edit"
                   ? "bg-accent text-accent-foreground"
                   : "bg-surface-1 text-muted-foreground hover:bg-surface-2"
@@ -86,12 +86,12 @@ export function DocEditor() {
               Edit
             </button>
           </div>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground hidden sm:inline">
             {saved ? "Saved" : "Editing..."}
           </span>
         </div>
       </div>
-      <div className="flex-1 min-h-0 overflow-auto p-6">
+      <div className="flex-1 min-h-0 overflow-auto p-4 sm:p-6">
         {mode === "view" ? (
           <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">
             {content}

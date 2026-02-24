@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import { X } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import { TopicNavigator } from "@/components/layout/TopicNavigator";
 import { ChatPanel } from "@/components/chat/ChatPanel";
@@ -17,6 +18,8 @@ function CommandRoomView() {
   const commandRoomOverlay = useAppStore((s) => s.commandRoomOverlay);
   const mobileSidebarOpen = useAppStore((s) => s.mobileSidebarOpen);
   const setMobileSidebarOpen = useAppStore((s) => s.setMobileSidebarOpen);
+  const mobileWorkPanelOpen = useAppStore((s) => s.mobileWorkPanelOpen);
+  const setMobileWorkPanelOpen = useAppStore((s) => s.setMobileWorkPanelOpen);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [wpWidth, setWpWidth] = useState<number | null>(null);
@@ -70,7 +73,7 @@ function CommandRoomView() {
       )}
 
       <div ref={containerRef} className="flex flex-1 min-w-0 h-full">
-        {/* Desktop: resizable */}
+        {/* Desktop: resizable chat + work panel */}
         <div className="hidden lg:flex flex-1 min-w-0 h-full">
           <div className="flex-1 min-w-0 h-full" style={{ minWidth: MIN_PANEL_PX }}>
             {centerContent}
@@ -95,11 +98,37 @@ function CommandRoomView() {
           </div>
         </div>
 
-        {/* Mobile: chat only */}
+        {/* Mobile/Tablet: chat only, work panel as overlay */}
         <div className="flex lg:hidden flex-1 min-w-0 h-full">
           {centerContent}
         </div>
       </div>
+
+      {/* Mobile work panel overlay */}
+      {mobileWorkPanelOpen && (
+        <div className="fixed inset-0 z-40 lg:hidden">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setMobileWorkPanelOpen(false)}
+            aria-hidden
+          />
+          <div className="absolute inset-x-0 bottom-0 top-14 bg-background border-t border-border shadow-xl flex flex-col animate-in slide-in-from-bottom duration-200">
+            <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
+              <span className="text-sm font-medium">Work Panel</span>
+              <button
+                type="button"
+                onClick={() => setMobileWorkPanelOpen(false)}
+                className="interactive-base p-1 text-muted-foreground hover:text-foreground rounded-md"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <WorkPanel />
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

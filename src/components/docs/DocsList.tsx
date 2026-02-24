@@ -67,7 +67,7 @@ export function DocsList() {
     );
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       <div className="grid gap-3">
         {filtered.map((doc) => (
           <DocCard key={doc.id} doc={doc} onSelect={() => setOpenDocumentId(doc.id)} />
