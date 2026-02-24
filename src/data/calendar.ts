@@ -1,18 +1,16 @@
-import type { AssistantId } from "./assistants";
+import type { TopicId } from "./topics";
 
 export type MeetingId = string;
 
 export interface CalendarEvent {
   id: MeetingId;
   title: string;
-  start: string; // ISO
+  start: string;
   end: string;
-  assistantId: AssistantId;
+  topicId: TopicId;
   type: "client" | "internal" | "follow-up";
   isPast: boolean;
-  // For future meetings
   prep?: MeetingPrep;
-  // For past meetings
   outcome?: MeetingOutcome;
 }
 
@@ -38,8 +36,7 @@ export interface FollowUpTaskStatus {
   linkCalendar?: string;
 }
 
-// Demo: week of 2026-02-09
-const baseDate = "2026-02-09";
+const baseDate = "2026-02-24";
 
 export const calendarEvents: CalendarEvent[] = [
   {
@@ -47,13 +44,16 @@ export const calendarEvents: CalendarEvent[] = [
     title: "TechVision 需求访谈",
     start: `${baseDate}T10:00:00`,
     end: `${baseDate}T11:00:00`,
-    assistantId: "alex",
+    topicId: "techvision",
     type: "client",
     isPast: true,
     outcome: {
       summaryDocId: "doc-meeting-notes-techvision",
       crmUpdated: true,
-      emailSent: { to: "Tom, Lisa", subject: "TechVision 需求访谈 - 纪要与下一步" },
+      emailSent: {
+        to: "Tom, Lisa",
+        subject: "TechVision 需求访谈 - 纪要与下一步",
+      },
       followUpTasks: [
         { id: "f1", label: "会议纪要", status: "done", linkDocId: "doc-meeting-notes-techvision" },
         { id: "f2", label: "CRM 更新", status: "done" },
@@ -69,40 +69,43 @@ export const calendarEvents: CalendarEvent[] = [
     title: "RetailMax 营销策略工作坊",
     start: `${baseDate}T14:00:00`,
     end: `${baseDate}T15:30:00`,
-    assistantId: "jamie",
+    topicId: "retailmax",
     type: "client",
     isPast: false,
     prep: {
       agendaDocId: "doc-agenda-retailmax",
-      clientSummary: "RetailMax 是主打年轻群体的零售品牌，近期希望提升全渠道转化与会员复购。关键联系人：CMO Lisa、电商负责人 David。",
+      clientSummary:
+        "RetailMax 是主打年轻群体的零售品牌，近期希望提升全渠道转化与会员复购。关键联系人：CMO Lisa、电商负责人 David。",
       recommendedQuestions: [
         { question: "Q3 的 KPI 目前完成度如何？", reason: "了解当前进度，便于制定策略优先级" },
         { question: "用户画像最近有没有更新？", reason: "确保策略与最新用户洞察对齐" },
       ],
-      openingScript: "大家好，今天我们把 Q3 的营销策略和落地节奏过一遍，重点看全渠道协同和会员运营两块……",
+      openingScript:
+        "大家好，今天我们把 Q3 的营销策略和落地节奏过一遍，重点看全渠道协同和会员运营两块……",
     },
   },
   {
     id: "m3",
     title: "CloudFlow 续约沟通",
-    start: `${baseDate}T16:00:00`,
-    end: `${baseDate}T16:45:00`,
-    assistantId: "morgan",
+    start: "2026-02-25T14:00:00",
+    end: "2026-02-25T14:45:00",
+    topicId: "cloudflow",
     type: "client",
     isPast: false,
     prep: {
-      clientSummary: "CloudFlow 企业版即将续约，客户成功团队希望我们协助梳理价值与案例。",
+      clientSummary:
+        "CloudFlow 企业版即将续约，客户成功团队希望我们协助梳理价值与案例。",
       recommendedQuestions: [
         { question: "续约决策时间线是？", reason: "便于安排材料与沟通节奏" },
       ],
-      openingScript: "Hi，今天主要想跟您同步一下本期的成果，并听听续约方面的计划……",
+      openingScript:
+        "Hi，今天主要想跟您同步一下本期的成果，并听听续约方面的计划……",
     },
   },
 ];
 
 export type EventStatus = "past" | "ongoing" | "upcoming";
 
-/** Derive status from event times. Pass optional now (ISO string) for demo/testing. */
 export function getEventStatus(
   event: CalendarEvent,
   nowStr?: string
@@ -120,3 +123,6 @@ export const getEventsForDate = (dateStr: string): CalendarEvent[] =>
 
 export const getEventById = (id: MeetingId): CalendarEvent | undefined =>
   calendarEvents.find((e) => e.id === id);
+
+export const getEventsByTopic = (topicId: TopicId): CalendarEvent[] =>
+  calendarEvents.filter((e) => e.topicId === topicId);

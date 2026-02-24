@@ -1,46 +1,62 @@
 import { create } from "zustand";
-import type { ConversationId } from "@/data/chats";
+import type { TopicId } from "@/data/topics";
 
-export type AppTab = "calendar" | "chat" | "doc" | "inbox" | "assistants";
+export type MainView = "command-room" | "calendar" | "docs" | "automations";
+export type CommandRoomOverlay = null | "review" | "insights" | "automations";
+export type CalendarRange = "day" | "week";
 
 interface AppState {
-  currentTab: AppTab;
-  setCurrentTab: (tab: AppTab) => void;
+  // Top-level view (controls entire layout below TopBar)
+  mainView: MainView;
+  setMainView: (view: MainView) => void;
+
+  // Context (Command Room only)
+  currentContext: "all" | TopicId;
+  setCurrentContext: (ctx: "all" | TopicId) => void;
+
+  // Command Room overlay (covers Chat Area, Work Panel stays visible)
+  commandRoomOverlay: CommandRoomOverlay;
+  setCommandRoomOverlay: (overlay: CommandRoomOverlay) => void;
+  activeReviewItemId: string | null;
+  setActiveReviewItemId: (id: string | null) => void;
+
+  // Work Panel
+  workPanelOpen: boolean;
+  setWorkPanelOpen: (v: boolean) => void;
 
   // Chat
-  activeConversationId: ConversationId | null;
-  setActiveConversationId: (id: ConversationId | null) => void;
+  chatInputValue: string;
+  setChatInputValue: (v: string) => void;
+  collapsedSessions: Record<string, boolean>;
+  toggleSessionCollapse: (dateKey: string) => void;
 
   // Calendar
-  selectedDate: string; // YYYY-MM-DD
+  calendarDate: string;
+  calendarRange: CalendarRange;
   selectedEventId: string | null;
-  setSelectedDate: (date: string) => void;
+  setCalendarDate: (date: string) => void;
+  setCalendarRange: (range: CalendarRange) => void;
   setSelectedEventId: (id: string | null) => void;
 
-  // Doc
+  // Docs
   openDocumentId: string | null;
   setOpenDocumentId: (id: string | null) => void;
-
-  // Inbox - pending count for badge
-  inboxPendingCount: number;
-  setInboxPendingCount: (n: number) => void;
-
-  // Active meeting tabs (temporary tabs in nav)
-  activeMeetings: { id: string; title: string; href: string; ongoing?: boolean; docMode?: boolean }[];
-  addActiveMeeting: (meeting: { id: string; title: string; href: string; ongoing?: boolean; docMode?: boolean }) => void;
-  removeActiveMeeting: (id: string) => void;
-
-  // Alex followup script progress (for Chat view)
-  alexFollowupStepIndex: number;
-  setAlexFollowupStepIndex: (n: number) => void;
-  alexSlidesGenerated: boolean;
-  setAlexSlidesGenerated: (v: boolean) => void;
+  docSearchQuery: string;
+  setDocSearchQuery: (q: string) => void;
+  docTypeFilter: string;
+  setDocTypeFilter: (t: string) => void;
+  docTopicFilter: TopicId[];
+  setDocTopicFilter: (topics: TopicId[]) => void;
 
   // Mobile UI
   mobileSidebarOpen: boolean;
-  mobileLogOpen: boolean;
+  mobileWorkPanelOpen: boolean;
   setMobileSidebarOpen: (v: boolean) => void;
-  setMobileLogOpen: (v: boolean) => void;
+  setMobileWorkPanelOpen: (v: boolean) => void;
+
+  // Onboarding
+  onboardingComplete: boolean;
+  setOnboardingComplete: (v: boolean) => void;
 
   // Guided Tour
   tourActive: boolean;
@@ -50,61 +66,83 @@ interface AppState {
   setTourStep: (n: number) => void;
   setShowTourHint: (v: boolean) => void;
 
-  // Reset for "重新开始 Demo"
+  // Review item status mutations (mock)
+  reviewItemStatuses: Record<string, string>;
+  setReviewItemStatus: (id: string, status: string) => void;
+
   reset: () => void;
 }
 
 const defaultState = {
-  currentTab: "calendar" as AppTab,
-  activeConversationId: null as ConversationId | null,
-  selectedDate: "2026-02-09",
+  mainView: "command-room" as MainView,
+  currentContext: "all" as "all" | TopicId,
+  commandRoomOverlay: null as CommandRoomOverlay,
+  activeReviewItemId: null as string | null,
+  workPanelOpen: true,
+  chatInputValue: "",
+  collapsedSessions: {} as Record<string, boolean>,
+  calendarDate: "2026-02-24",
+  calendarRange: "day" as CalendarRange,
   selectedEventId: null as string | null,
   openDocumentId: null as string | null,
-  inboxPendingCount: 4,
-  activeMeetings: [] as { id: string; title: string; href: string; ongoing?: boolean; docMode?: boolean }[],
-  alexFollowupStepIndex: 0,
-  alexSlidesGenerated: false,
+  docSearchQuery: "",
+  docTypeFilter: "all",
+  docTopicFilter: [] as TopicId[],
   mobileSidebarOpen: false,
-  mobileLogOpen: false,
+  mobileWorkPanelOpen: false,
+  onboardingComplete: false,
   tourActive: false,
   tourStep: 0,
   showTourHint: false,
+  reviewItemStatuses: {} as Record<string, string>,
 };
 
 export const useAppStore = create<AppState>((set) => ({
   ...defaultState,
 
-  setCurrentTab: (tab) => set({ currentTab: tab }),
+  setMainView: (view) => set({ mainView: view }),
 
-  setActiveConversationId: (id) => set({ activeConversationId: id }),
+  setCurrentContext: (ctx) =>
+    set({ currentContext: ctx, commandRoomOverlay: null }),
 
-  setSelectedDate: (date) => set({ selectedDate: date, selectedEventId: null }),
+  setCommandRoomOverlay: (overlay) => set({ commandRoomOverlay: overlay }),
 
+  setActiveReviewItemId: (id) => set({ activeReviewItemId: id }),
+
+  setWorkPanelOpen: (v) => set({ workPanelOpen: v }),
+
+  setChatInputValue: (v) => set({ chatInputValue: v }),
+
+  toggleSessionCollapse: (dateKey) =>
+    set((s) => ({
+      collapsedSessions: {
+        ...s.collapsedSessions,
+        [dateKey]: !s.collapsedSessions[dateKey],
+      },
+    })),
+
+  setCalendarDate: (date) => set({ calendarDate: date, selectedEventId: null }),
+  setCalendarRange: (range) => set({ calendarRange: range }),
   setSelectedEventId: (id) => set({ selectedEventId: id }),
 
   setOpenDocumentId: (id) => set({ openDocumentId: id }),
-
-  setInboxPendingCount: (n) => set({ inboxPendingCount: n }),
-
-  addActiveMeeting: (meeting) =>
-    set((s) => ({
-      activeMeetings: s.activeMeetings.some((m) => m.id === meeting.id)
-        ? s.activeMeetings.map((m) => m.id === meeting.id ? { ...m, ...meeting } : m)
-        : [...s.activeMeetings, meeting],
-    })),
-  removeActiveMeeting: (id) =>
-    set((s) => ({ activeMeetings: s.activeMeetings.filter((m) => m.id !== id) })),
-
-  setAlexFollowupStepIndex: (n) => set({ alexFollowupStepIndex: n }),
-
-  setAlexSlidesGenerated: (v) => set({ alexSlidesGenerated: v }),
+  setDocSearchQuery: (q) => set({ docSearchQuery: q }),
+  setDocTypeFilter: (t) => set({ docTypeFilter: t }),
+  setDocTopicFilter: (topics) => set({ docTopicFilter: topics }),
 
   setMobileSidebarOpen: (v) => set({ mobileSidebarOpen: v }),
-  setMobileLogOpen: (v) => set({ mobileLogOpen: v }),
+  setMobileWorkPanelOpen: (v) => set({ mobileWorkPanelOpen: v }),
+
+  setOnboardingComplete: (v) => set({ onboardingComplete: v }),
 
   setTourActive: (v) => set({ tourActive: v, tourStep: 0 }),
   setTourStep: (n) => set({ tourStep: n }),
   setShowTourHint: (v) => set({ showTourHint: v }),
+
+  setReviewItemStatus: (id, status) =>
+    set((s) => ({
+      reviewItemStatuses: { ...s.reviewItemStatuses, [id]: status },
+    })),
 
   reset: () => set(defaultState),
 }));

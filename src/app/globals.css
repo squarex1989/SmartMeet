@@ -3,21 +3,40 @@
 @tailwind utilities;
 
 :root {
-  --background: #fafafa;
-  --foreground: #171717;
-  --border: #e5e5e5;
-  --muted: #f5f5f5;
-  --muted-foreground: #6b6b6b;
+  --background: #FAFAFA;
+  --foreground: #1A1A1A;
+  --surface-1: #FFFFFF;
+  --surface-2: #F5F5F5;
+  --surface-3: #EBEBEB;
+  --border: #E2E2E2;
+  --muted: #F5F5F5;
+  --muted-foreground: #737373;
+  --accent: #5B6AAE;
+  --accent-foreground: #FFFFFF;
+
+  --shadow-interactive: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-interactive-hover: 0 2px 8px rgba(0, 0, 0, 0.14);
 }
 
-/* Landing page (dark) uses .dark or separate route */
 .dark,
 [data-theme="landing"] {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --border: #1e1e1e;
-  --muted: #111111;
-  --muted-foreground: #8a8a8a;
+  --background: #0A0A0A;
+  --foreground: #E8E8E8;
+  --surface-1: #141414;
+  --surface-2: #111111;
+  --surface-3: #1A1A1A;
+  --border: #1E1E1E;
+  --muted: #141414;
+  --muted-foreground: #8A8A8A;
+  --accent: #7C8BBF;
+  --accent-foreground: #FFFFFF;
+
+  --shadow-interactive: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-interactive-hover: 0 2px 10px rgba(0, 0, 0, 0.4);
+
+  --aurora-1: hsla(230, 25%, 30%, 0.15);
+  --aurora-2: hsla(270, 20%, 25%, 0.12);
+  --aurora-3: hsla(200, 20%, 28%, 0.10);
 }
 
 body {
@@ -29,5 +48,37 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer components {
+  .interactive-base {
+    transition-property: transform, box-shadow, background-color, color, border-color, opacity;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @media (hover: hover) {
+    .interactive-base:hover {
+      transform: scale(1.015);
+      box-shadow: var(--shadow-interactive-hover);
+    }
+    .interactive-base:active {
+      transform: scale(0.985);
+    }
+
+    .interactive-subtle:hover {
+      transform: scale(1.008);
+      box-shadow: var(--shadow-interactive-hover);
+    }
+    .interactive-subtle:active {
+      transform: scale(0.995);
+    }
+  }
+
+  .interactive-subtle {
+    transition-property: transform, box-shadow, background-color, color, border-color, opacity;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
 }

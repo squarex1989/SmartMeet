@@ -1,11 +1,11 @@
-import type { AssistantId } from "./assistants";
+import type { TopicId } from "./topics";
 
 export type DocumentId = string;
 
 export interface DocumentMeta {
   id: DocumentId;
   title: string;
-  assistantId: AssistantId;
+  topicId: TopicId;
   type: "notes" | "agenda" | "report" | "strategy" | "slides" | "proposal";
   updatedAt: string;
   pageCount?: number;
@@ -13,35 +13,68 @@ export interface DocumentMeta {
 
 export interface DocumentContent {
   id: DocumentId;
-  body: string; // Markdown
+  body: string;
   trackChanges?: TrackChange[];
 }
 
 export interface TrackChange {
   id: string;
   type: "insert" | "delete" | "replace";
-  authorId: AssistantId;
-  // For insert: afterText is the anchor, newFragment is inserted after it
   afterText?: string;
   newFragment?: string;
-  // For delete: oldText is removed
   oldText?: string;
-  // For replace
   oldTextReplace?: string;
   newTextReplace?: string;
 }
 
 export const documentsMeta: DocumentMeta[] = [
-  { id: "doc-meeting-notes-techvision", title: "TechVision 需求访谈纪要 - 2026.02.11", assistantId: "alex", type: "notes", updatedAt: "2026-02-11T10:45:00" },
-  { id: "doc-slides-techvision", title: "TechVision 产品定位 Deck (Draft)", assistantId: "alex", type: "slides", updatedAt: "2026-02-11T11:00:00", pageCount: 8 },
-  { id: "doc-proposal-techvision", title: "TechVision Proposal - 定价方案", assistantId: "alex", type: "proposal", updatedAt: "2026-02-11T11:10:00" },
-  { id: "doc-agenda-retailmax", title: "RetailMax 营销策略工作坊 - Agenda", assistantId: "jamie", type: "agenda", updatedAt: "2026-02-10T18:00:00" },
-  { id: "doc-report-cloudflow", title: "CloudFlow 周报 - 2026.02.10", assistantId: "morgan", type: "report", updatedAt: "2026-02-10T08:00:00" },
-  { id: "doc-strategy-retailmax", title: "RetailMax 营销策略文档", assistantId: "jamie", type: "strategy", updatedAt: "2026-02-08T14:00:00" },
+  {
+    id: "doc-meeting-notes-techvision",
+    title: "TechVision 需求访谈纪要 - 2026.02.24",
+    topicId: "techvision",
+    type: "notes",
+    updatedAt: "2026-02-24T10:45:00",
+  },
+  {
+    id: "doc-slides-techvision",
+    title: "TechVision 产品定位 Deck (Draft)",
+    topicId: "techvision",
+    type: "slides",
+    updatedAt: "2026-02-24T11:00:00",
+    pageCount: 8,
+  },
+  {
+    id: "doc-proposal-techvision",
+    title: "TechVision Proposal - 定价方案",
+    topicId: "techvision",
+    type: "proposal",
+    updatedAt: "2026-02-24T11:10:00",
+  },
+  {
+    id: "doc-agenda-retailmax",
+    title: "RetailMax 营销策略工作坊 - Agenda",
+    topicId: "retailmax",
+    type: "agenda",
+    updatedAt: "2026-02-23T18:00:00",
+  },
+  {
+    id: "doc-report-cloudflow",
+    title: "CloudFlow 周报 - 2026.02.24",
+    topicId: "cloudflow",
+    type: "report",
+    updatedAt: "2026-02-24T08:00:00",
+  },
+  {
+    id: "doc-strategy-retailmax",
+    title: "RetailMax 营销策略文档",
+    topicId: "retailmax",
+    type: "strategy",
+    updatedAt: "2026-02-21T14:00:00",
+  },
 ];
 
 const meetingNotesBody = `# TechVision 需求访谈纪要
-**日期**: 2026-02-11  
+**日期**: 2026-02-24
 **参会**: Sarah, Tom (CTO), Lisa (CMO)
 
 ## 会议要点
@@ -97,20 +130,36 @@ const proposalBody = `# TechVision Proposal - 定价方案
 - 标准版：¥X/月
 - 专业版：¥Y/月
 
-## 修改建议（Alex）
+## 修改建议
 - **新增** 企业套餐选项：¥Z/年，含专属成功经理与 SLA。
 - 专业版价格微调为 ¥Y'/月。
 `;
 
 export const documentsContent: Record<DocumentId, DocumentContent> = {
-  "doc-meeting-notes-techvision": { id: "doc-meeting-notes-techvision", body: meetingNotesBody },
-  "doc-slides-techvision": { id: "doc-slides-techvision", body: slidesDraftBody },
+  "doc-meeting-notes-techvision": {
+    id: "doc-meeting-notes-techvision",
+    body: meetingNotesBody,
+  },
+  "doc-slides-techvision": {
+    id: "doc-slides-techvision",
+    body: slidesDraftBody,
+  },
   "doc-proposal-techvision": {
     id: "doc-proposal-techvision",
     body: proposalBody,
     trackChanges: [
-      { id: "tc1", type: "insert", authorId: "alex", afterText: "- 专业版：¥Y/月", newFragment: "\n- 企业套餐：¥Z/年，含专属成功经理与 SLA。" },
-      { id: "tc2", type: "replace", authorId: "alex", oldTextReplace: "专业版：¥Y/月", newTextReplace: "专业版：¥Y'/月（微调）" },
+      {
+        id: "tc1",
+        type: "insert",
+        afterText: "- 专业版：¥Y/月",
+        newFragment: "\n- 企业套餐：¥Z/年，含专属成功经理与 SLA。",
+      },
+      {
+        id: "tc2",
+        type: "replace",
+        oldTextReplace: "专业版：¥Y/月",
+        newTextReplace: "专业版：¥Y'/月（微调）",
+      },
     ],
   },
   "doc-agenda-retailmax": {
@@ -119,13 +168,19 @@ export const documentsContent: Record<DocumentId, DocumentContent> = {
   },
   "doc-report-cloudflow": {
     id: "doc-report-cloudflow",
-    body: "# CloudFlow 周报 2026.02.10\n\n## 上周进展\n- 续约沟通推进\n- 案例整理\n\n## 本周计划\n- 续约材料定稿\n- 客户拜访\n",
+    body: "# CloudFlow 周报 2026.02.24\n\n## 上周进展\n- 续约沟通推进\n- 案例整理\n\n## 本周计划\n- 续约材料定稿\n- 客户拜访\n",
   },
   "doc-strategy-retailmax": {
     id: "doc-strategy-retailmax",
-    body: "# RetailMax 营销策略\n\n全渠道与品牌增长策略文档。",
+    body: "# RetailMax 营销策略\n\n全渠道与品牌增长策略文档。\n\n## 核心策略\n- 全渠道数据打通\n- 会员运营体系\n- 精准投放优化\n\n## 目标\n- Q3 全渠道转化率提升 15%\n- 会员复购率提升 20%\n",
   },
 };
 
-export const getDocumentMeta = (id: DocumentId) => documentsMeta.find((d) => d.id === id);
-export const getDocumentContent = (id: DocumentId) => documentsContent[id];
+export const getDocumentMeta = (id: DocumentId) =>
+  documentsMeta.find((d) => d.id === id);
+
+export const getDocumentContent = (id: DocumentId) =>
+  documentsContent[id];
+
+export const getDocumentsByTopic = (topicId: TopicId): DocumentMeta[] =>
+  documentsMeta.filter((d) => d.topicId === topicId);

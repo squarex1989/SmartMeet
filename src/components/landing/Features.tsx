@@ -1,39 +1,39 @@
-import { Calendar, MessageSquare, FileText } from "lucide-react";
+import { Zap, Clock, Network } from "lucide-react";
 
 const features = [
   {
-    icon: Calendar,
-    title: "Before",
-    description: "会前自动准备 agenda、客户 research、推荐问题",
+    icon: Zap,
+    title: "Auto-execute",
+    description: "会后自动生成纪要、更新 CRM、发送 follow-up",
   },
   {
-    icon: MessageSquare,
-    title: "During",
-    description: "会中实时转录、智能笔记、提问建议",
+    icon: Clock,
+    title: "Scheduled reports",
+    description: "定期生成周报、汇总，按时交付",
   },
   {
-    icon: FileText,
-    title: "After",
-    description: "会后纪要、CRM 更新、任务识别、一键执行",
+    icon: Network,
+    title: "Structured workspace",
+    description: "按客户、项目、目标组织工作，图结构关联",
   },
 ];
 
 export function Features() {
   return (
-    <section id="product" className="py-24 px-6 border-t border-[#1E1E1E]">
+    <section id="product" className="py-24 px-6 border-t border-border">
       <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl font-bold tracking-tight text-[#EDEDED] text-center mb-16">
-          Before, during, and after every meeting
+        <h2 className="text-2xl font-bold tracking-tight text-foreground text-center mb-16">
+          Smart automation that works for you
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-lg border border-[#1E1E1E] bg-[#111111] p-6"
+              className="interactive-subtle rounded-lg border border-border bg-surface-1 p-6 hover:border-accent/30"
             >
-              <f.icon className="h-8 w-8 text-[#8A8A8A] mb-4" />
-              <h3 className="text-lg font-semibold text-[#EDEDED]">{f.title}</h3>
-              <p className="mt-2 text-sm text-[#8A8A8A]">{f.description}</p>
+              <f.icon className="h-8 w-8 text-accent mb-4" />
+              <h3 className="text-lg font-semibold text-foreground">{f.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{f.description}</p>
             </div>
           ))}
         </div>

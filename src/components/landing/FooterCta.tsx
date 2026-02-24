@@ -2,16 +2,16 @@ import Link from "next/link";
 
 export function FooterCta() {
   return (
-    <section className="py-16 md:py-24 px-4 md:px-6 border-t border-[#1E1E1E]">
+    <section className="py-16 md:py-24 px-4 md:px-6 border-t border-border">
       <div className="max-w-2xl mx-auto text-center">
-        <h2 className="text-2xl font-bold tracking-tight text-[#EDEDED]">
-          Ready to bring Shadow to your meetings?
+        <h2 className="text-2xl font-bold tracking-tight text-foreground">
+          Stop managing tasks. Start reviewing outcomes.
         </h2>
         <Link
           href="/app/onboarding"
-          className="mt-6 inline-block rounded-md bg-white px-6 py-3 text-sm font-medium text-black hover:opacity-90 transition"
+          className="interactive-base mt-6 inline-block rounded-md bg-accent px-6 py-3 text-sm font-medium text-accent-foreground hover:bg-accent/90"
         >
-          Try the demo
+          Try Shadow
         </Link>
       </div>
     </section>
