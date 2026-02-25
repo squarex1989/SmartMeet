@@ -1,8 +1,6 @@
-import { FileText, CheckCircle, Loader2, XCircle, Calendar, AlertTriangle, Info, Clock, Send } from "lucide-react";
-import { toast } from "sonner";
+import { FileText, CheckCircle, Loader2, XCircle, Calendar, AlertTriangle, Info, Clock, Lightbulb, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ChatMessage, MessageContent } from "@/data/chat-messages";
-import { getTopicById } from "@/data/topics";
 import { useAppStore } from "@/store/useAppStore";
 
 interface MessageBubbleProps {
@@ -65,48 +63,36 @@ function ContentBlock({
 
   if (content.type === "meeting_list" && content.meetings) {
     return (
-      <div className="space-y-1 mt-1">
+      <div className="mt-1 space-y-3">
         {content.meetings.map((m) => {
-          const topic = getTopicById(m.topicId);
           const statusDot = m.status === "ready"
             ? "bg-green-500"
             : m.status === "preparing"
-              ? "bg-amber-500"
+              ? "bg-accent"
               : "bg-blue-500";
 
           return (
-            <div key={m.eventId} className="space-y-1">
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 py-1.5 text-sm">
+            <div key={m.eventId} className="space-y-1.5">
+              <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                 <span className="text-xs text-muted-foreground tabular-nums shrink-0">{m.time}</span>
                 <span className={cn("inline-block h-1.5 w-1.5 rounded-full shrink-0", statusDot)} />
-                <span className="font-medium truncate">{m.title}</span>
-                <span className="flex items-center gap-1.5 ml-auto">
-                  {topic && (
-                    <button
-                      type="button"
-                      onClick={(e) => { e.stopPropagation(); onTopicClick(m.topicId); }}
-                      className="interactive-subtle shrink-0 rounded-full bg-surface-2 px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground"
-                    >
-                      {topic.name}
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const store = useAppStore.getState();
-                      store.setMainView("calendar");
-                      store.setSelectedEventId(m.eventId);
-                    }}
-                    className="interactive-base shrink-0 rounded-md bg-accent px-2 py-0.5 text-[10px] font-medium text-accent-foreground hover:bg-accent/90"
-                  >
-                    详情
-                  </button>
-                </span>
+                <span className="font-medium truncate flex-1">{m.title}</span>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const store = useAppStore.getState();
+                    store.setMainView("calendar");
+                    store.setSelectedEventId(m.eventId);
+                  }}
+                  className="interactive-base shrink-0 rounded-md bg-accent px-2 py-0.5 text-[10px] font-medium text-accent-foreground hover:bg-accent/90"
+                >
+                  详情
+                </button>
               </div>
               {m.prepDocs && m.prepDocs.length > 0 && (
-                <div className="ml-6 sm:ml-[4.5rem] flex flex-wrap gap-1.5 pb-1">
+                <div className="ml-[1.375rem] flex flex-wrap gap-1.5">
                   {m.prepDocs.map((doc) => (
                     <button
                       key={doc.docId}
@@ -118,7 +104,7 @@ function ContentBlock({
                       className="interactive-subtle inline-flex items-center gap-1 rounded border border-border bg-background px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted/80"
                     >
                       <FileText className="h-3 w-3 shrink-0" />
-                      <span className="truncate max-w-[120px] sm:max-w-none">{doc.docTitle}</span>
+                      <span className="truncate max-w-[140px]">{doc.docTitle}</span>
                     </button>
                   ))}
                 </div>
@@ -147,31 +133,26 @@ function ContentBlock({
 
   if (content.type === "overdue_followups" && content.overdueTasks) {
     return (
-      <div className="rounded-lg border border-amber-300 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-3 py-2.5 mt-1 space-y-2">
+      <div className="rounded-lg border border-border bg-muted/50 px-3 py-2.5 mt-1 space-y-2">
         <div className="flex items-start gap-2">
-          <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0 text-amber-800 dark:text-amber-300" />
-          <p className="text-sm text-amber-800 dark:text-amber-300">{content.text}</p>
+          <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground" />
+          <p className="text-sm">{content.text}</p>
         </div>
         <div className="space-y-1.5">
           {content.overdueTasks.map((task) => (
-            <div key={task.id} className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 rounded-md bg-white/60 dark:bg-white/5 px-2.5 py-1.5">
-              <div className="flex items-center gap-2 min-w-0">
-                <Clock className="h-3.5 w-3.5 shrink-0 text-amber-600 dark:text-amber-400" />
-                <span className="text-xs font-medium truncate">{task.label}</span>
-                <span className="shrink-0 text-[10px] text-amber-600 dark:text-amber-400">逾期 {task.daysOverdue} 天</span>
-              </div>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toast.success(`已发起 Follow Up: ${task.label}`);
-                }}
-                className="interactive-base shrink-0 self-end sm:self-auto inline-flex items-center gap-1 rounded-md bg-amber-600 px-2 py-0.5 text-[10px] font-medium text-white hover:bg-amber-700"
-              >
-                <Send className="h-2.5 w-2.5" />
-                一键 Follow Up
-              </button>
-            </div>
+            <button
+              key={task.id}
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onTopicClick(task.topicId);
+              }}
+              className="flex w-full items-center gap-2 rounded-md bg-background px-2.5 py-1.5 text-left hover:bg-muted/80 transition-colors"
+            >
+              <Clock className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+              <span className="text-xs font-medium truncate flex-1">{task.label}</span>
+              <span className="shrink-0 text-[10px] text-muted-foreground">逾期 {task.daysOverdue} 天</span>
+            </button>
           ))}
         </div>
       </div>
@@ -282,6 +263,35 @@ function ContentBlock({
       <div className="flex items-center gap-2 text-sm">
         <Icon className={cn("h-4 w-4 shrink-0", spinning && "animate-spin")} />
         <span>{content.text}</span>
+      </div>
+    );
+  }
+
+  if (content.type === "playbook_update" && content.playbookRule) {
+    const rule = content.playbookRule;
+    return (
+      <div className="mt-1 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2.5 space-y-1.5">
+        <div className="flex items-center gap-2">
+          <Zap className="h-4 w-4 shrink-0 text-accent" />
+          <span className="text-xs font-semibold text-accent">Playbook Updated</span>
+        </div>
+        <p className="text-sm">{rule.description}</p>
+        <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
+          {rule.trigger}
+        </span>
+      </div>
+    );
+  }
+
+  if (content.type === "insights_summary" && content.insightItems) {
+    return (
+      <div className="space-y-1.5 mt-1">
+        {content.insightItems.map((item) => (
+          <div key={item.id} className="flex items-start gap-2 rounded-md border border-border bg-background px-2.5 py-2">
+            <Lightbulb className="h-3.5 w-3.5 mt-0.5 shrink-0 text-muted-foreground" />
+            <p className="text-xs font-medium flex-1 min-w-0">{item.label}</p>
+          </div>
+        ))}
       </div>
     );
   }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
 import {
   getGlobalAutomations,
@@ -26,46 +27,78 @@ function formatTime(iso: string): string {
 }
 
 function AutomationCard({ rule }: { rule: Automation }) {
+  const [expanded, setExpanded] = useState(false);
   const topic =
     rule.scope !== "global" ? getTopicById(rule.scope as TopicId) : null;
   return (
-    <div className="interactive-subtle rounded-lg border border-border bg-surface-1 p-4 hover:border-accent/20">
-      <p className="text-sm">{rule.description}</p>
-      <div className="mt-2 flex flex-wrap items-center gap-2">
-        <span className="rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
-          {rule.trigger}
-        </span>
-        {topic && (
-          <span className="rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
-            {topic.name}
-          </span>
-        )}
-        {rule.requiresReview && (
-          <span className="rounded bg-status-pending/20 px-2 py-0.5 text-xs text-status-pending">
-            Review required
-          </span>
+    <div
+      className="rounded-lg border border-border bg-surface-1 hover:border-accent/20 transition-colors cursor-pointer"
+      onClick={() => setExpanded(!expanded)}
+    >
+      <div className="flex items-start gap-3 p-4">
+        <div className="flex-1 min-w-0">
+          <p className="text-sm">{rule.description}</p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span className="rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
+              {rule.trigger}
+            </span>
+            {topic && (
+              <span className="rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
+                {topic.name}
+              </span>
+            )}
+            {rule.requiresReview && (
+              <span className="rounded bg-status-pending/20 px-2 py-0.5 text-xs text-status-pending">
+                Review required
+              </span>
+            )}
+          </div>
+        </div>
+        {rule.ruleDetail && (
+          expanded
+            ? <ChevronDown className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground" />
+            : <ChevronRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground" />
         )}
       </div>
-      {rule.actions.length > 0 && (
-        <ul className="mt-2 list-inside list-disc text-xs text-muted-foreground">
-          {rule.actions.map((a, i) => (
-            <li key={i}>{a}</li>
-          ))}
-        </ul>
-      )}
-      <div className="mt-3 flex items-center justify-between">
-        <div
-          className={cn(
-            "h-2 w-8 rounded-full",
-            rule.enabled ? "bg-status-executed" : "bg-muted"
+      {expanded && (
+        <div className="border-t border-border px-4 py-3 space-y-3">
+          {rule.ruleDetail && (
+            <p className="text-xs text-muted-foreground leading-relaxed">{rule.ruleDetail}</p>
           )}
-        />
-        {rule.lastTriggered && (
-          <span className="text-[10px] text-muted-foreground">
-            Last: {formatTime(rule.lastTriggered)}
-          </span>
-        )}
-      </div>
+          {rule.actions.length > 0 && (
+            <ul className="list-inside list-disc text-xs text-muted-foreground">
+              {rule.actions.map((a, i) => (
+                <li key={i}>{a}</li>
+              ))}
+            </ul>
+          )}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div
+                className={cn(
+                  "h-2 w-8 rounded-full",
+                  rule.enabled ? "bg-status-executed" : "bg-muted"
+                )}
+              />
+              {rule.lastTriggered && (
+                <span className="text-[10px] text-muted-foreground">
+                  Last: {formatTime(rule.lastTriggered)}
+                </span>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toast.success(`Editing: ${rule.description}`);
+              }}
+              className="text-xs text-accent hover:underline"
+            >
+              Edit
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -99,7 +132,7 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
         </button>
       )}
       <div className="flex flex-1 flex-col overflow-hidden px-4 pb-6 pt-4">
-        <h2 className="text-lg font-semibold">Manage Automations</h2>
+        <h2 className="text-lg font-semibold">Manage Playbook</h2>
         <div className="mt-3 flex gap-1 border-b border-border">
           <button
             onClick={() => setTab("global")}
@@ -110,7 +143,7 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
-            Global Rules
+            Global Playbook
           </button>
           <button
             onClick={() => setTab("topic")}
@@ -121,7 +154,7 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
                 : "text-muted-foreground hover:text-foreground"
             )}
           >
-            Topic Rules
+            Topic Playbook
           </button>
         </div>
         <div className="mt-4 flex-1 overflow-auto">
@@ -158,7 +191,7 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
           className="interactive-base mt-4 w-full rounded-md border border-dashed border-border py-3 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground hover:border-accent/30"
           type="button"
         >
-          + Add Rule
+          + Add Playbook Rule
         </button>
       </div>
     </div>

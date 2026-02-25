@@ -10,7 +10,9 @@ export type MessageContentType =
   | "status_update"
   | "meeting_list"
   | "alert_card"
-  | "overdue_followups";
+  | "overdue_followups"
+  | "insights_summary"
+  | "playbook_update";
 
 export interface MeetingPrepDoc {
   docId: string;
@@ -35,6 +37,13 @@ export interface OverdueTask {
   action: string;
 }
 
+export interface InsightBrief {
+  id: string;
+  label: string;
+  severity: "info" | "warning" | "critical";
+  topicId?: string;
+}
+
 export interface MessageContent {
   type: MessageContentType;
   text?: string;
@@ -49,6 +58,8 @@ export interface MessageContent {
   meetings?: MeetingListItem[];
   alertLevel?: "info" | "warning" | "critical";
   overdueTasks?: OverdueTask[];
+  insightItems?: InsightBrief[];
+  playbookRule?: { id: string; description: string; trigger: string };
 }
 
 export interface ChatMessage {
@@ -117,6 +128,18 @@ export const chatMessages: ChatMessage[] = [
           },
         ],
       },
+    ],
+    createdAt: "2026-02-24T09:00:30",
+  },
+  {
+    id: "gm-3",
+    topicId: "global",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "有 2 个紧急 follow-up 需要你关注：",
+      },
       {
         type: "overdue_followups",
         alertLevel: "warning",
@@ -127,7 +150,68 @@ export const chatMessages: ChatMessage[] = [
         ],
       },
     ],
-    createdAt: "2026-02-24T09:00:30",
+    createdAt: "2026-02-24T09:01:00",
+  },
+  {
+    id: "gm-4",
+    topicId: "global",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "今天有 3 个值得关注的 insights：",
+      },
+      {
+        type: "insights_summary",
+        insightItems: [
+          { id: "ins-1", label: "TechVision CTO 回复时间延长至 18 小时，建议主动跟进", severity: "warning", topicId: "techvision" },
+          { id: "ins-5", label: "TechVision 产品定位 Deck 距截止日还有 5 天，初稿待 review", severity: "warning", topicId: "techvision" },
+          { id: "ins-4", label: "本周会议密度高于平均 60%，建议评估是否需要合并或推迟", severity: "warning" },
+        ],
+      },
+    ],
+    createdAt: "2026-02-24T09:01:30",
+  },
+  {
+    id: "gm-5",
+    topicId: "global",
+    role: "user",
+    content: [
+      {
+        type: "text",
+        text: "https://docs.google.com/document/d/sarah-work-guidelines\n按照这个要求干活",
+      },
+    ],
+    createdAt: "2026-02-24T09:05:00",
+  },
+  {
+    id: "gm-6",
+    topicId: "global",
+    role: "shadow",
+    content: [
+      { type: "status_update", text: "正在阅读链接内容...", statusIcon: "loading" },
+    ],
+    createdAt: "2026-02-24T09:05:10",
+  },
+  {
+    id: "gm-7",
+    topicId: "global",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "好的，我已阅读完毕《Sarah 的工作准则》，将更新我的 Playbook：",
+      },
+      {
+        type: "playbook_update",
+        playbookRule: {
+          id: "auto-global-doc",
+          description: "按照《Sarah 的工作准则》中的要求执行所有工作",
+          trigger: "always",
+        },
+      },
+    ],
+    createdAt: "2026-02-24T09:05:30",
   },
 
   // TechVision conversation — pre-meeting prep
@@ -217,6 +301,38 @@ export const chatMessages: ChatMessage[] = [
     ],
     createdAt: "2026-02-24T09:01:00",
   },
+  {
+    id: "tv-6",
+    topicId: "techvision",
+    role: "user",
+    content: [
+      {
+        type: "text",
+        text: "以后 TechVision 的汇报里以数据为主，Tom 比较看重量化数据",
+      },
+    ],
+    createdAt: "2026-02-24T09:10:00",
+  },
+  {
+    id: "tv-7",
+    topicId: "techvision",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "收到，我已更新 TechVision 的 Playbook，后续汇报将优先使用量化数据呈现：",
+      },
+      {
+        type: "playbook_update",
+        playbookRule: {
+          id: "auto-tv-data",
+          description: "汇报内容以量化数据为主",
+          trigger: "report_generation",
+        },
+      },
+    ],
+    createdAt: "2026-02-24T09:10:30",
+  },
 
   // Older TechVision messages (previous session)
   {
@@ -264,6 +380,38 @@ export const chatMessages: ChatMessage[] = [
     ],
     createdAt: "2026-02-24T08:00:00",
   },
+  {
+    id: "cf-2",
+    topicId: "cloudflow",
+    role: "user",
+    content: [
+      {
+        type: "text",
+        text: "CloudFlow 的续约沟通邮件需要附带上一次沟通的关键决策点",
+      },
+    ],
+    createdAt: "2026-02-24T08:05:00",
+  },
+  {
+    id: "cf-3",
+    topicId: "cloudflow",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "明白，我已更新 CloudFlow 的 Playbook。后续续约相关邮件将自动附带上次沟通的关键决策点：",
+      },
+      {
+        type: "playbook_update",
+        playbookRule: {
+          id: "auto-cf-decision",
+          description: "续约邮件附带上次沟通关键决策点",
+          trigger: "email_draft",
+        },
+      },
+    ],
+    createdAt: "2026-02-24T08:05:30",
+  },
 
   // RetailMax conversation
   {
@@ -291,6 +439,38 @@ export const chatMessages: ChatMessage[] = [
       },
     ],
     createdAt: "2026-02-24T09:15:00",
+  },
+  {
+    id: "rm-2",
+    topicId: "retailmax",
+    role: "user",
+    content: [
+      {
+        type: "text",
+        text: "每周三给 RetailMax 写一份周中进展汇报",
+      },
+    ],
+    createdAt: "2026-02-24T09:20:00",
+  },
+  {
+    id: "rm-3",
+    topicId: "retailmax",
+    role: "shadow",
+    content: [
+      {
+        type: "text",
+        text: "好的，我已新增一条定时规则。每周三上午 10:00 我会自动生成 RetailMax 的周中进展汇报：",
+      },
+      {
+        type: "playbook_update",
+        playbookRule: {
+          id: "auto-rm-weekly",
+          description: "每周三生成周中进展汇报",
+          trigger: "schedule:weekly:wed:10:00",
+        },
+      },
+    ],
+    createdAt: "2026-02-24T09:20:30",
   },
 
   // Fundraising 2026 conversation

@@ -132,7 +132,7 @@ export const reviewItems: ReviewItem[] = [
     type: "follow_up",
     title: "安排 Follow-up Call",
     summary: "下周二 14:00 与 Tom、Lisa 确认最终方案",
-    status: "pending_review",
+    status: "done",
     createdAt: "2026-02-24T10:48:00",
     payload: {
       type: "follow_up",
@@ -146,7 +146,7 @@ export const reviewItems: ReviewItem[] = [
     type: "weekly_report",
     title: "CloudFlow 周报草稿",
     summary: "涵盖续约进展和本周计划",
-    status: "pending_review",
+    status: "done",
     createdAt: "2026-02-24T08:00:00",
     payload: {
       type: "weekly_report",
@@ -160,7 +160,7 @@ export const reviewItems: ReviewItem[] = [
     type: "email_draft",
     title: "CloudFlow 周报邮件",
     summary: "待确认发送给客户",
-    status: "pending_review",
+    status: "done",
     createdAt: "2026-02-24T08:30:00",
     payload: {
       type: "email_draft",
@@ -175,7 +175,7 @@ export const reviewItems: ReviewItem[] = [
     type: "meeting_prep",
     title: "RetailMax 工作坊准备材料",
     summary: "Agenda 和策略文档已就绪，会前 review 确认即可",
-    status: "pending_review",
+    status: "done",
     createdAt: "2026-02-24T09:00:00",
     payload: {
       type: "meeting_notes",
@@ -189,7 +189,7 @@ export const reviewItems: ReviewItem[] = [
     type: "meeting_prep",
     title: "Pitch Deck 草稿 Review",
     summary: "12 页 Pitch Deck 已生成，需确认市场数据和财务预测部分",
-    status: "pending_review",
+    status: "done",
     createdAt: "2026-02-24T07:30:00",
     payload: {
       type: "meeting_notes",
@@ -203,7 +203,7 @@ export const reviewItems: ReviewItem[] = [
     type: "follow_up",
     title: "联系目标投资机构",
     summary: "已筛选 8 家目标机构，需确认优先级后安排首轮沟通",
-    status: "pending_review",
+    status: "done",
     createdAt: "2026-02-24T07:35:00",
     payload: {
       type: "follow_up",
@@ -217,7 +217,7 @@ export const reviewItems: ReviewItem[] = [
     type: "meeting_prep",
     title: "AI 市场分析报告 Review",
     summary: "竞品调研数据已更新，策略研讨会前请确认分析结论",
-    status: "pending_review",
+    status: "done",
     createdAt: "2026-02-24T07:45:00",
     payload: {
       type: "meeting_notes",
@@ -231,7 +231,7 @@ export const reviewItems: ReviewItem[] = [
     type: "follow_up",
     title: "竞品产品试用",
     summary: "建议试用 AlphaAI 和 NeuralEdge 产品，为策略研讨提供第一手对比数据",
-    status: "pending_review",
+    status: "done",
     createdAt: "2026-02-24T07:50:00",
     payload: {
       type: "follow_up",

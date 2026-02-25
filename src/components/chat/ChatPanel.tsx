@@ -19,8 +19,12 @@ export function ChatPanel() {
       ? "All Work"
       : getTopicById(currentContext)?.name ?? "All Work";
 
+  const injectedMessages = useAppStore((s) => s.injectedMessages);
+
   const topicId = currentContext === "all" ? "global" : currentContext;
-  const messages = getMessagesByTopic(topicId);
+  const staticMessages = getMessagesByTopic(topicId);
+  const dynamicMessages = injectedMessages[topicId] ?? [];
+  const messages = [...staticMessages, ...dynamicMessages];
   const sessions = groupMessagesBySessions(messages);
 
   const handleSubmit = useCallback(() => {

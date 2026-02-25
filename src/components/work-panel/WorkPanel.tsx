@@ -4,19 +4,14 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import { reviewItems } from "@/data/review-items";
-import { getInsightsForContext } from "@/data/insights";
-import type { InsightSeverity } from "@/data/insights";
+import { getTodosForContext } from "@/data/todo-items";
+import { getDecisionsForContext } from "@/data/decision-items";
 import { ReviewCard } from "./ReviewCard";
-import { SignalCard } from "./SignalCard";
-import { ActiveRulesSection } from "./ActiveRulesSection";
+import { TodoCard } from "./TodoCard";
+import { DecisionCard } from "./DecisionCard";
+import { ActiveRulesSection, usePlaybookCount } from "./ActiveRulesSection";
 
-const severityOrder: Record<InsightSeverity, number> = {
-  critical: 0,
-  warning: 1,
-  info: 2,
-};
-
-function CollapsibleSection({
+function Section({
   title,
   count,
   children,
@@ -30,11 +25,11 @@ function CollapsibleSection({
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div className="border-b border-border last:border-b-0">
+    <div>
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="interactive-subtle flex w-full items-center gap-2 py-3 text-left text-sm font-medium"
+        className="flex w-full items-center gap-2 py-2.5 text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
       >
         {open ? (
           <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -48,14 +43,13 @@ function CollapsibleSection({
           </span>
         )}
       </button>
-      {open && <div className="pb-3">{children}</div>}
+      {open && <div className="pb-2 space-y-2">{children}</div>}
     </div>
   );
 }
 
 export function WorkPanel() {
   const currentContext = useAppStore((s) => s.currentContext);
-  const setCommandRoomOverlay = useAppStore((s) => s.setCommandRoomOverlay);
   const reviewItemStatuses = useAppStore((s) => s.reviewItemStatuses);
 
   const getStatus = (item: (typeof reviewItems)[0]) =>
@@ -68,11 +62,11 @@ export function WorkPanel() {
     return item.topicId === currentContext;
   });
 
-  const contextInsights = getInsightsForContext(currentContext);
-  const sortedInsights = [...contextInsights].sort(
-    (a, b) => severityOrder[a.severity] - severityOrder[b.severity]
-  );
-  const topSignals = sortedInsights.slice(0, 3);
+  const todoItems = getTodosForContext(currentContext);
+  const decisionItems = getDecisionsForContext(currentContext);
+  const playbookCount = usePlaybookCount();
+
+  const attentionCount = decisionItems.length;
 
   const doneCount = reviewItems.filter((item) => {
     const status = getStatus(item);
@@ -83,54 +77,58 @@ export function WorkPanel() {
 
   return (
     <div className="flex h-full w-full flex-col border-l border-border bg-background overflow-y-auto">
-      <div className="flex-1 space-y-0 px-4 pt-2">
-        <CollapsibleSection title="Pending Review" count={pendingItems.length}>
-          <div className="space-y-2">
-            {pendingItems.length === 0 ? (
-              <p className="text-xs text-muted-foreground py-2">All clear — nothing to review.</p>
-            ) : (
-              pendingItems.map((item) => (
-                <ReviewCard
-                  key={item.id}
-                  item={item}
-                  showTopic={currentContext === "all"}
-                />
-              ))
-            )}
-          </div>
-        </CollapsibleSection>
-
-        <CollapsibleSection title="Signals" count={contextInsights.length}>
-          <div className="space-y-2">
-            {topSignals.map((insight) => (
-              <SignalCard
-                key={insight.id}
-                insight={insight}
+      <div className="flex-1 px-4 pt-2">
+        <Section title="Prepared for you" count={pendingItems.length}>
+          {pendingItems.length === 0 ? (
+            <p className="text-xs text-muted-foreground py-1">All clear — nothing to review.</p>
+          ) : (
+            pendingItems.map((item) => (
+              <ReviewCard
+                key={item.id}
+                item={item}
                 showTopic={currentContext === "all"}
               />
-            ))}
-            {contextInsights.length > 3 && (
-              <button
-                type="button"
-                onClick={() => setCommandRoomOverlay("insights")}
-                className="interactive-base text-xs text-muted-foreground hover:text-accent hover:underline"
-              >
-                View all insights →
-              </button>
-            )}
-          </div>
-        </CollapsibleSection>
+            ))
+          )}
+        </Section>
 
-        <CollapsibleSection title="Active Rules" count={0} defaultOpen={false}>
+        <Section title="Your follow-ups" count={todoItems.length}>
+          {todoItems.length === 0 ? (
+            <p className="text-xs text-muted-foreground py-1">No follow-ups right now.</p>
+          ) : (
+            todoItems.map((item) => (
+              <TodoCard
+                key={item.id}
+                item={item}
+                showTopic={currentContext === "all"}
+              />
+            ))
+          )}
+        </Section>
+
+        <Section title="Need your attention" count={attentionCount}>
+          {attentionCount === 0 ? (
+            <p className="text-xs text-muted-foreground py-1">Nothing needs attention right now.</p>
+          ) : (
+            decisionItems.map((item) => (
+              <DecisionCard
+                key={item.id}
+                item={item}
+                showTopic={currentContext === "all"}
+              />
+            ))
+          )}
+        </Section>
+
+        <Section title="Active Playbook" count={playbookCount} defaultOpen={false}>
           <ActiveRulesSection />
-        </CollapsibleSection>
+        </Section>
       </div>
 
       {doneCount > 0 && (
         <div className="shrink-0 border-t border-border px-4 py-3">
           <button
             type="button"
-            onClick={() => setCommandRoomOverlay("insights")}
             className="interactive-base text-xs text-muted-foreground hover:text-accent"
           >
             已完成 {doneCount} 项 · 查看历史 →

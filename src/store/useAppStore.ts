@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { TopicId } from "@/data/topics";
+import type { ChatMessage } from "@/data/chat-messages";
 
 export type MainView = "command-room" | "calendar" | "docs" | "automations";
 export type CommandRoomOverlay = null | "review" | "insights" | "automations";
@@ -19,6 +20,10 @@ interface AppState {
   setCommandRoomOverlay: (overlay: CommandRoomOverlay) => void;
   activeReviewItemId: string | null;
   setActiveReviewItemId: (id: string | null) => void;
+
+  // Sidebar
+  sidebarCollapsed: boolean;
+  setSidebarCollapsed: (v: boolean) => void;
 
   // Work Panel
   workPanelOpen: boolean;
@@ -66,6 +71,10 @@ interface AppState {
   setTourStep: (n: number) => void;
   setShowTourHint: (v: boolean) => void;
 
+  // Dynamic chat messages injected by interactions
+  injectedMessages: Record<string, ChatMessage[]>;
+  injectMessages: (topicId: string, messages: ChatMessage[]) => void;
+
   // Review item status mutations (mock)
   reviewItemStatuses: Record<string, string>;
   setReviewItemStatus: (id: string, status: string) => void;
@@ -78,6 +87,7 @@ const defaultState = {
   currentContext: "all" as "all" | TopicId,
   commandRoomOverlay: null as CommandRoomOverlay,
   activeReviewItemId: null as string | null,
+  sidebarCollapsed: false,
   workPanelOpen: true,
   chatInputValue: "",
   collapsedSessions: {} as Record<string, boolean>,
@@ -94,6 +104,7 @@ const defaultState = {
   tourActive: false,
   tourStep: 0,
   showTourHint: false,
+  injectedMessages: {} as Record<string, ChatMessage[]>,
   reviewItemStatuses: {} as Record<string, string>,
 };
 
@@ -108,6 +119,8 @@ export const useAppStore = create<AppState>((set) => ({
   setCommandRoomOverlay: (overlay) => set({ commandRoomOverlay: overlay }),
 
   setActiveReviewItemId: (id) => set({ activeReviewItemId: id }),
+
+  setSidebarCollapsed: (v) => set({ sidebarCollapsed: v }),
 
   setWorkPanelOpen: (v) => set({ workPanelOpen: v }),
 
@@ -138,6 +151,14 @@ export const useAppStore = create<AppState>((set) => ({
   setTourActive: (v) => set({ tourActive: v, tourStep: 0 }),
   setTourStep: (n) => set({ tourStep: n }),
   setShowTourHint: (v) => set({ showTourHint: v }),
+
+  injectMessages: (topicId, messages) =>
+    set((s) => ({
+      injectedMessages: {
+        ...s.injectedMessages,
+        [topicId]: [...(s.injectedMessages[topicId] ?? []), ...messages],
+      },
+    })),
 
   setReviewItemStatus: (id, status) =>
     set((s) => ({

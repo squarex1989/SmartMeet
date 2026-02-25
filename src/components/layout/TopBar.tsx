@@ -9,7 +9,7 @@ const views: { view: MainView; label: string; icon: React.ElementType }[] = [
   { view: "command-room", label: "Command Room", icon: MessageSquare },
   { view: "calendar", label: "Calendar", icon: Calendar },
   { view: "docs", label: "Works", icon: Layers },
-  { view: "automations", label: "Automations", icon: Zap },
+  { view: "automations", label: "Playbook", icon: Zap },
 ];
 
 export function TopBar() {
