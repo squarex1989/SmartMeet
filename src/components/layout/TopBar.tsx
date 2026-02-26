@@ -125,7 +125,7 @@ export function TopBar() {
           href="/"
           className="interactive-base font-semibold tracking-tight shrink-0 text-foreground hover:text-accent hidden sm:block"
         >
-          Command Room
+          Shadow
         </Link>
         <div className="flex items-center gap-0.5 sm:gap-1 flex-1 min-w-0">
           {views.map(({ view, label, icon: Icon }) => (

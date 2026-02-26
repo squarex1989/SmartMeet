@@ -67,7 +67,7 @@ export function TopicNavigator() {
           )}
         >
           <Home className="h-4 w-4 shrink-0" />
-          <span className="flex-1">Shadow</span>
+          <span className="flex-1">General</span>
           {total > 0 && (
             <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-muted-foreground/20 px-1.5 text-xs font-medium tabular-nums text-muted-foreground">
               {total}

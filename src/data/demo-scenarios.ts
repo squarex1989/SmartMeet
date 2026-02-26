@@ -257,7 +257,7 @@ export const demoScenarios: ScenarioConfig[] = [
         content: [
           {
             type: "text",
-            text: "**识别到的任务：**\n\n1. 📄 **更新产品定位 Deck** — Tom 要求下周三董事会前完成，需突出 AI 差异化（已放入 Prepared for you）\n2. 📧 **回复 Lisa 会员运营数据邮件** — Lisa 会上追问了具体数据维度（已加入 Your follow-ups）\n3. 📊 **竞品数据校验** — Pitch Deck 第 7 页数据需要更新确认（已加入 Your follow-ups）\n\n会议纪要和 CRM 更新已放在右侧 Work Panel，请 review。",
+            text: "**识别到的任务（已加入 Your follow-ups）：**\n\n1. 📄 **更新产品定位 Deck** — Tom 要求下周三董事会前完成，需突出 AI 差异化\n2. 📧 **回复 Lisa 会员运营数据邮件** — Lisa 会上追问了具体数据维度\n3. 📊 **竞品数据校验** — Pitch Deck 第 7 页数据需要更新确认\n\n同时，会议纪要和 CRM 更新已按 Playbook 自动生成，放在 Prepared for you 等你 review。",
           },
         ],
         createdAt: "2026-02-24T11:11:00",

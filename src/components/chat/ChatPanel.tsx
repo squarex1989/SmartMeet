@@ -16,8 +16,8 @@ export function ChatPanel() {
 
   const contextName =
     currentContext === "all"
-      ? "All Work"
-      : getTopicById(currentContext)?.name ?? "All Work";
+      ? "General"
+      : getTopicById(currentContext)?.name ?? "General";
 
   const injectedMessages = useAppStore((s) => s.injectedMessages);
 
