@@ -5,7 +5,7 @@ import type { ChatMessage } from "@/data/chat-messages";
 export type MainView = "command-room" | "calendar" | "docs" | "automations";
 export type CommandRoomOverlay = null | "review" | "insights" | "automations";
 export type CalendarRange = "day" | "week";
-export type DemoScenario = "pre-meeting" | "custom-workflow" | "task-identify" | "risk-alert" | "qa-task" | null;
+export type DemoScenario = "pre-meeting" | "custom-workflow" | "task-identify" | "risk-alert" | "qa-task" | "daily-brief" | "goal-driven" | "inbox-mgmt" | "smart-bookmark" | null;
 
 interface AppState {
   // Top-level view (controls entire layout below TopBar)

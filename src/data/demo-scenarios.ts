@@ -383,25 +383,11 @@ export const demoScenarios: ScenarioConfig[] = [
           {
             type: "crm_preview",
             crmFields: [
-              { name: "客户", from: "TechVision", to: "RetailMax" },
-              { name: "阶段", from: "需求对接", to: "策略深化" },
-              { name: "健康度", from: "⚡ 活跃", to: "✅ 良好" },
-              { name: "下一步", from: "产品定位 Deck", to: "执行策略方案" },
-              { name: "风险", from: "时间窗口紧", to: "无" },
-            ],
-          },
-          {
-            type: "text",
-            text: "CloudFlow 单独列出，因为状态需要特别关注：",
-          },
-          {
-            type: "crm_preview",
-            crmFields: [
-              { name: "客户", from: "CloudFlow", to: "" },
-              { name: "阶段", from: "续约谈判", to: "" },
-              { name: "健康度", from: "⚠️ 风险", to: "" },
-              { name: "下一步", from: "发送续约提案", to: "" },
-              { name: "风险", from: "沟通频率下降 + 逾期", to: "" },
+              { name: "", from: "TechVision", to: "RetailMax", col3: "CloudFlow" },
+              { name: "阶段", from: "需求对接", to: "策略深化", col3: "续约谈判" },
+              { name: "健康度", from: "⚡ 活跃", to: "✅ 良好", col3: "⚠️ 风险" },
+              { name: "下一步", from: "产品定位 Deck", to: "执行策略方案", col3: "发送续约提案" },
+              { name: "风险", from: "时间窗口紧", to: "无", col3: "沟通频率下降 + 逾期" },
             ],
           },
         ],
@@ -410,12 +396,24 @@ export const demoScenarios: ScenarioConfig[] = [
       {
         id: "demo-qa-5",
         topicId: "global",
-        role: "user",
-        content: [{ type: "text", text: "帮我给 CloudFlow 的 James 写一封关怀邮件，重新建立联系" }],
-        createdAt: "2026-02-24T11:05:00",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "我注意到 CloudFlow 有续约风险信号。需要我帮你给 CloudFlow 的 James 写一封关怀邮件，重新建立联系吗？",
+          },
+        ],
+        createdAt: "2026-02-24T11:03:00",
       },
       {
         id: "demo-qa-6",
+        topicId: "global",
+        role: "user",
+        content: [{ type: "text", text: "要的" }],
+        createdAt: "2026-02-24T11:04:00",
+      },
+      {
+        id: "demo-qa-7",
         topicId: "global",
         role: "shadow",
         content: [
@@ -440,7 +438,352 @@ export const demoScenarios: ScenarioConfig[] = [
             ],
           },
         ],
-        createdAt: "2026-02-24T11:05:30",
+        createdAt: "2026-02-24T11:04:30",
+      },
+    ],
+  },
+  {
+    id: "daily-brief",
+    label: "每日资讯简报",
+    description: "AI 每天从指定新闻源制作简报",
+    targetTopic: "global",
+    messages: [
+      {
+        id: "demo-db-1",
+        topicId: "global",
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "我需要你每天早上帮我获取 AI 和 SaaS 领域的行业资讯，做成简报发给我。来源优先用 TechCrunch、The Information 和 36氪。",
+          },
+        ],
+        createdAt: "2026-02-24T08:00:00",
+      },
+      {
+        id: "demo-db-2",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "收到，我会在每个工作日早上 8 点为你生成行业简报。信息来源：TechCrunch、The Information、36氪，聚焦 AI 和 SaaS 领域。\n\n需要我现在就生成今天的简报给你看看吗？",
+          },
+          {
+            type: "playbook_update",
+            playbookRule: {
+              id: "rule-daily-brief",
+              description: "每个工作日 8:00 生成 AI & SaaS 行业简报",
+              trigger: "每日定时 · 工作日 8:00",
+            },
+          },
+        ],
+        createdAt: "2026-02-24T08:00:30",
+      },
+      {
+        id: "demo-db-3",
+        topicId: "global",
+        role: "user",
+        content: [{ type: "text", text: "要的，现在给我看看" }],
+        createdAt: "2026-02-24T08:01:00",
+      },
+      {
+        id: "demo-db-4",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          { type: "status_update", text: "正在检索 TechCrunch 最新内容...", statusIcon: "success" },
+          { type: "status_update", text: "正在检索 The Information 最新内容...", statusIcon: "success" },
+          { type: "status_update", text: "正在检索 36氪 最新内容...", statusIcon: "success" },
+          { type: "status_update", text: "正在分析和整理...", statusIcon: "loading" },
+        ],
+        createdAt: "2026-02-24T08:01:15",
+      },
+      {
+        id: "demo-db-5",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "今日 AI & SaaS 行业简报 — 2026.02.24\n\n🔥 重点关注\n\n1. OpenAI 推出企业级 Agent 平台，支持多步骤工作流自动化，直接对标 ServiceNow 和 Salesforce 的自动化产品线\n→ 与我们的定位高度相关，建议关注其定价策略\n\n2. Anthropic 完成 $3.5B 新一轮融资，估值达 $60B，将重点投入 AI 安全和企业应用\n→ AI 赛道资金持续涌入，投资人情绪积极\n\n3. 36氪报道：国内 3 家 AI Agent 创业公司在过去一个月内完成 A 轮融资，合计超 5 亿人民币\n\n📊 值得留意\n\n4. Salesforce 宣布 Agentforce 2.0，整合 Slack 实现对话式 CRM 操作\n5. Notion 推出 AI 会议纪要功能，自动关联日历和任务\n→ 与 Shadow 的会议准备功能有交集，值得分析差异化\n6. Gartner 发布 2026 AI Hype Cycle，Agent 技术进入 \"Slope of Enlightenment\"",
+          },
+        ],
+        createdAt: "2026-02-24T08:02:00",
+      },
+    ],
+  },
+  {
+    id: "goal-driven",
+    label: "24/7 目标驱动",
+    description: "告知 AI 目标，每天帮你推进",
+    targetTopic: "global",
+    messages: [
+      {
+        id: "demo-gd-1",
+        topicId: "global",
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "我有一个目标：Build partnerships with 5 AI companies this quarter. 帮我推进。",
+          },
+        ],
+        createdAt: "2026-02-24T09:00:00",
+      },
+      {
+        id: "demo-gd-2",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "了解，我来帮你拆解并持续推进这个目标。\n\n当前进度：0 / 5 家合作伙伴\n截止日期：Q1 2026（剩余约 5 周）\n\n我的计划：\n1. 每天为你调研 1-2 家潜在合作 AI 公司的背景\n2. 起草 cold outreach 邮件，你确认后发送\n3. 跟踪每家公司的联络状态\n4. 每周一发送进度汇总",
+          },
+          {
+            type: "playbook_update",
+            playbookRule: {
+              id: "rule-partnership-goal",
+              description: "持续推进「5 家 AI 公司合作」目标，每日调研 + 邮件起草 + 状态跟踪",
+              trigger: "每日 · 目标驱动",
+            },
+          },
+        ],
+        createdAt: "2026-02-24T09:00:30",
+      },
+      {
+        id: "demo-gd-3",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "今日调研结果 — 推荐 2 家潜在合作公司：\n\n① Cohere — 企业级 LLM API 提供商\n- 与我们的客户群体重合度高（企业 SaaS）\n- 近期推出 RAG 产品线，与 Shadow 的会议准备功能有协同空间\n- 建议合作方向：联合方案（Shadow + Cohere RAG）\n- 联系人：VP of BD - Michael Zhang\n\n② LangChain — AI 开发框架公司\n- 开发者社区 10 万+，品牌影响力强\n- 有官方合作伙伴计划（Partner Program）\n- 建议合作方向：技术集成 + 联合案例\n- 联系人：Partnerships Lead - Sarah Kim",
+          },
+        ],
+        createdAt: "2026-02-24T09:01:00",
+      },
+      {
+        id: "demo-gd-4",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "我已经为 Cohere 起草了一封合作意向邮件：",
+          },
+          {
+            type: "email_preview",
+            email: {
+              to: "michael.zhang@cohere.com",
+              subject: "Partnership Opportunity — Shadow × Cohere",
+              body: "Hi Michael,\n\nI'm reaching out from Shadow, an AI-powered work assistant for knowledge workers. We're exploring partnerships with leading AI infrastructure companies, and Cohere's enterprise LLM platform is a natural fit.\n\nSpecifically, I see strong synergy between Shadow's meeting intelligence and Cohere's RAG capabilities — together, we could offer enterprise clients a seamless \"know before you meet\" experience.\n\nWould you be open to a 20-min call this week to explore?\n\nBest,\nSarah",
+            },
+          },
+          {
+            type: "action_buttons",
+            buttons: [
+              { label: "确认发送", action: "send_email" },
+              { label: "修改内容", action: "edit_email" },
+            ],
+          },
+        ],
+        createdAt: "2026-02-24T09:02:00",
+      },
+    ],
+  },
+  {
+    id: "inbox-mgmt",
+    label: "收件箱管理",
+    description: "自动识别重要邮件并起草回复",
+    targetTopic: "global",
+    messages: [
+      {
+        id: "demo-im-1",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "你有 3 封需要关注的未读邮件：",
+          },
+        ],
+        createdAt: "2026-02-24T09:30:00",
+      },
+      {
+        id: "demo-im-2",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "📩 重要邮件 #1 — 来自 TechVision CEO Tom\n\n主题：Re: Next Steps on AI Strategy\n\n概要：Tom 确认了下周三的董事会时间，希望在会前收到产品定位 Deck 的终稿。他特别提到竞品对比部分需要加上市场数据支撑。\n\n我已经准备好了回复草稿 ↓",
+          },
+          {
+            type: "email_preview",
+            email: {
+              to: "tom@techvision.com",
+              subject: "Re: Next Steps on AI Strategy",
+              body: "Hi Tom,\n\nThanks for confirming. We'll have the final deck ready by Monday, including updated competitive analysis with Q4 market data.\n\nI'll also prepare a one-page executive summary for the board.\n\nBest,\nSarah",
+            },
+          },
+          {
+            type: "action_buttons",
+            buttons: [
+              { label: "确认发送", action: "send_email" },
+              { label: "修改内容", action: "edit_email" },
+            ],
+          },
+        ],
+        createdAt: "2026-02-24T09:30:30",
+      },
+      {
+        id: "demo-im-3",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "📩 重要邮件 #2 — 来自 RetailMax CMO Lisa\n\n主题：Workshop Follow-up — Member Data Request\n\n概要：Lisa 请求提供上季度会员运营数据的完整报告，用于她下周的管理层汇报。她还问到了我们是否能支持实时数据看板。\n\n我已经准备好了回复草稿 ↓",
+          },
+          {
+            type: "email_preview",
+            email: {
+              to: "lisa@retailmax.com",
+              subject: "Re: Workshop Follow-up — Member Data Request",
+              body: "Hi Lisa,\n\nI'll send the Q4 member analytics report by tomorrow. It will include retention rates, engagement metrics, and cohort analysis.\n\nRegarding the real-time dashboard — yes, we can set that up. I'll prepare a demo for our next call.\n\nBest,\nSarah",
+            },
+          },
+          {
+            type: "action_buttons",
+            buttons: [
+              { label: "确认发送", action: "send_email" },
+              { label: "修改内容", action: "edit_email" },
+            ],
+          },
+        ],
+        createdAt: "2026-02-24T09:31:00",
+      },
+      {
+        id: "demo-im-4",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "📩 重要邮件 #3 — 来自投资人 David（Sequoia）\n\n主题：Quick Question on Revenue Model\n\n概要：David 问到了我们的收入模型细节，特别是 per-seat 定价和企业年费方案的区分。这封邮件标记了\"高优先级\"。\n\n⚡ 建议优先回复 — 投资人邮件的平均理想响应时间在 4 小时内。",
+          },
+          {
+            type: "action_buttons",
+            buttons: [
+              { label: "帮我起草回复", action: "draft_email" },
+              { label: "先看完整邮件", action: "view_proposal" },
+            ],
+          },
+        ],
+        createdAt: "2026-02-24T09:31:30",
+      },
+    ],
+  },
+  {
+    id: "smart-bookmark",
+    label: "智能收藏与灵感",
+    description: "收藏内容，AI 主动关联分析",
+    targetTopic: "global",
+    messages: [
+      {
+        id: "demo-sb-1",
+        topicId: "global",
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "https://hbr.org/2026/01/how-ai-agents-are-reshaping-enterprise-workflows",
+          },
+        ],
+        createdAt: "2026-02-23T14:00:00",
+      },
+      {
+        id: "demo-sb-2",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          { type: "status_update", text: "正在阅读文章内容...", statusIcon: "success" },
+          {
+            type: "text",
+            text: "已收藏。这篇 HBR 文章讨论了 AI Agent 如何改变企业工作流：\n\n核心观点：\n• 2026 年企业对 AI Agent 的采用率预计增长 300%\n• 最大价值不在「自动化」而在「预判」— 在人需要之前准备好信息\n• 风险：Agent 的「自主决策边界」尚未被企业清晰定义",
+          },
+        ],
+        createdAt: "2026-02-23T14:00:30",
+      },
+      {
+        id: "demo-sb-3",
+        topicId: "global",
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "https://a16z.com/ai-agent-market-map-2026/",
+          },
+        ],
+        createdAt: "2026-02-23T15:00:00",
+      },
+      {
+        id: "demo-sb-4",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          { type: "status_update", text: "正在阅读文章内容...", statusIcon: "success" },
+          {
+            type: "text",
+            text: "已收藏。a16z 的 AI Agent 市场全景图（2026 版）：\n\n核心信息：\n• 将 AI Agent 分为 5 大类：个人助手、销售、工程、客服、运营\n• 「AI Staff Engineer」和「AI Account Executive」是增长最快的两个方向\n• Shadow 所在的「AI Work Assistant」类别被列入「Ones to Watch」",
+          },
+        ],
+        createdAt: "2026-02-23T15:00:30",
+      },
+      {
+        id: "demo-sb-5",
+        topicId: "global",
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "https://twitter.com/sama/status/1892847562893",
+          },
+        ],
+        createdAt: "2026-02-23T20:00:00",
+      },
+      {
+        id: "demo-sb-6",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          { type: "status_update", text: "正在阅读内容...", statusIcon: "success" },
+          {
+            type: "text",
+            text: "已收藏。Sam Altman 的推文核心：\"The best AI products in 2026 won't be chatbots — they'll be agents that work alongside you, anticipating what you need before you ask.\"",
+          },
+        ],
+        createdAt: "2026-02-23T20:00:30",
+      },
+      {
+        id: "demo-sb-7",
+        topicId: "global",
+        role: "shadow",
+        content: [
+          {
+            type: "text",
+            text: "💡 基于你最近收藏的 3 篇内容，我发现了一些有趣的关联：\n\n趋势洞察：AI Agent 从「工具」到「同事」\n\n你收藏的内容指向同一个方向：2026 年市场正在从「AI 作为工具」转向「AI 作为协作者」。具体表现在：\n\n1. HBR 文章强调「预判」价值 → 这正是 Shadow 的核心能力（会前准备、风险预警）\n2. a16z 市场图把 Shadow 类产品列入「Ones to Watch」→ 市场认知正在建立\n3. Sam Altman 的表态与我们的产品方向高度一致 → 可用于融资叙事\n\n建议行动：\n• 把这个「从工具到同事」的叙事加入 Pitch Deck 的市场定位部分\n• 引用 HBR 数据（300% 增长率）作为 TAM 论据\n• a16z 的市场全景图可以放在竞品分析页",
+          },
+          {
+            type: "action_buttons",
+            buttons: [
+              { label: "更新 Pitch Deck", action: "draft_email" },
+              { label: "继续分析", action: "view_proposal" },
+            ],
+          },
+        ],
+        createdAt: "2026-02-24T08:00:00",
       },
     ],
   },

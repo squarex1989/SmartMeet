@@ -51,7 +51,7 @@ export interface MessageContent {
   docTitle?: string;
   pageCount?: number;
   buttons?: { label: string; action: string }[];
-  crmFields?: { name: string; from: string; to: string }[];
+  crmFields?: { name: string; from: string; to?: string; col3?: string }[];
   email?: { to: string; cc?: string; subject: string; body: string };
   quote?: { speaker: string; text: string };
   statusIcon?: "loading" | "success" | "error";

@@ -1,7 +1,97 @@
+import { Fragment } from "react";
 import { FileText, CheckCircle, Loader2, XCircle, Calendar, AlertTriangle, Info, Clock, Lightbulb, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ChatMessage, MessageContent } from "@/data/chat-messages";
 import { useAppStore } from "@/store/useAppStore";
+
+function InlineBold({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return <strong key={i} className="font-semibold">{part.slice(2, -2)}</strong>;
+        }
+        return <Fragment key={i}>{part}</Fragment>;
+      })}
+    </>
+  );
+}
+
+function MarkdownTable({ lines }: { lines: string[] }) {
+  const rows = lines.filter((l) => !l.match(/^\|[\s-:|]+\|$/));
+  const parsed = rows.map((r) =>
+    r.split("|").slice(1, -1).map((c) => c.trim())
+  );
+  if (parsed.length === 0) return null;
+  const [header, ...body] = parsed;
+  return (
+    <div className="overflow-x-auto my-1 text-xs">
+      <table className="min-w-full">
+        <thead>
+          <tr className="border-b border-border">
+            {header.map((h, i) => (
+              <th key={i} className="text-left py-1 pr-3 text-muted-foreground font-medium">
+                <InlineBold text={h} />
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {body.map((row, ri) => (
+            <tr key={ri} className="border-b border-border/50 last:border-0">
+              {row.map((cell, ci) => (
+                <td key={ci} className="py-1 pr-3">
+                  <InlineBold text={cell} />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function RichText({ text }: { text: string }) {
+  const lines = text.split("\n");
+  const blocks: { type: "text" | "table"; lines: string[] }[] = [];
+  let current: { type: "text" | "table"; lines: string[] } = { type: "text", lines: [] };
+
+  for (const line of lines) {
+    const isTableLine = line.trimStart().startsWith("|") && line.trimEnd().endsWith("|");
+    if (isTableLine) {
+      if (current.type !== "table") {
+        if (current.lines.length) blocks.push(current);
+        current = { type: "table", lines: [] };
+      }
+      current.lines.push(line);
+    } else {
+      if (current.type !== "text") {
+        if (current.lines.length) blocks.push(current);
+        current = { type: "text", lines: [] };
+      }
+      current.lines.push(line);
+    }
+  }
+  if (current.lines.length) blocks.push(current);
+
+  return (
+    <>
+      {blocks.map((block, i) => {
+        if (block.type === "table") {
+          return <MarkdownTable key={i} lines={block.lines} />;
+        }
+        const joined = block.lines.join("\n");
+        return (
+          <Fragment key={i}>
+            <InlineBold text={joined} />
+          </Fragment>
+        );
+      })}
+    </>
+  );
+}
 
 interface MessageBubbleProps {
   message: ChatMessage;
@@ -36,6 +126,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
               key={i}
               content={item}
               isUser={isUser}
+              topicId={message.topicId}
               onDocClick={handleDocClick}
               onTopicClick={setCurrentContext}
             />
@@ -46,19 +137,44 @@ export function MessageBubble({ message }: MessageBubbleProps) {
   );
 }
 
+const actionButtonResponses: Record<string, { userText: string; aiText: string }> = {
+  draft_email: {
+    userText: "帮我起草邮件",
+    aiText: "好的，我根据 CloudFlow 的沟通历史和续约情况起草了一封关怀邮件：",
+  },
+  view_proposal: {
+    userText: "先看续约提案",
+    aiText: "这是 CloudFlow 的续约提案概要：\n\n合同期限：2026.04 — 2027.04（12 个月）\n年费：$48,000（与去年持平）\n服务内容：全栈云部署 + 7×24 技术支持 + 季度业务回顾\n\n根据风险信号，我建议考虑以下调整：\n1. 赠送 1 个月免费服务期，释放善意\n2. 新增「自动化部署优化」作为增值服务\n3. SLA 从 99.5% 升级至 99.9%\n\n需要我按这个方向更新提案文档吗？",
+  },
+  send_email: {
+    userText: "确认发送",
+    aiText: "邮件已发送给 james.chen@cloudflow.io ✓\n\n我会持续关注 James 的回复情况，如果 48 小时内没有回复，会提醒你跟进。",
+  },
+  edit_email: {
+    userText: "修改内容",
+    aiText: "好的，请告诉我你想修改哪些内容？比如：\n\n- 调整语气（更正式 / 更轻松）\n- 修改会议时间建议\n- 增加或删除某些话题\n- 其他修改",
+  },
+};
+
 function ContentBlock({
   content,
   isUser,
+  topicId,
   onDocClick,
   onTopicClick,
 }: {
   content: MessageContent;
   isUser: boolean;
+  topicId: string;
   onDocClick: (docId: string) => void;
   onTopicClick: (topicId: string) => void;
 }) {
   if (content.type === "text" && content.text) {
-    return <p className="whitespace-pre-wrap text-sm">{content.text}</p>;
+    return (
+      <p className="whitespace-pre-wrap text-sm">
+        <RichText text={content.text} />
+      </p>
+    );
   }
 
   if (content.type === "meeting_list" && content.meetings) {
@@ -126,7 +242,7 @@ function ContentBlock({
     return (
       <div className={cn("flex items-start gap-2 rounded-lg border px-3 py-2.5 mt-1", borderColor, bgColor)}>
         <AlertIcon className={cn("h-4 w-4 mt-0.5 shrink-0", textColor)} />
-        <p className={cn("text-sm", textColor)}>{content.text}</p>
+        <p className={cn("text-sm", textColor)}><RichText text={content.text} /></p>
       </div>
     );
   }
@@ -185,14 +301,42 @@ function ContentBlock({
   }
 
   if (content.type === "action_buttons" && content.buttons) {
+    const handleActionClick = (action: string) => {
+      const resp = actionButtonResponses[action];
+      if (!resp) return;
+      const store = useAppStore.getState();
+      const now = new Date().toISOString();
+      const uid = `btn-${Date.now()}`;
+      store.injectMessages(topicId, [
+        {
+          id: `${uid}-u`,
+          topicId: topicId as never,
+          role: "user",
+          content: [{ type: "text", text: resp.userText }],
+          createdAt: now,
+        },
+        {
+          id: `${uid}-a`,
+          topicId: topicId as never,
+          role: "shadow",
+          content: [{ type: "text", text: resp.aiText }],
+          createdAt: new Date(Date.now() + 1000).toISOString(),
+        },
+      ]);
+    };
+
     return (
       <div className="flex flex-wrap gap-2">
         {content.buttons.map((b) => (
           <button
             key={b.action}
             type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleActionClick(b.action);
+            }}
             className={cn(
-              "text-xs px-2 py-1 rounded border shrink-0",
+              "text-xs px-2 py-1 rounded border shrink-0 transition-colors",
               isUser
                 ? "border-foreground/20 hover:bg-foreground/5"
                 : "border-border hover:bg-muted/80"
@@ -206,24 +350,24 @@ function ContentBlock({
   }
 
   if (content.type === "crm_preview" && content.crmFields) {
+    const hasCol3 = content.crmFields.some((f) => f.col3);
     return (
       <div className="text-xs overflow-x-auto">
         <table className="min-w-full">
-          <thead>
-            <tr className="border-b border-border">
-              <th className="text-left py-1 pr-2 text-muted-foreground">Field</th>
-              <th className="text-left py-1 pr-2 text-muted-foreground">from</th>
-              <th className="text-left py-1">to</th>
-            </tr>
-          </thead>
           <tbody>
-            {content.crmFields.map((f, i) => (
-              <tr key={i} className="border-b border-border/50 last:border-0">
-                <td className="py-1 pr-2 text-muted-foreground">{f.name}</td>
-                <td className="py-1 pr-2">{f.from}</td>
-                <td className="py-1">{f.to}</td>
-              </tr>
-            ))}
+            {content.crmFields.map((f, i) => {
+              const isHeader = !f.name;
+              const cellBase = "py-1.5 pr-3";
+              const headerStyle = "font-medium text-foreground";
+              return (
+                <tr key={i} className="border-b border-border/50 last:border-0">
+                  <td className={cn(cellBase, "text-muted-foreground whitespace-nowrap")}>{f.name}</td>
+                  <td className={cn(cellBase, isHeader && headerStyle)}>{f.from}</td>
+                  {f.to != null && <td className={cn(cellBase, isHeader && headerStyle)}>{f.to}</td>}
+                  {hasCol3 && <td className={cn(cellBase, isHeader && headerStyle)}>{f.col3 || ""}</td>}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
