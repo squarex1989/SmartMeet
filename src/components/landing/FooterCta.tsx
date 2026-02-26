@@ -8,7 +8,7 @@ export function FooterCta() {
           Stop managing tasks. Start reviewing outcomes.
         </h2>
         <Link
-          href="/app/onboarding"
+          href="/app"
           className="interactive-base mt-6 inline-block rounded-md bg-accent px-6 py-3 text-sm font-medium text-accent-foreground hover:bg-accent/90"
         >
           Try Shadow

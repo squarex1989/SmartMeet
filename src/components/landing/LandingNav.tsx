@@ -19,7 +19,7 @@ export function LandingNav() {
             <Link href="/app" className="interactive-base text-sm text-muted-foreground hover:text-foreground">Log in</Link>
           </div>
           <Link
-            href="/app/onboarding"
+            href="/app"
             className="interactive-base rounded-md bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent/90 shrink-0"
           >
             Get started

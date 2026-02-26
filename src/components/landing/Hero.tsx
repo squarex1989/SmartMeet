@@ -11,13 +11,13 @@ export function Hero() {
           Shadow observes your meetings, drafts your follow-ups, updates your CRM, and learns how you operate.
         </p>
         <Link
-          href="/app/onboarding"
+          href="/app"
           className="interactive-base mt-8 md:mt-10 inline-block rounded-md bg-accent px-6 py-3 text-sm font-medium text-accent-foreground hover:bg-accent/90"
         >
           Try Shadow
         </Link>
         <p className="mt-4 text-sm text-muted-foreground">
-          Connect your calendar and see it in action
+          See it in action — no setup needed
         </p>
       </div>
 

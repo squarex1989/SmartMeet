@@ -28,7 +28,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
         <div
           className={cn(
             "rounded-lg px-3 py-2 space-y-2",
-            isUser ? "bg-foreground text-background" : "bg-muted"
+            isUser ? "bg-[#bccefb] text-foreground" : "bg-muted"
           )}
         >
           {message.content.map((item, i) => (
@@ -167,7 +167,7 @@ function ContentBlock({
         className={cn(
           "flex items-center gap-2 p-2 rounded border text-left w-full transition-colors",
           isUser
-            ? "border-white/30 hover:bg-white/10"
+            ? "border-foreground/20 hover:bg-foreground/5"
             : "border-border hover:bg-muted/80 bg-background"
         )}
       >
@@ -194,7 +194,7 @@ function ContentBlock({
             className={cn(
               "text-xs px-2 py-1 rounded border shrink-0",
               isUser
-                ? "border-white/30 hover:bg-white/10"
+                ? "border-foreground/20 hover:bg-foreground/5"
                 : "border-border hover:bg-muted/80"
             )}
           >

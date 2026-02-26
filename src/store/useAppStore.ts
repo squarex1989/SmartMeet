@@ -5,6 +5,7 @@ import type { ChatMessage } from "@/data/chat-messages";
 export type MainView = "command-room" | "calendar" | "docs" | "automations";
 export type CommandRoomOverlay = null | "review" | "insights" | "automations";
 export type CalendarRange = "day" | "week";
+export type DemoScenario = "pre-meeting" | "custom-workflow" | "task-identify" | "risk-alert" | "qa-task" | null;
 
 interface AppState {
   // Top-level view (controls entire layout below TopBar)
@@ -71,6 +72,10 @@ interface AppState {
   setTourStep: (n: number) => void;
   setShowTourHint: (v: boolean) => void;
 
+  // Demo scenario
+  activeScenario: DemoScenario;
+  setActiveScenario: (s: DemoScenario) => void;
+
   // Dynamic chat messages injected by interactions
   injectedMessages: Record<string, ChatMessage[]>;
   injectMessages: (topicId: string, messages: ChatMessage[]) => void;
@@ -104,6 +109,7 @@ const defaultState = {
   tourActive: false,
   tourStep: 0,
   showTourHint: false,
+  activeScenario: null as DemoScenario,
   injectedMessages: {} as Record<string, ChatMessage[]>,
   reviewItemStatuses: {} as Record<string, string>,
 };
@@ -151,6 +157,8 @@ export const useAppStore = create<AppState>((set) => ({
   setTourActive: (v) => set({ tourActive: v, tourStep: 0 }),
   setTourStep: (n) => set({ tourStep: n }),
   setShowTourHint: (v) => set({ showTourHint: v }),
+
+  setActiveScenario: (s) => set({ activeScenario: s }),
 
   injectMessages: (topicId, messages) =>
     set((s) => ({
