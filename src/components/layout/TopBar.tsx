@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { MessageSquare, Calendar, Layers, Settings, Menu, Zap, PanelRight, Play, ChevronDown, Check } from "lucide-react";
+import { MessageSquare, Calendar, Layers, Settings, Menu, Zap, PanelRight, Play, ChevronDown, Check, X } from "lucide-react";
 import { useAppStore, type MainView } from "@/store/useAppStore";
 import { demoScenarios } from "@/data/demo-scenarios";
 import { cn } from "@/lib/utils";
@@ -14,9 +14,27 @@ const views: { view: MainView; label: string; icon: React.ElementType }[] = [
   { view: "automations", label: "Playbook", icon: Zap },
 ];
 
+const DEMO_GUIDE_KEY = "shadow-demo-guide-dismissed";
+
 function DemoDropdown() {
   const [open, setOpen] = useState(false);
+  const [guideVisible, setGuideVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    try {
+      setGuideVisible(!localStorage.getItem(DEMO_GUIDE_KEY));
+    } catch {
+      setGuideVisible(true);
+    }
+  }, []);
+
+  const dismissGuide = () => {
+    setGuideVisible(false);
+    try {
+      localStorage.setItem(DEMO_GUIDE_KEY, "1");
+    } catch {}
+  };
   const activeScenario = useAppStore((s) => s.activeScenario);
   const setActiveScenario = useAppStore((s) => s.setActiveScenario);
   const setCurrentContext = useAppStore((s) => s.setCurrentContext);
@@ -54,6 +72,19 @@ function DemoDropdown() {
 
   return (
     <div ref={ref} className="relative">
+      {guideVisible && (
+        <div className="absolute right-0 bottom-full mb-2 z-[60] flex items-center gap-2 rounded-xl border border-border bg-background shadow-lg px-3 py-2 min-w-[160px]">
+          <span className="text-xs text-muted-foreground flex-1">点击这里切换演示场景</span>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); dismissGuide(); }}
+            className="shrink-0 p-0.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-surface-2 transition-colors"
+            aria-label="关闭"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      )}
       <button
         type="button"
         onClick={() => setOpen(!open)}
