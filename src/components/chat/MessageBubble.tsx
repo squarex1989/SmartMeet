@@ -119,7 +119,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
           className={cn(
             "rounded-2xl px-4 py-3 space-y-2",
             isUser
-              ? "bg-foreground text-background rounded-br-md"
+              ? "bg-accent/15 text-foreground rounded-br-md"
               : "bg-surface-2 text-foreground rounded-bl-md"
           )}
         >
@@ -285,7 +285,7 @@ function ContentBlock({
         className={cn(
           "flex items-center gap-2.5 p-3 rounded-xl border text-left w-full transition-colors",
           isUser
-            ? "border-background/20 hover:bg-background/10"
+            ? "border-accent/20 hover:bg-accent/10"
             : "border-border hover:bg-background bg-background/50"
         )}
       >
@@ -340,7 +340,7 @@ function ContentBlock({
             className={cn(
               "text-xs px-3 py-1.5 rounded-lg border shrink-0 transition-colors font-medium",
               isUser
-                ? "border-background/20 hover:bg-background/10"
+                ? "border-accent/20 hover:bg-accent/10"
                 : "border-border hover:bg-background bg-background/50"
             )}
           >
