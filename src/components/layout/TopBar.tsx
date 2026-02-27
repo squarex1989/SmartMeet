@@ -73,16 +73,17 @@ function DemoDropdown() {
   return (
     <div ref={ref} className="relative">
       {guideVisible && (
-        <div className="absolute right-0 bottom-full mb-2 z-[60] flex items-center gap-2 rounded-xl border border-border bg-background shadow-lg px-3 py-2 min-w-[160px]">
-          <span className="text-xs text-muted-foreground flex-1">点击这里切换演示场景</span>
+        <div className="absolute right-full mr-2 top-1/2 -translate-y-1/2 z-[60] flex items-center gap-2 rounded-xl bg-foreground text-background shadow-lg px-3 py-2 min-w-[140px]">
+          <span className="text-xs flex-1">点击这里切换演示场景</span>
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); dismissGuide(); }}
-            className="shrink-0 p-0.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-surface-2 transition-colors"
+            className="shrink-0 p-0.5 rounded-md text-background/70 hover:text-background transition-colors"
             aria-label="关闭"
           >
             <X className="h-3.5 w-3.5" />
           </button>
+          <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 rotate-45 bg-foreground" />
         </div>
       )}
       <button
