@@ -119,7 +119,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
           className={cn(
             "rounded-2xl px-4 py-3 space-y-2",
             isUser
-              ? "bg-accent/15 text-foreground rounded-br-md"
+              ? "bg-[#EDE9FE] text-foreground rounded-br-md"
               : "bg-surface-2 text-foreground rounded-bl-md"
           )}
         >
