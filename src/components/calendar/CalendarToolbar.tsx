@@ -22,7 +22,7 @@ export function CalendarToolbar() {
       <button
         type="button"
         onClick={() => setCalendarDate(shiftDate(calendarDate, -1))}
-        className="interactive-base flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-surface-2"
+        className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-surface-2"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -31,7 +31,7 @@ export function CalendarToolbar() {
           type="date"
           value={calendarDate}
           onChange={(e) => setCalendarDate(e.target.value)}
-          className="interactive-subtle w-full rounded-lg border border-border bg-surface-1 px-3 py-2 text-sm font-medium text-transparent focus:outline-none focus:ring-2 focus:ring-accent/20 [&::-webkit-calendar-picker-indicator]:opacity-0"
+          className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm font-medium text-transparent focus:outline-none focus:ring-2 focus:ring-accent/20 [&::-webkit-calendar-picker-indicator]:opacity-0"
         />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-3">
           <span className="text-sm font-medium">{formatDisplay(calendarDate)}</span>
@@ -41,7 +41,7 @@ export function CalendarToolbar() {
       <button
         type="button"
         onClick={() => setCalendarDate(shiftDate(calendarDate, 1))}
-        className="interactive-base flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-surface-2"
+        className="flex h-8 w-8 items-center justify-center rounded-md border border-border hover:bg-surface-2"
       >
         <ChevronRight className="h-4 w-4" />
       </button>

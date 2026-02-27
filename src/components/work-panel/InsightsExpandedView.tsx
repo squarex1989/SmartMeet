@@ -45,7 +45,7 @@ function InsightCard({ insight }: { insight: Insight }) {
   };
 
   return (
-    <div className="interactive-subtle rounded-lg bg-surface-1 px-3 py-2.5 hover:bg-surface-2 transition-colors">
+    <div className="rounded-xl bg-background px-3 py-2.5 hover:bg-surface-2 transition-colors">
       <div className="flex items-start gap-2.5">
         <span
           className={cn(
@@ -109,7 +109,7 @@ export function InsightsExpandedView() {
     <div className="flex h-full w-full flex-col overflow-hidden bg-background">
       <button
         onClick={() => setCommandRoomOverlay(null)}
-        className="interactive-base flex shrink-0 items-center gap-2 px-4 py-3 text-sm text-muted-foreground hover:text-foreground"
+        className="flex shrink-0 items-center gap-2 px-4 py-3 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Chat

@@ -227,7 +227,7 @@ export function NewTopicDialog({ open, onClose }: NewTopicDialogProps) {
         onClick={onClose}
       />
       <div
-        className="relative w-full max-w-md mx-4 flex flex-col rounded-xl border border-border bg-background shadow-xl overflow-hidden"
+        className="relative w-full max-w-md mx-4 flex flex-col rounded-xl border border-border bg-background shadow-lg overflow-hidden"
         style={{ maxHeight: "75vh" }}
       >
         <header className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
@@ -235,7 +235,7 @@ export function NewTopicDialog({ open, onClose }: NewTopicDialogProps) {
           <button
             type="button"
             onClick={onClose}
-            className="interactive-base rounded-md p-1 text-muted-foreground hover:text-foreground"
+            className="rounded-md p-1 text-muted-foreground hover:text-foreground"
           >
             <X className="h-4 w-4" />
           </button>
@@ -255,7 +255,7 @@ export function NewTopicDialog({ open, onClose }: NewTopicDialogProps) {
             >
               <div
                 className={cn(
-                  "max-w-[85%] rounded-lg px-3 py-2 text-sm whitespace-pre-wrap",
+                  "max-w-[85%] rounded-xl px-3 py-2 text-sm whitespace-pre-wrap",
                   msg.role === "user"
                     ? "bg-foreground text-background"
                     : "bg-muted text-foreground"
@@ -280,10 +280,10 @@ export function NewTopicDialog({ open, onClose }: NewTopicDialogProps) {
                       type="button"
                       onClick={() => toggleTag(tag.id)}
                       className={cn(
-                        "interactive-base inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+                        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
                         selected
                           ? "border-transparent text-white"
-                          : "border-border bg-surface-1 text-foreground hover:bg-surface-2"
+                          : "border-border bg-background text-foreground hover:bg-surface-2"
                       )}
                       style={
                         selected
@@ -303,13 +303,13 @@ export function NewTopicDialog({ open, onClose }: NewTopicDialogProps) {
                       setShowNewTagInput(true);
                       setTimeout(() => tagInputRef.current?.focus(), 50);
                     }}
-                    className="interactive-base inline-flex items-center gap-1 rounded-full border border-dashed border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:border-foreground/30"
+                    className="inline-flex items-center gap-1 rounded-full border border-dashed border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:border-foreground/30"
                   >
                     <Plus className="h-3 w-3" />
                     新建标签
                   </button>
                 ) : (
-                  <div className="inline-flex items-center gap-1 rounded-full border border-accent/40 bg-surface-1 px-2 py-1">
+                  <div className="inline-flex items-center gap-1 rounded-full border border-accent/40 bg-background px-2 py-1">
                     <input
                       ref={tagInputRef}
                       type="text"
@@ -323,7 +323,7 @@ export function NewTopicDialog({ open, onClose }: NewTopicDialogProps) {
                       type="button"
                       onClick={handleCreateTag}
                       disabled={!newTagInput.trim()}
-                      className="interactive-base rounded-full p-0.5 text-accent disabled:opacity-40"
+                      className="rounded-full p-0.5 text-accent disabled:opacity-40"
                     >
                       <Check className="h-3 w-3" />
                     </button>
@@ -333,7 +333,7 @@ export function NewTopicDialog({ open, onClose }: NewTopicDialogProps) {
               <button
                 type="button"
                 onClick={handleConfirmTags}
-                className="interactive-base w-full rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent/90"
+                className="w-full rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground hover:bg-accent/90"
               >
                 继续
               </button>
@@ -350,13 +350,13 @@ export function NewTopicDialog({ open, onClose }: NewTopicDialogProps) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 rounded-md border border-border bg-surface-1 px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-accent/40 interactive-subtle"
+              className="flex-1 rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-accent/40"
             />
             <button
               type="button"
               onClick={handleSend}
               disabled={!input.trim()}
-              className="interactive-base flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground disabled:opacity-40"
+              className="flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground disabled:opacity-40"
             >
               <SendHorizontal className="h-4 w-4" />
             </button>

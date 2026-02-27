@@ -25,11 +25,11 @@ function Section({
   const [open, setOpen] = useState(defaultOpen);
 
   return (
-    <div>
+    <div className="mb-1">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center gap-2 py-2.5 text-left text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+        className="flex w-full items-center gap-2 py-3 text-left text-sm font-semibold text-foreground/80 hover:text-foreground transition-colors"
       >
         {open ? (
           <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground" />
@@ -38,12 +38,12 @@ function Section({
         )}
         <span>{title}</span>
         {count > 0 && (
-          <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+          <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
             {count}
           </span>
         )}
       </button>
-      {open && <div className="pb-2 space-y-2">{children}</div>}
+      {open && <div className="pb-3 space-y-2">{children}</div>}
     </div>
   );
 }
@@ -77,10 +77,10 @@ export function WorkPanel() {
 
   return (
     <div className="flex h-full w-full flex-col border-l border-border bg-background overflow-y-auto">
-      <div className="flex-1 px-4 pt-2">
+      <div className="flex-1 px-5 pt-3">
         <Section title="Prepared for you" count={pendingItems.length}>
           {pendingItems.length === 0 ? (
-            <p className="text-xs text-muted-foreground py-1">All clear — nothing to review.</p>
+            <p className="text-xs text-muted-foreground py-2">All clear — nothing to review.</p>
           ) : (
             pendingItems.map((item) => (
               <ReviewCard
@@ -94,7 +94,7 @@ export function WorkPanel() {
 
         <Section title="Your follow-ups" count={todoItems.length}>
           {todoItems.length === 0 ? (
-            <p className="text-xs text-muted-foreground py-1">No follow-ups right now.</p>
+            <p className="text-xs text-muted-foreground py-2">No follow-ups right now.</p>
           ) : (
             todoItems.map((item) => (
               <TodoCard
@@ -108,7 +108,7 @@ export function WorkPanel() {
 
         <Section title="Need your attention" count={attentionCount}>
           {attentionCount === 0 ? (
-            <p className="text-xs text-muted-foreground py-1">Nothing needs attention right now.</p>
+            <p className="text-xs text-muted-foreground py-2">Nothing needs attention right now.</p>
           ) : (
             decisionItems.map((item) => (
               <DecisionCard
@@ -126,10 +126,10 @@ export function WorkPanel() {
       </div>
 
       {doneCount > 0 && (
-        <div className="shrink-0 border-t border-border px-4 py-3">
+        <div className="shrink-0 border-t border-border px-5 py-3">
           <button
             type="button"
-            className="interactive-base text-xs text-muted-foreground hover:text-accent"
+            className="text-xs text-muted-foreground hover:text-accent transition-colors"
           >
             已完成 {doneCount} 项 · 查看历史 →
           </button>

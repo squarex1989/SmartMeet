@@ -44,7 +44,7 @@ function Sidebar() {
             placeholder="Search docs..."
             value={docSearchQuery}
             onChange={(e) => setDocSearchQuery(e.target.value)}
-            className="interactive-subtle w-full pl-9 pr-3 py-2 text-sm rounded-md border border-border bg-surface-1 focus:outline-none focus:ring-2 focus:ring-accent/20"
+            className="w-full pl-9 pr-3 py-2 text-sm rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-accent/20"
           />
         </div>
       </div>
@@ -57,7 +57,7 @@ function Sidebar() {
               type="button"
               onClick={() => setDocTypeFilter(value)}
               className={cn(
-                "interactive-subtle px-2 py-1 text-xs rounded-md",
+                "px-2 py-1 text-xs rounded-md",
                 docTypeFilter === value
                   ? "bg-accent text-accent-foreground"
                   : "bg-surface-2 text-muted-foreground hover:bg-surface-3"
@@ -116,7 +116,7 @@ export function DocsView() {
               <button
                 type="button"
                 onClick={() => setOpenDocumentId(null)}
-                className="interactive-base flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
               >
                 <ArrowLeft className="h-4 w-4" />
                 返回文档
@@ -134,7 +134,7 @@ export function DocsView() {
                 type="button"
                 onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
                 className={cn(
-                  "interactive-base flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs",
+                  "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs",
                   mobileFiltersOpen
                     ? "bg-accent/15 text-accent"
                     : "text-muted-foreground hover:text-foreground"
@@ -145,7 +145,7 @@ export function DocsView() {
               </button>
             </div>
             {mobileFiltersOpen && (
-              <div className="shrink-0 border-b border-border bg-surface-1 max-h-[50vh] overflow-auto flex flex-col">
+              <div className="shrink-0 border-b border-border bg-background max-h-[50vh] overflow-auto flex flex-col">
                 <Sidebar />
               </div>
             )}

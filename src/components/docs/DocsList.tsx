@@ -97,7 +97,7 @@ function DocCard({
     <button
       type="button"
       onClick={onSelect}
-      className="interactive-subtle w-full text-left p-4 rounded-lg border border-border bg-surface-1 hover:bg-surface-2 hover:border-accent/20"
+      className="w-full text-left p-4 rounded-xl border border-border bg-background hover:bg-surface-2 hover:border-accent/20"
     >
       <div className="font-semibold text-foreground mb-2">{doc.title}</div>
       <div className="flex flex-wrap items-center gap-2 mb-2">

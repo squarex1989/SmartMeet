@@ -115,7 +115,7 @@ export function EventDetail({ event }: EventDetailProps) {
             <button
               type="button"
               onClick={() => toast("会议室功能即将上线")}
-              className="interactive-base inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-accent text-accent-foreground hover:bg-accent/90"
+              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium bg-accent text-accent-foreground hover:bg-accent/90"
             >
               <Video className="h-4 w-4" />
               加入会议
@@ -124,7 +124,7 @@ export function EventDetail({ event }: EventDetailProps) {
           {status === "past" && (
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium border border-border hover:bg-muted"
+              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium border border-border hover:bg-muted"
             >
               <VideoOff className="h-4 w-4" />
               View Recording
@@ -143,7 +143,7 @@ export function EventDetail({ event }: EventDetailProps) {
                 <button
                   type="button"
                   onClick={() => handleNotesClick(event.outcome!.summaryDocId!)}
-                  className="flex items-center gap-3 p-3 rounded-lg border border-border bg-background hover:bg-muted text-left w-full"
+                  className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background hover:bg-muted text-left w-full"
                 >
                   <FileText className="h-5 w-5 text-muted-foreground shrink-0" />
                   <span className="font-medium">{doc.title}</span>
@@ -151,13 +151,13 @@ export function EventDetail({ event }: EventDetailProps) {
               ) : null;
             })()}
             {event.outcome.crmUpdated && (
-              <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-background">
+              <div className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background">
                 <Database className="h-5 w-5 text-muted-foreground shrink-0" />
                 <span className="text-sm font-medium">CRM Updated</span>
               </div>
             )}
             {event.outcome.emailSent && (
-              <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-background">
+              <div className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background">
                 <Mail className="h-5 w-5 text-muted-foreground shrink-0" />
                 <span className="text-sm">
                   Email sent to {event.outcome.emailSent.to}, subject:{" "}
@@ -195,13 +195,13 @@ export function EventDetail({ event }: EventDetailProps) {
                 <button
                   type="button"
                   onClick={() => handleAgendaClick(event.prep!.agendaDocId!)}
-                  className="flex items-center gap-3 p-3 rounded-lg border border-border bg-background hover:bg-muted text-left w-full"
+                  className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background hover:bg-muted text-left w-full"
                 >
                   <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
                   <span className="font-medium">Agenda: {doc.title}</span>
                 </button>
               ) : (
-                <div className="flex items-center gap-3 p-3 rounded-lg border border-border bg-background">
+                <div className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background">
                   <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
                   <span className="font-medium">Agenda</span>
                 </div>
@@ -269,7 +269,7 @@ function FollowUpTaskItem({
         : "Done";
 
   return (
-    <li className="flex items-center justify-between gap-3 py-2 px-3 rounded-lg border border-border bg-background">
+    <li className="flex items-center justify-between gap-3 py-2 px-3 rounded-xl border border-border bg-background">
       <div className="flex items-center gap-2 min-w-0">
         {doc ? (
           <button

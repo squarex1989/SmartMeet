@@ -81,13 +81,13 @@ function CommandRoomView() {
 
           <div
             className="shrink-0 relative group cursor-col-resize select-none"
-            style={{ width: 4 }}
+            style={{ width: 1 }}
             onMouseDown={handleMouseDown}
             role="separator"
             aria-orientation="vertical"
           >
-            <div className="absolute inset-y-0 -left-1.5 -right-1.5 group-hover:bg-accent/10 transition-colors rounded" />
-            <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-border group-hover:bg-accent/40 transition-colors" />
+            <div className="absolute inset-y-0 -left-2 -right-2 group-hover:bg-accent/5 transition-colors" />
+            <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-border" />
           </div>
 
           <div

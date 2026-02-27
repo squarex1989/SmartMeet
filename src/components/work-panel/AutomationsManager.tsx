@@ -32,23 +32,23 @@ function AutomationCard({ rule }: { rule: Automation }) {
     rule.scope !== "global" ? getTopicById(rule.scope as TopicId) : null;
   return (
     <div
-      className="rounded-lg border border-border bg-surface-1 hover:border-accent/20 transition-colors cursor-pointer"
+      className="rounded-xl border border-border bg-background hover:border-accent/20 transition-colors cursor-pointer"
       onClick={() => setExpanded(!expanded)}
     >
       <div className="flex items-start gap-3 p-4">
         <div className="flex-1 min-w-0">
           <p className="text-sm">{rule.description}</p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            <span className="rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
+            <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs text-muted-foreground">
               {rule.trigger}
             </span>
             {topic && (
-              <span className="rounded border border-border px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs text-muted-foreground">
                 {topic.name}
               </span>
             )}
             {rule.requiresReview && (
-              <span className="rounded bg-status-pending/20 px-2 py-0.5 text-xs text-status-pending">
+              <span className="rounded-full bg-amber-50 px-2 py-0.5 text-xs text-amber-600">
                 Review required
               </span>
             )}
@@ -188,7 +188,7 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
           )}
         </div>
         <button
-          className="interactive-base mt-4 w-full rounded-md border border-dashed border-border py-3 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground hover:border-accent/30"
+          className="mt-4 w-full rounded-xl border border-dashed border-border py-3 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground hover:border-accent/30 transition-colors"
           type="button"
         >
           + Add Playbook Rule

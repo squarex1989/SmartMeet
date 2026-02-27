@@ -33,7 +33,6 @@ function DemoDropdown() {
 
   const handleSelect = (scenario: (typeof demoScenarios)[number]) => {
     setActiveScenario(scenario.id);
-    // Clear previously injected scenario messages then inject new ones
     const store = useAppStore.getState();
     const cleared: Record<string, never[]> = {};
     for (const key of Object.keys(store.injectedMessages)) {
@@ -59,10 +58,10 @@ function DemoDropdown() {
         type="button"
         onClick={() => setOpen(!open)}
         className={cn(
-          "interactive-base flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium border transition-colors",
+          "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium border transition-colors",
           activeScenario
-            ? "border-accent/40 bg-accent/10 text-accent"
-            : "border-border bg-surface-2 text-muted-foreground hover:text-foreground hover:border-accent/30"
+            ? "border-accent/30 bg-accent/8 text-accent"
+            : "border-border bg-surface-2 text-muted-foreground hover:text-foreground hover:border-accent/20"
         )}
       >
         <Play className="h-3 w-3" />
@@ -70,10 +69,10 @@ function DemoDropdown() {
         <ChevronDown className={cn("h-3 w-3 transition-transform", open && "rotate-180")} />
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-2 z-50 w-72 rounded-lg border border-border bg-background shadow-lg overflow-hidden">
-          <div className="px-3 py-2 border-b border-border">
+        <div className="absolute right-0 top-full mt-2 z-50 w-72 rounded-xl border border-border bg-background shadow-lg overflow-hidden">
+          <div className="px-4 py-3 border-b border-border">
             <p className="text-xs font-semibold text-foreground">Hero Scenarios</p>
-            <p className="text-[10px] text-muted-foreground mt-0.5">选择要演示的场景</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">选择要演示的场景</p>
           </div>
           <div className="py-1">
             {demoScenarios.map((scenario) => (
@@ -82,16 +81,16 @@ function DemoDropdown() {
                 type="button"
                 onClick={() => handleSelect(scenario)}
                 className={cn(
-                  "flex w-full items-start gap-2.5 px-3 py-2.5 text-left hover:bg-muted/50 transition-colors",
+                  "flex w-full items-start gap-3 px-4 py-3 text-left hover:bg-surface-2 transition-colors",
                   activeScenario === scenario.id && "bg-accent/5"
                 )}
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-medium">{scenario.label}</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{scenario.description}</p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">{scenario.description}</p>
                 </div>
                 {activeScenario === scenario.id && (
-                  <Check className="h-3.5 w-3.5 shrink-0 text-accent mt-0.5" />
+                  <Check className="h-4 w-4 shrink-0 text-accent mt-0.5" />
                 )}
               </button>
             ))}
@@ -111,23 +110,23 @@ export function TopBar() {
   const setMobileWorkPanelOpen = useAppStore((s) => s.setMobileWorkPanelOpen);
 
   return (
-    <nav className="flex h-14 items-center bg-surface-2 text-foreground border-b border-border shrink-0">
-      <div className="flex items-center gap-1 sm:gap-4 px-2 sm:px-4 w-full">
+    <nav className="flex h-14 items-center bg-background border-b border-border shrink-0">
+      <div className="flex items-center gap-2 sm:gap-4 px-3 sm:px-5 w-full">
         <button
           type="button"
           onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
-          className="interactive-base md:hidden p-2 -ml-1 text-muted-foreground hover:text-foreground"
+          className="md:hidden p-2 -ml-1 text-muted-foreground hover:text-foreground rounded-lg transition-colors"
           aria-label="Toggle sidebar"
         >
           <Menu className="h-5 w-5" />
         </button>
         <Link
           href="/"
-          className="interactive-base font-semibold tracking-tight shrink-0 text-foreground hover:text-accent hidden sm:block"
+          className="font-semibold tracking-tight shrink-0 text-foreground hover:text-accent transition-colors hidden sm:block"
         >
           Shadow
         </Link>
-        <div className="flex items-center gap-0.5 sm:gap-1 flex-1 min-w-0">
+        <div className="flex items-center gap-1 flex-1 min-w-0 ml-2">
           {views.map(({ view, label, icon: Icon }) => (
             <button
               key={view}
@@ -135,10 +134,10 @@ export function TopBar() {
               data-tour-id={`tour-view-${view}`}
               onClick={() => setMainView(view)}
               className={cn(
-                "interactive-base flex items-center gap-1.5 rounded-md px-2 sm:px-3 py-2 text-sm font-medium shrink-0",
+                "flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium shrink-0 transition-colors",
                 mainView === view
-                  ? "bg-accent/15 text-accent"
-                  : "text-muted-foreground hover:text-foreground hover:bg-surface-3"
+                  ? "bg-accent/10 text-accent"
+                  : "text-muted-foreground hover:text-foreground hover:bg-surface-2"
               )}
             >
               <Icon className="h-4 w-4" />
@@ -146,13 +145,13 @@ export function TopBar() {
             </button>
           ))}
         </div>
-        <div className="ml-auto flex items-center gap-1 sm:gap-2 shrink-0">
+        <div className="ml-auto flex items-center gap-2 shrink-0">
           <DemoDropdown />
           {mainView === "command-room" && (
             <button
               type="button"
               onClick={() => setMobileWorkPanelOpen(!mobileWorkPanelOpen)}
-              className="interactive-base lg:hidden p-2 text-muted-foreground hover:text-foreground hover:bg-surface-3 rounded-md"
+              className="lg:hidden p-2 text-muted-foreground hover:text-foreground hover:bg-surface-2 rounded-lg transition-colors"
               aria-label="Toggle work panel"
             >
               <PanelRight className="h-4 w-4" />
@@ -160,18 +159,14 @@ export function TopBar() {
           )}
           <button
             type="button"
-            className="interactive-base p-2 text-muted-foreground hover:text-foreground hover:bg-surface-3 rounded-md"
+            className="p-2 text-muted-foreground hover:text-foreground hover:bg-surface-2 rounded-lg transition-colors"
             aria-label="Settings"
           >
             <Settings className="h-4 w-4" />
           </button>
-          <button
-            type="button"
-            className="interactive-base flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground text-sm font-semibold ring-1 ring-border hover:ring-accent/40"
-            aria-label="User avatar"
-          >
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-accent text-sm font-semibold">
             S
-          </button>
+          </div>
         </div>
       </div>
     </nav>

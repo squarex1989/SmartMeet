@@ -42,7 +42,7 @@ export function DocEditor() {
         <button
           type="button"
           onClick={() => setOpenDocumentId(null)}
-          className="interactive-base p-2 -ml-1 rounded-md hover:bg-surface-2 text-muted-foreground hover:text-foreground hidden md:flex"
+          className="p-2 -ml-1 rounded-md hover:bg-surface-2 text-muted-foreground hover:text-foreground hidden md:flex"
           aria-label="Back to docs"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -51,7 +51,7 @@ export function DocEditor() {
           <button
             type="button"
             onClick={() => setOpenDocumentId(null)}
-            className="interactive-base hover:text-accent hidden md:inline"
+            className="hover:text-accent hidden md:inline"
           >
             Docs
           </button>
@@ -65,10 +65,10 @@ export function DocEditor() {
               type="button"
               onClick={() => setMode("view")}
               className={cn(
-                "interactive-subtle px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm",
+                "px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm",
                 mode === "view"
                   ? "bg-accent text-accent-foreground"
-                  : "bg-surface-1 text-muted-foreground hover:bg-surface-2"
+                  : "bg-background text-muted-foreground hover:bg-surface-2"
               )}
             >
               View
@@ -77,10 +77,10 @@ export function DocEditor() {
               type="button"
               onClick={() => setMode("edit")}
               className={cn(
-                "interactive-subtle px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm",
+                "px-2.5 sm:px-3 py-1.5 text-xs sm:text-sm",
                 mode === "edit"
                   ? "bg-accent text-accent-foreground"
-                  : "bg-surface-1 text-muted-foreground hover:bg-surface-2"
+                  : "bg-background text-muted-foreground hover:bg-surface-2"
               )}
             >
               Edit
@@ -100,7 +100,7 @@ export function DocEditor() {
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="interactive-subtle w-full h-full min-h-[400px] p-4 font-mono text-sm rounded-md border border-border bg-surface-1 resize-none focus:outline-none focus:ring-2 focus:ring-accent/20"
+            className="w-full h-full min-h-[400px] p-4 font-mono text-sm rounded-md border border-border bg-background resize-none focus:outline-none focus:ring-2 focus:ring-accent/20"
           />
         )}
       </div>

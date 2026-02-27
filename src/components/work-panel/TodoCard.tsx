@@ -52,31 +52,31 @@ export function TodoCard({ item, showTopic }: TodoCardProps) {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-surface-1 p-3">
-      <div className="flex items-start gap-2">
+    <div className="rounded-xl border border-border bg-background p-3.5">
+      <div className="flex items-start gap-3">
         <CircleDot className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground" />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-sm">{item.title}</span>
             {topic && (
-              <span className="rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
+              <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground">
                 {topic.name}
               </span>
             )}
           </div>
-          <p className="mt-0.5 truncate text-xs text-muted-foreground">{item.summary}</p>
+          <p className="mt-1 truncate text-xs text-muted-foreground leading-relaxed">{item.summary}</p>
           {item.dueDate && (
-            <p className="mt-1 text-[10px] text-muted-foreground">
+            <p className="mt-1.5 text-[10px] text-muted-foreground">
               Due: {new Date(item.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
             </p>
           )}
         </div>
       </div>
-      <div className="flex justify-end mt-2">
+      <div className="flex justify-end mt-3">
         <button
           type="button"
           onClick={handleStartWithAi}
-          className="interactive-base inline-flex items-center gap-1 rounded-md bg-accent px-2.5 py-1 text-[11px] font-medium text-accent-foreground hover:bg-accent/90"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-[11px] font-medium text-accent-foreground hover:bg-accent/90 transition-colors"
         >
           <Sparkles className="h-3 w-3" />
           Start with AI

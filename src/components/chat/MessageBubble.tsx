@@ -26,12 +26,12 @@ function MarkdownTable({ lines }: { lines: string[] }) {
   if (parsed.length === 0) return null;
   const [header, ...body] = parsed;
   return (
-    <div className="overflow-x-auto my-1 text-xs">
+    <div className="overflow-x-auto my-2 text-xs">
       <table className="min-w-full">
         <thead>
           <tr className="border-b border-border">
             {header.map((h, i) => (
-              <th key={i} className="text-left py-1 pr-3 text-muted-foreground font-medium">
+              <th key={i} className="text-left py-1.5 pr-4 text-muted-foreground font-medium">
                 <InlineBold text={h} />
               </th>
             ))}
@@ -39,9 +39,9 @@ function MarkdownTable({ lines }: { lines: string[] }) {
         </thead>
         <tbody>
           {body.map((row, ri) => (
-            <tr key={ri} className="border-b border-border/50 last:border-0">
+            <tr key={ri} className="border-b border-border/40 last:border-0">
               {row.map((cell, ci) => (
-                <td key={ci} className="py-1 pr-3">
+                <td key={ci} className="py-1.5 pr-4">
                   <InlineBold text={cell} />
                 </td>
               ))}
@@ -113,12 +113,14 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     <div className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}>
       <div className={cn("flex flex-col max-w-[85%]", isUser ? "items-end" : "items-start")}>
         {!isUser && (
-          <span className="text-xs text-muted-foreground mb-1">Shadow</span>
+          <span className="text-xs font-medium text-muted-foreground mb-1.5 ml-1">Shadow</span>
         )}
         <div
           className={cn(
-            "rounded-lg px-3 py-2 space-y-2",
-            isUser ? "bg-[#bccefb] text-foreground" : "bg-muted"
+            "rounded-2xl px-4 py-3 space-y-2",
+            isUser
+              ? "bg-foreground text-background rounded-br-md"
+              : "bg-surface-2 text-foreground rounded-bl-md"
           )}
         >
           {message.content.map((item, i) => (
@@ -171,7 +173,7 @@ function ContentBlock({
 }) {
   if (content.type === "text" && content.text) {
     return (
-      <p className="whitespace-pre-wrap text-sm">
+      <p className="whitespace-pre-wrap text-sm leading-relaxed">
         <RichText text={content.text} />
       </p>
     );
@@ -185,7 +187,7 @@ function ContentBlock({
             ? "bg-green-500"
             : m.status === "preparing"
               ? "bg-accent"
-              : "bg-blue-500";
+              : "bg-blue-400";
 
           return (
             <div key={m.eventId} className="space-y-1.5">
@@ -202,7 +204,7 @@ function ContentBlock({
                     store.setMainView("calendar");
                     store.setSelectedEventId(m.eventId);
                   }}
-                  className="interactive-base shrink-0 rounded-md bg-accent px-2 py-0.5 text-[10px] font-medium text-accent-foreground hover:bg-accent/90"
+                  className="shrink-0 rounded-lg bg-accent/10 px-2.5 py-0.5 text-[10px] font-medium text-accent hover:bg-accent/20 transition-colors"
                 >
                   详情
                 </button>
@@ -217,7 +219,7 @@ function ContentBlock({
                         e.stopPropagation();
                         onDocClick(doc.docId);
                       }}
-                      className="interactive-subtle inline-flex items-center gap-1 rounded border border-border bg-background px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted/80"
+                      className="inline-flex items-center gap-1 rounded-lg border border-border bg-background px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground hover:bg-surface-2 transition-colors"
                     >
                       <FileText className="h-3 w-3 shrink-0" />
                       <span className="truncate max-w-[140px]">{doc.docTitle}</span>
@@ -234,22 +236,22 @@ function ContentBlock({
 
   if (content.type === "alert_card" && content.text) {
     const level = content.alertLevel ?? "info";
-    const borderColor = level === "critical" ? "border-red-300 dark:border-red-800" : level === "warning" ? "border-amber-300 dark:border-amber-800" : "border-blue-300 dark:border-blue-800";
-    const bgColor = level === "critical" ? "bg-red-50 dark:bg-red-900/20" : level === "warning" ? "bg-amber-50 dark:bg-amber-900/20" : "bg-blue-50 dark:bg-blue-900/20";
-    const textColor = level === "critical" ? "text-red-800 dark:text-red-300" : level === "warning" ? "text-amber-800 dark:text-amber-300" : "text-blue-800 dark:text-blue-300";
+    const borderColor = level === "critical" ? "border-red-200" : level === "warning" ? "border-amber-200" : "border-blue-200";
+    const bgColor = level === "critical" ? "bg-red-50" : level === "warning" ? "bg-amber-50" : "bg-blue-50";
+    const textColor = level === "critical" ? "text-red-700" : level === "warning" ? "text-amber-700" : "text-blue-700";
     const AlertIcon = level === "critical" || level === "warning" ? AlertTriangle : Info;
 
     return (
-      <div className={cn("flex items-start gap-2 rounded-lg border px-3 py-2.5 mt-1", borderColor, bgColor)}>
+      <div className={cn("flex items-start gap-2.5 rounded-xl border px-3.5 py-3 mt-1", borderColor, bgColor)}>
         <AlertIcon className={cn("h-4 w-4 mt-0.5 shrink-0", textColor)} />
-        <p className={cn("text-sm", textColor)}><RichText text={content.text} /></p>
+        <p className={cn("text-sm leading-relaxed", textColor)}><RichText text={content.text} /></p>
       </div>
     );
   }
 
   if (content.type === "overdue_followups" && content.overdueTasks) {
     return (
-      <div className="rounded-lg border border-border bg-muted/50 px-3 py-2.5 mt-1 space-y-2">
+      <div className="rounded-xl border border-border bg-background/60 px-3.5 py-3 mt-1 space-y-2.5">
         <div className="flex items-start gap-2">
           <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground" />
           <p className="text-sm">{content.text}</p>
@@ -263,7 +265,7 @@ function ContentBlock({
                 e.stopPropagation();
                 onTopicClick(task.topicId);
               }}
-              className="flex w-full items-center gap-2 rounded-md bg-background px-2.5 py-1.5 text-left hover:bg-muted/80 transition-colors"
+              className="flex w-full items-center gap-2 rounded-lg bg-background px-3 py-2 text-left hover:bg-surface-2 transition-colors"
             >
               <Clock className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
               <span className="text-xs font-medium truncate flex-1">{task.label}</span>
@@ -281,10 +283,10 @@ function ContentBlock({
         type="button"
         onClick={() => onDocClick(content.docId!)}
         className={cn(
-          "flex items-center gap-2 p-2 rounded border text-left w-full transition-colors",
+          "flex items-center gap-2.5 p-3 rounded-xl border text-left w-full transition-colors",
           isUser
-            ? "border-foreground/20 hover:bg-foreground/5"
-            : "border-border hover:bg-muted/80 bg-background"
+            ? "border-background/20 hover:bg-background/10"
+            : "border-border hover:bg-background bg-background/50"
         )}
       >
         <FileText className="h-4 w-4 shrink-0" />
@@ -326,7 +328,7 @@ function ContentBlock({
     };
 
     return (
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mt-1">
         {content.buttons.map((b) => (
           <button
             key={b.action}
@@ -336,10 +338,10 @@ function ContentBlock({
               handleActionClick(b.action);
             }}
             className={cn(
-              "text-xs px-2 py-1 rounded border shrink-0 transition-colors",
+              "text-xs px-3 py-1.5 rounded-lg border shrink-0 transition-colors font-medium",
               isUser
-                ? "border-foreground/20 hover:bg-foreground/5"
-                : "border-border hover:bg-muted/80"
+                ? "border-background/20 hover:bg-background/10"
+                : "border-border hover:bg-background bg-background/50"
             )}
           >
             {b.label}
@@ -357,10 +359,10 @@ function ContentBlock({
           <tbody>
             {content.crmFields.map((f, i) => {
               const isHeader = !f.name;
-              const cellBase = "py-1.5 pr-3";
-              const headerStyle = "font-medium text-foreground";
+              const cellBase = "py-2 pr-4";
+              const headerStyle = "font-semibold text-foreground";
               return (
-                <tr key={i} className="border-b border-border/50 last:border-0">
+                <tr key={i} className="border-b border-border/40 last:border-0">
                   <td className={cn(cellBase, "text-muted-foreground whitespace-nowrap")}>{f.name}</td>
                   <td className={cn(cellBase, isHeader && headerStyle)}>{f.from}</td>
                   {f.to != null && <td className={cn(cellBase, isHeader && headerStyle)}>{f.to}</td>}
@@ -377,11 +379,11 @@ function ContentBlock({
   if (content.type === "email_preview" && content.email) {
     const e = content.email;
     return (
-      <div className="text-xs rounded border border-border p-2 space-y-1">
+      <div className="text-xs rounded-xl border border-border bg-background/50 p-3 space-y-1.5">
         <p><span className="text-muted-foreground">To:</span> {e.to}</p>
         {e.cc && <p><span className="text-muted-foreground">CC:</span> {e.cc}</p>}
-        <p><span className="text-muted-foreground">Subject:</span> {e.subject}</p>
-        <p className="text-muted-foreground whitespace-pre-wrap mt-2">{e.body}</p>
+        <p><span className="text-muted-foreground">Subject:</span> <span className="font-medium">{e.subject}</span></p>
+        <p className="text-muted-foreground whitespace-pre-wrap mt-2 leading-relaxed">{e.body}</p>
       </div>
     );
   }
@@ -389,7 +391,7 @@ function ContentBlock({
   if (content.type === "transcript_quote" && content.quote) {
     const q = content.quote;
     return (
-      <blockquote className="border-l-2 border-muted-foreground/30 pl-2 my-0 italic text-sm">
+      <blockquote className="border-l-2 border-accent/30 pl-3 my-1 italic text-sm">
         <span className="text-muted-foreground font-medium">{q.speaker}:</span> &ldquo;{q.text}&rdquo;
       </blockquote>
     );
@@ -405,7 +407,7 @@ function ContentBlock({
     const spinning = content.statusIcon === "loading";
     return (
       <div className="flex items-center gap-2 text-sm">
-        <Icon className={cn("h-4 w-4 shrink-0", spinning && "animate-spin")} />
+        <Icon className={cn("h-4 w-4 shrink-0", spinning && "animate-spin", content.statusIcon === "success" && "text-green-500")} />
         <span>{content.text}</span>
       </div>
     );
@@ -414,13 +416,13 @@ function ContentBlock({
   if (content.type === "playbook_update" && content.playbookRule) {
     const rule = content.playbookRule;
     return (
-      <div className="mt-1 rounded-lg border border-accent/30 bg-accent/5 px-3 py-2.5 space-y-1.5">
+      <div className="mt-1 rounded-xl border border-accent/20 bg-accent/5 px-4 py-3 space-y-2">
         <div className="flex items-center gap-2">
           <Zap className="h-4 w-4 shrink-0 text-accent" />
           <span className="text-xs font-semibold text-accent">Playbook Updated</span>
         </div>
-        <p className="text-sm">{rule.description}</p>
-        <span className="inline-block rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
+        <p className="text-sm leading-relaxed">{rule.description}</p>
+        <span className="inline-block rounded-full bg-accent/10 px-2.5 py-0.5 text-[10px] font-medium text-accent">
           {rule.trigger}
         </span>
       </div>
@@ -431,7 +433,7 @@ function ContentBlock({
     return (
       <div className="space-y-1.5 mt-1">
         {content.insightItems.map((item) => (
-          <div key={item.id} className="flex items-start gap-2 rounded-md border border-border bg-background px-2.5 py-2">
+          <div key={item.id} className="flex items-start gap-2 rounded-xl border border-border bg-background/50 px-3 py-2.5">
             <Lightbulb className="h-3.5 w-3.5 mt-0.5 shrink-0 text-muted-foreground" />
             <p className="text-xs font-medium flex-1 min-w-0">{item.label}</p>
           </div>

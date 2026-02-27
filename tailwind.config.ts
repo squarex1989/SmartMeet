@@ -20,27 +20,23 @@ const config: Config = {
         "muted-foreground": "var(--muted-foreground)",
         accent: "var(--accent)",
         "accent-foreground": "var(--accent-foreground)",
-        // Topic colors
         "topic-client": "#3B82F6",
         "topic-project": "#8B5CF6",
         "topic-goal": "#10B981",
-        // Status colors
         "status-draft": "#6B7280",
         "status-pending": "#F59E0B",
         "status-approved": "#3B82F6",
         "status-executed": "#10B981",
-        // Signal colors
         "signal-info": "#3B82F6",
         "signal-warning": "#F97316",
         "signal-critical": "#EF4444",
       },
+      borderRadius: {
+        DEFAULT: "var(--radius)",
+      },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "Inter", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "JetBrains Mono", "monospace"],
-      },
-      boxShadow: {
-        interactive: "var(--shadow-interactive)",
-        "interactive-hover": "var(--shadow-interactive-hover)",
       },
       keyframes: {
         "aurora-drift-1": {

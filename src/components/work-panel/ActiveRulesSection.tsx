@@ -27,17 +27,17 @@ function RuleRow({ rule }: { rule: Automation }) {
   const setMainView = useAppStore((s) => s.setMainView);
 
   return (
-    <div className="rounded border border-border bg-surface-1 text-xs">
+    <div className="rounded-xl border border-border bg-background text-xs">
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-start gap-2 p-2 text-left hover:bg-muted/50 transition-colors rounded"
+        className="flex w-full items-start gap-2.5 p-3 text-left hover:bg-surface-2/50 transition-colors rounded-xl"
       >
-        <Zap className="h-3.5 w-3.5 shrink-0 mt-0.5 text-amber-500" />
+        <Zap className="h-3.5 w-3.5 shrink-0 mt-0.5 text-accent" />
         <div className="min-w-0 flex-1">
-          <p className="text-muted-foreground">{rule.description}</p>
-          <div className="mt-1 flex flex-wrap items-center gap-1.5">
-            <span className="rounded bg-muted px-1.5 py-0.5 text-[10px]">
+          <p className="text-muted-foreground leading-relaxed">{rule.description}</p>
+          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+            <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[10px]">
               {rule.trigger}
             </span>
             {rule.lastTriggered && (
@@ -54,7 +54,7 @@ function RuleRow({ rule }: { rule: Automation }) {
         )}
       </button>
       {expanded && rule.ruleDetail && (
-        <div className="border-t border-border px-2 py-2 space-y-2">
+        <div className="border-t border-border px-3 py-3 space-y-2">
           <p className={cn("text-[11px] text-muted-foreground leading-relaxed")}>{rule.ruleDetail}</p>
           <button
             type="button"
@@ -91,7 +91,7 @@ export function ActiveRulesSection() {
       <button
         type="button"
         onClick={() => setMainView("automations")}
-        className="interactive-base text-xs text-muted-foreground hover:text-accent hover:underline"
+        className="text-xs text-muted-foreground hover:text-accent transition-colors"
       >
         Manage Playbook →
       </button>

@@ -1,13 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef } from "react";
-import { SendHorizontal } from "lucide-react";
+import { ArrowUp, Paperclip } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import { getTopicById } from "@/data/topics";
 import { getMessagesByTopic, groupMessagesBySessions } from "@/data/chat-messages";
 import { ChatSession } from "./ChatSession";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 
 export function ChatPanel() {
   const currentContext = useAppStore((s) => s.currentContext);
@@ -51,32 +49,49 @@ export function ChatPanel() {
   );
 
   return (
-    <div className="flex flex-col h-full">
-      <header className="shrink-0 px-4 py-3 border-b border-border">
-        <h2 className="text-sm font-medium">{contextName}</h2>
+    <div className="flex flex-col h-full bg-background">
+      <header className="shrink-0 px-6 py-4">
+        <h2 className="text-base font-semibold">{contextName}</h2>
       </header>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
-        {sessions.map((session, idx) => (
-          <ChatSession
-            key={session.date}
-            session={session}
-            isLatest={idx === sessions.length - 1}
-          />
-        ))}
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-6 pb-4">
+        <div className="max-w-3xl mx-auto space-y-6">
+          {sessions.map((session, idx) => (
+            <ChatSession
+              key={session.date}
+              session={session}
+              isLatest={idx === sessions.length - 1}
+            />
+          ))}
+        </div>
       </div>
 
-      <div className="shrink-0 p-4 border-t border-border flex gap-2">
-        <Input
-          placeholder="Type a command..."
-          value={chatInputValue}
-          onChange={(e) => setChatInputValue(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="flex-1"
-        />
-        <Button size="icon" onClick={handleSubmit}>
-          <SendHorizontal className="h-4 w-4" />
-        </Button>
+      <div className="shrink-0 px-6 pb-5 pt-2">
+        <div className="max-w-3xl mx-auto">
+          <div className="flex items-center gap-2 rounded-2xl border border-border bg-surface-2 px-4 py-2 focus-within:border-accent/30 focus-within:ring-2 focus-within:ring-accent/10 transition-all">
+            <button
+              type="button"
+              className="p-1 text-muted-foreground hover:text-foreground rounded-lg transition-colors"
+              aria-label="Attach file"
+            >
+              <Paperclip className="h-4 w-4" />
+            </button>
+            <input
+              placeholder="Ask follow up question"
+              value={chatInputValue}
+              onChange={(e) => setChatInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="flex-1 bg-transparent text-sm placeholder:text-muted-foreground focus:outline-none py-1"
+            />
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground hover:bg-accent/90 transition-colors shrink-0"
+            >
+              <ArrowUp className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

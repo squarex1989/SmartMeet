@@ -78,7 +78,7 @@ export function ReviewOverlay() {
     <div className="flex h-full w-full flex-col overflow-auto bg-background">
       <button
         onClick={() => { setEditing(false); setCommandRoomOverlay(null); }}
-        className="interactive-base flex shrink-0 items-center gap-2 px-4 py-3 text-sm text-muted-foreground hover:text-foreground"
+        className="flex shrink-0 items-center gap-2 px-4 py-3 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
         Back
@@ -87,7 +87,7 @@ export function ReviewOverlay() {
         <h2 className="text-lg font-semibold">{item.title}</h2>
 
         {isDone && (
-          <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800 px-4 py-3">
+          <div className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800 px-4 py-3">
             <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400" />
             <span className="text-sm font-medium text-green-800 dark:text-green-300">
               {needsAction ? `${actionLabel} — Done` : "Reviewed"}
@@ -105,7 +105,7 @@ export function ReviewOverlay() {
             {needsAction ? (
               <button
                 onClick={handleAction}
-                className="interactive-base inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent/90"
+                className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent/90"
               >
                 {actionIcon()}
                 {actionLabel}
@@ -113,7 +113,7 @@ export function ReviewOverlay() {
             ) : (
               <button
                 onClick={handleLooksGood}
-                className="interactive-base inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent/90"
+                className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground hover:bg-accent/90"
               >
                 <CheckCircle className="h-4 w-4" />
                 Looks Good
@@ -123,7 +123,7 @@ export function ReviewOverlay() {
             {!editing && (
               <button
                 onClick={() => docId ? handleOpenInDocs(docId) : setEditing(true)}
-                className="interactive-base inline-flex items-center gap-1.5 rounded-md border border-border px-4 py-2.5 text-sm hover:bg-surface-2"
+                className="inline-flex items-center gap-1.5 rounded-md border border-border px-4 py-2.5 text-sm hover:bg-surface-2"
               >
                 <Pencil className="h-3.5 w-3.5" />
                 Edit
@@ -146,7 +146,7 @@ function ReviewContent({
   if (payload.type === "meeting_notes" || payload.type === "weekly_report") {
     const doc = getDocumentContent(payload.docId);
     return (
-      <pre className="whitespace-pre-wrap rounded-lg border border-border bg-muted/30 p-4 text-sm leading-relaxed">
+      <pre className="whitespace-pre-wrap rounded-xl border border-border bg-muted/30 p-4 text-sm leading-relaxed">
         {doc?.body ?? ""}
       </pre>
     );
@@ -175,7 +175,7 @@ function EmailContent({ payload, editing }: { payload: EmailPayload; editing: bo
 
   if (editing) {
     return (
-      <div className="space-y-3 rounded-lg border border-accent/30 bg-muted/30 p-4">
+      <div className="space-y-3 rounded-xl border border-accent/30 bg-muted/30 p-4">
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-muted-foreground font-medium">To</span>
           <input value={to} onChange={(e) => setTo(e.target.value)} className="rounded border border-border bg-background px-2.5 py-1.5 text-sm" />
@@ -197,7 +197,7 @@ function EmailContent({ payload, editing }: { payload: EmailPayload; editing: bo
   }
 
   return (
-    <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-4">
+    <div className="space-y-2 rounded-xl border border-border bg-muted/30 p-4">
       <p className="text-sm"><span className="font-medium text-muted-foreground">To:</span> {payload.to}</p>
       {payload.cc && <p className="text-sm"><span className="font-medium text-muted-foreground">CC:</span> {payload.cc}</p>}
       <p className="text-sm"><span className="font-medium text-muted-foreground">Subject:</span> {payload.subject}</p>
@@ -216,7 +216,7 @@ function CrmContent({ payload, editing }: { payload: CrmUpdatePayload; editing: 
   };
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-border">
+    <div className="overflow-x-auto rounded-xl border border-border">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border bg-muted/30">
@@ -253,7 +253,7 @@ function FollowUpContent({ payload, editing }: { payload: FollowUpPayload; editi
 
   if (editing) {
     return (
-      <div className="space-y-3 rounded-lg border border-accent/30 bg-muted/30 p-4">
+      <div className="space-y-3 rounded-xl border border-accent/30 bg-muted/30 p-4">
         <label className="flex flex-col gap-1 text-sm">
           <span className="text-muted-foreground font-medium">Description</span>
           <textarea value={desc} onChange={(e) => setDesc(e.target.value)} rows={3} className="rounded border border-border bg-background px-2.5 py-1.5 text-sm resize-y" />
@@ -267,7 +267,7 @@ function FollowUpContent({ payload, editing }: { payload: FollowUpPayload; editi
   }
 
   return (
-    <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-4">
+    <div className="space-y-2 rounded-xl border border-border bg-muted/30 p-4">
       <p className="text-sm">{payload.description}</p>
       {payload.dueDate && (
         <p className="text-sm text-muted-foreground">Due: {new Date(payload.dueDate).toLocaleString()}</p>

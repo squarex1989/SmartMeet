@@ -77,12 +77,12 @@ export function TourHint() {
 
   return (
     <div className="fixed top-16 right-4 z-50 animate-in slide-in-from-top-2 fade-in duration-300">
-      <div className="flex items-start gap-3 rounded-xl border border-border bg-surface-1 px-4 py-3 shadow-2xl max-w-xs">
+      <div className="flex items-start gap-3 rounded-xl border border-border bg-background px-4 py-3 shadow-lg max-w-xs">
         <HelpCircle className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
         <p className="text-sm text-foreground leading-relaxed flex-1">
           随时点击右上角的 <span className="font-semibold">Guide</span> 按钮重新查看引导
         </p>
-        <button type="button" onClick={() => setShowTourHint(false)} className="interactive-base text-muted-foreground hover:text-foreground shrink-0 mt-0.5">
+        <button type="button" onClick={() => setShowTourHint(false)} className="text-muted-foreground hover:text-foreground shrink-0 mt-0.5">
           <X className="h-4 w-4" />
         </button>
       </div>
@@ -182,12 +182,12 @@ export function GuidedTour() {
       />
       {targetRect && (
         <div
-          className="fixed border-2 border-white/40 rounded-lg pointer-events-none"
+          className="fixed border-2 border-white/40 rounded-xl pointer-events-none"
           style={{ top: targetRect.top - pad, left: targetRect.left - pad, width: targetRect.width + pad * 2, height: targetRect.height + pad * 2, transition: TRANSITION }}
         />
       )}
       {targetRect && (
-        <div className="fixed z-[61] w-[320px] rounded-xl border border-border bg-surface-1 p-4 shadow-2xl" style={{ ...tooltipPos, transition: TRANSITION }}>
+        <div className="fixed z-[61] w-[320px] rounded-xl border border-border bg-background p-4 shadow-lg" style={{ ...tooltipPos, transition: TRANSITION }}>
           <div style={{ opacity: textOpacity, transition: "opacity 0.15s ease" }}>
             <div className="flex items-start justify-between mb-2">
               <h4 className="text-sm font-semibold text-foreground">{displayStep?.title}</h4>
@@ -203,10 +203,10 @@ export function GuidedTour() {
             </div>
             <div className="flex gap-2">
               {!isFirst && (
-                <button type="button" onClick={handlePrev} className="interactive-base px-3 py-1.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-surface-3">上一步</button>
+                <button type="button" onClick={handlePrev} className="px-3 py-1.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-surface-3">上一步</button>
               )}
-              <button type="button" onClick={endTour} className="interactive-base px-3 py-1.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-surface-3">跳过</button>
-              <button type="button" onClick={handleNext} className="interactive-base px-4 py-1.5 rounded-md text-xs font-medium bg-accent text-accent-foreground hover:bg-accent/90">{isLast ? "完成" : "下一步"}</button>
+              <button type="button" onClick={endTour} className="px-3 py-1.5 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-surface-3">跳过</button>
+              <button type="button" onClick={handleNext} className="px-4 py-1.5 rounded-md text-xs font-medium bg-accent text-accent-foreground hover:bg-accent/90">{isLast ? "完成" : "下一步"}</button>
             </div>
           </div>
         </div>

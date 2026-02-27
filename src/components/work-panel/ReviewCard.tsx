@@ -39,22 +39,22 @@ export function ReviewCard({ item, showTopic }: ReviewCardProps) {
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick(); }}
-      className="interactive-subtle cursor-pointer rounded-lg border border-border bg-surface-1 p-3 hover:border-accent/30 hover:shadow-md transition-all"
+      className="cursor-pointer rounded-xl border border-border bg-background p-3.5 hover:border-accent/25 hover:bg-surface-2/50 transition-all"
     >
-      <div className="flex items-start gap-2">
-        <div className="mt-0.5 shrink-0 rounded p-1.5 bg-muted">
+      <div className="flex items-start gap-3">
+        <div className="mt-0.5 shrink-0 rounded-lg p-1.5 bg-surface-2">
           <Icon className="h-4 w-4 text-muted-foreground" />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-sm">{item.title}</span>
             {topic && (
-              <span className="rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
+              <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground">
                 {topic.name}
               </span>
             )}
           </div>
-          <p className="mt-0.5 truncate text-xs text-muted-foreground">
+          <p className="mt-1 truncate text-xs text-muted-foreground leading-relaxed">
             {item.summary}
           </p>
         </div>

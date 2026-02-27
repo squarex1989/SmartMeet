@@ -41,10 +41,10 @@ export function MeetingCard({ event, isSelected, onClick }: MeetingCardProps) {
       onClick={onClick}
       onKeyDown={(e) => e.key === "Enter" && onClick()}
       className={cn(
-        "interactive-subtle rounded-lg border p-4 cursor-pointer",
+        "rounded-xl border p-4 cursor-pointer",
         isSelected
           ? "border-accent bg-accent/5"
-          : "border-border bg-surface-1 hover:bg-surface-2"
+          : "border-border bg-background hover:bg-surface-2"
       )}
     >
       <h3 className="font-semibold text-sm">{event.title}</h3>
@@ -64,7 +64,7 @@ export function MeetingCard({ event, isSelected, onClick }: MeetingCardProps) {
         {(status === "upcoming" || status === "ongoing") && (
           <button
             type="button"
-            className="interactive-base inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground hover:bg-accent/90"
+            className="inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground hover:bg-accent/90"
             onClick={(e) => {
               e.stopPropagation();
               toast("会议室功能即将上线");
@@ -76,7 +76,7 @@ export function MeetingCard({ event, isSelected, onClick }: MeetingCardProps) {
         {status === "past" && event.outcome && (
           <button
             type="button"
-            className="interactive-base inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-surface-2"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-surface-2"
             onClick={(e) => e.stopPropagation()}
           >
             <Video className="h-3 w-3" />

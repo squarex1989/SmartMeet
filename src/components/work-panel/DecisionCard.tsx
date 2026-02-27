@@ -77,27 +77,27 @@ export function DecisionCard({ item, showTopic }: DecisionCardProps) {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-surface-1 p-3">
-      <div className="flex items-start gap-2">
+    <div className="rounded-xl border border-border bg-background p-3.5">
+      <div className="flex items-start gap-3">
         <Lightbulb className="h-4 w-4 mt-0.5 shrink-0 text-accent" />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-sm">{item.title}</span>
             {topic && (
-              <span className="rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
+              <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground">
                 {topic.name}
               </span>
             )}
           </div>
           <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{item.context}</p>
           {item.options && item.options.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1.5">
+            <div className="mt-2.5 flex flex-wrap gap-1.5">
               {item.options.map((opt) => (
                 <button
                   key={opt}
                   type="button"
                   onClick={() => handleOptionClick(opt)}
-                  className="interactive-subtle inline-block rounded-full bg-muted border border-border px-2 py-0.5 text-[10px] text-muted-foreground hover:text-foreground hover:border-accent/40 transition-colors"
+                  className="inline-block rounded-full bg-surface-2 border border-border px-2.5 py-1 text-[10px] text-muted-foreground hover:text-foreground hover:border-accent/30 hover:bg-accent/5 transition-colors"
                 >
                   {opt}
                 </button>
@@ -106,11 +106,11 @@ export function DecisionCard({ item, showTopic }: DecisionCardProps) {
           )}
         </div>
       </div>
-      <div className="flex justify-end mt-2">
+      <div className="flex justify-end mt-3">
         <button
           type="button"
           onClick={handleThinkWithAi}
-          className="interactive-base inline-flex items-center gap-1 rounded-md bg-accent px-2.5 py-1 text-[11px] font-medium text-accent-foreground hover:bg-accent/90"
+          className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-[11px] font-medium text-accent-foreground hover:bg-accent/90 transition-colors"
         >
           <Sparkles className="h-3 w-3" />
           Think with AI

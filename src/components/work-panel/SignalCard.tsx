@@ -47,7 +47,7 @@ export function SignalCard({ insight, showTopic }: SignalCardProps) {
   };
 
   return (
-    <div className="interactive-subtle rounded-lg bg-surface-1 px-3 py-2.5 hover:bg-surface-2 transition-colors">
+    <div className="rounded-xl bg-background px-3 py-2.5 hover:bg-surface-2 transition-colors">
       <div className="flex items-start gap-2.5">
         <span className={cn("mt-[7px] h-[6px] w-[6px] shrink-0 rounded-full", dotColor)} />
         <div className="min-w-0 flex-1">

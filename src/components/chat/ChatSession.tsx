@@ -25,18 +25,18 @@ export function ChatSession({ session, isLatest }: ChatSessionProps) {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <div
         className={cn(
           "text-center text-xs text-muted-foreground py-2",
-          !isLatest && "cursor-pointer hover:text-foreground",
+          !isLatest && "cursor-pointer hover:text-foreground transition-colors",
           !isLatest && "flex items-center justify-center gap-2"
         )}
         onClick={!isLatest ? handleToggle : undefined}
       >
-        <span>{session.label}</span>
+        <span className="bg-surface-2 rounded-full px-3 py-1">{session.label}</span>
         {!isLatest && (
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 text-muted-foreground">
             ({session.messages.length} messages)
             {isCollapsed ? (
               <ChevronDown className="h-3 w-3 inline" />
@@ -47,7 +47,7 @@ export function ChatSession({ session, isLatest }: ChatSessionProps) {
         )}
       </div>
       {isExpanded && (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {session.messages.map((msg) => (
             <MessageBubble key={msg.id} message={msg} />
           ))}
