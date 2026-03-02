@@ -3,13 +3,16 @@
 import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
-import { reviewItems } from "@/data/review-items";
-import { getTodosForContext } from "@/data/todo-items";
-import { getDecisionsForContext } from "@/data/decision-items";
 import { ReviewCard } from "./ReviewCard";
 import { TodoCard } from "./TodoCard";
 import { DecisionCard } from "./DecisionCard";
 import { ActiveRulesSection, usePlaybookCount } from "./ActiveRulesSection";
+import type { ReviewItem } from "@/data/review-items";
+import {
+  getScenarioReviewItems,
+  getScenarioTodoItems,
+  getScenarioDecisionItems,
+} from "@/data/demo-datasets";
 
 function Section({
   title,
@@ -50,29 +53,27 @@ function Section({
 
 export function WorkPanel() {
   const currentContext = useAppStore((s) => s.currentContext);
+  const activeScenario = useAppStore((s) => s.activeScenario);
   const reviewItemStatuses = useAppStore((s) => s.reviewItemStatuses);
 
-  const getStatus = (item: (typeof reviewItems)[0]) =>
+  const scopedReviewItems = getScenarioReviewItems(activeScenario, currentContext);
+  const getStatus = (item: ReviewItem) =>
     (reviewItemStatuses[item.id] as string) ?? item.status;
 
-  const pendingItems = reviewItems.filter((item) => {
+  const pendingItems = scopedReviewItems.filter((item) => {
     const status = getStatus(item);
-    if (status !== "pending_review") return false;
-    if (currentContext === "all") return true;
-    return item.topicId === currentContext;
+    return status === "pending_review";
   });
 
-  const todoItems = getTodosForContext(currentContext);
-  const decisionItems = getDecisionsForContext(currentContext);
+  const todoItems = getScenarioTodoItems(activeScenario, currentContext);
+  const decisionItems = getScenarioDecisionItems(activeScenario, currentContext);
   const playbookCount = usePlaybookCount();
 
   const attentionCount = decisionItems.length;
 
-  const doneCount = reviewItems.filter((item) => {
+  const doneCount = scopedReviewItems.filter((item) => {
     const status = getStatus(item);
-    if (status !== "done") return false;
-    if (currentContext === "all") return true;
-    return item.topicId === currentContext;
+    return status === "done";
   }).length;
 
   return (

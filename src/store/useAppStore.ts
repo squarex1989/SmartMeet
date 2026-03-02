@@ -75,6 +75,8 @@ interface AppState {
   // Demo scenario
   activeScenario: DemoScenario;
   setActiveScenario: (s: DemoScenario) => void;
+  demoDocked: boolean;
+  setDemoDocked: (v: boolean) => void;
 
   // Dynamic chat messages injected by interactions
   injectedMessages: Record<string, ChatMessage[]>;
@@ -110,6 +112,7 @@ const defaultState = {
   tourStep: 0,
   showTourHint: false,
   activeScenario: null as DemoScenario,
+  demoDocked: false,
   injectedMessages: {} as Record<string, ChatMessage[]>,
   reviewItemStatuses: {} as Record<string, string>,
 };
@@ -159,6 +162,7 @@ export const useAppStore = create<AppState>((set) => ({
   setShowTourHint: (v) => set({ showTourHint: v }),
 
   setActiveScenario: (s) => set({ activeScenario: s }),
+  setDemoDocked: (v) => set({ demoDocked: v }),
 
   injectMessages: (topicId, messages) =>
     set((s) => ({

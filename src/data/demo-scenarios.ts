@@ -12,7 +12,7 @@ export interface ScenarioConfig {
 export const demoScenarios: ScenarioConfig[] = [
   {
     id: "pre-meeting",
-    label: "会前自动准备",
+    label: "1. 会前自动准备",
     description: "AI 识别会议并提前准备材料",
     targetTopic: "global",
     messages: [
@@ -115,7 +115,7 @@ export const demoScenarios: ScenarioConfig[] = [
   },
   {
     id: "custom-workflow",
-    label: "自定义工作流",
+    label: "2. 自定义工作流",
     description: "用自然语言叮嘱 AI 按要求工作",
     targetTopic: "techvision",
     messages: [
@@ -223,7 +223,7 @@ export const demoScenarios: ScenarioConfig[] = [
   },
   {
     id: "task-identify",
-    label: "主动识别任务",
+    label: "3. 主动识别任务",
     description: "AI 从会议中提取任务并准备执行",
     targetTopic: "techvision",
     messages: [
@@ -290,7 +290,7 @@ export const demoScenarios: ScenarioConfig[] = [
   },
   {
     id: "risk-alert",
-    label: "主动提醒风险",
+    label: "4. 主动提醒风险",
     description: "AI 发现客户互动中的风险点",
     targetTopic: "cloudflow",
     messages: [
@@ -341,7 +341,7 @@ export const demoScenarios: ScenarioConfig[] = [
   },
   {
     id: "qa-task",
-    label: "问答与发起任务",
+    label: "5. 问答与发起任务",
     description: "通过 Chat 提问和发起工作",
     targetTopic: "global",
     messages: [
@@ -444,7 +444,7 @@ export const demoScenarios: ScenarioConfig[] = [
   },
   {
     id: "daily-brief",
-    label: "每日资讯简报",
+    label: "6. 每日资讯简报",
     description: "AI 每天从指定新闻源制作简报",
     targetTopic: "global",
     messages: [
@@ -515,7 +515,7 @@ export const demoScenarios: ScenarioConfig[] = [
   },
   {
     id: "goal-driven",
-    label: "24/7 目标驱动",
+    label: "7. 24/7 目标驱动",
     description: "告知 AI 目标，每天帮你推进",
     targetTopic: "global",
     messages: [
@@ -594,7 +594,7 @@ export const demoScenarios: ScenarioConfig[] = [
   },
   {
     id: "inbox-mgmt",
-    label: "收件箱管理",
+    label: "8. 收件箱管理",
     description: "自动识别重要邮件并起草回复",
     targetTopic: "global",
     messages: [
@@ -687,7 +687,7 @@ export const demoScenarios: ScenarioConfig[] = [
   },
   {
     id: "smart-bookmark",
-    label: "智能收藏与灵感",
+    label: "9. 智能收藏与灵感",
     description: "收藏内容，AI 主动关联分析",
     targetTopic: "global",
     messages: [

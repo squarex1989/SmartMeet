@@ -58,9 +58,7 @@ export function TopBar() {
           ))}
         </div>
         <div className="ml-auto flex items-center gap-2 shrink-0">
-          <div className="hidden lg:block">
-            <DemoDropdown />
-          </div>
+          <DemoDropdown />
           {mainView === "command-room" && (
             <button
               type="button"

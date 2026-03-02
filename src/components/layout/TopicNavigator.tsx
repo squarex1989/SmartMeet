@@ -3,11 +3,14 @@
 import { useState } from "react";
 import { Home, Plus } from "lucide-react";
 import { topics } from "@/data/topics";
-import { reviewItems } from "@/data/review-items";
 import type { TopicType, TopicId } from "@/data/topics";
 import { useAppStore } from "@/store/useAppStore";
 import { cn } from "@/lib/utils";
 import { NewTopicDialog } from "./NewTopicDialog";
+import {
+  getScenarioPendingByTopic,
+  getScenarioPendingTotal,
+} from "@/data/demo-datasets";
 
 const SECTION_CONFIG: { type: TopicType; label: string }[] = [
   { type: "client", label: "CLIENTS" },
@@ -16,14 +19,12 @@ const SECTION_CONFIG: { type: TopicType; label: string }[] = [
 ];
 
 function usePendingCounts() {
-  const reviewItemStatuses = useAppStore((s) => s.reviewItemStatuses);
-  const getStatus = (item: (typeof reviewItems)[0]) =>
-    (reviewItemStatuses[item.id] as string) ?? item.status;
+  const activeScenario = useAppStore((s) => s.activeScenario);
 
   const byTopic = (topicId: TopicId) =>
-    reviewItems.filter((r) => r.topicId === topicId && getStatus(r) === "pending_review").length;
+    getScenarioPendingByTopic(activeScenario, topicId);
 
-  const total = reviewItems.filter((r) => getStatus(r) === "pending_review").length;
+  const total = getScenarioPendingTotal(activeScenario);
 
   return { byTopic, total };
 }

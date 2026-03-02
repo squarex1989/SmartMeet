@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { ArrowUp, Paperclip } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
-import { DemoDropdown } from "@/components/DemoDropdown";
 import { getTopicById } from "@/data/topics";
 import { getMessagesByTopic, groupMessagesBySessions } from "@/data/chat-messages";
 import { ChatSession } from "./ChatSession";
@@ -51,22 +50,25 @@ export function ChatPanel() {
 
   return (
     <div className="flex flex-col h-full bg-background">
-      <header className="shrink-0 px-4 sm:px-6 py-4 flex items-center justify-between gap-3">
+      <header className="shrink-0 px-4 sm:px-6 py-4">
         <h2 className="text-base font-semibold truncate">{contextName}</h2>
-        <div className="lg:hidden shrink-0">
-          <DemoDropdown />
-        </div>
       </header>
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-6 pb-4">
         <div className="max-w-3xl mx-auto space-y-6">
-          {sessions.map((session, idx) => (
-            <ChatSession
-              key={session.date}
-              session={session}
-              isLatest={idx === sessions.length - 1}
-            />
-          ))}
+          {sessions.length === 0 ? (
+            <div className="rounded-xl border border-border bg-surface-2 p-4 text-sm text-muted-foreground">
+              暂无对话内容。点击右上角 Demo 入口，选择一个场景开始体验。
+            </div>
+          ) : (
+            sessions.map((session, idx) => (
+              <ChatSession
+                key={session.date}
+                session={session}
+                isLatest={idx === sessions.length - 1}
+              />
+            ))
+          )}
         </div>
       </div>
 
