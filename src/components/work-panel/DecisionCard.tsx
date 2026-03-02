@@ -77,19 +77,19 @@ export function DecisionCard({ item, showTopic }: DecisionCardProps) {
   };
 
   return (
-    <div className="rounded-xl border border-border bg-background p-3.5">
+    <div className="bg-white shadow-sm border border-stone-200 rounded-2xl p-4">
       <div className="flex items-start gap-3">
-        <Lightbulb className="h-4 w-4 mt-0.5 shrink-0 text-accent" />
+        <Lightbulb className="h-4 w-4 mt-0.5 shrink-0 text-orange-500" />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-sm">{item.title}</span>
             {topic && (
-              <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+              <span className="rounded-md bg-stone-100 px-1.5 py-0.5 text-[10px] text-stone-500">
                 {topic.name}
               </span>
             )}
           </div>
-          <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{item.context}</p>
+          <p className="mt-1 text-xs text-stone-500 leading-relaxed">{item.context}</p>
           {item.options && item.options.length > 0 && (
             <div className="mt-2.5 flex flex-wrap gap-1.5">
               {item.options.map((opt) => (
@@ -97,7 +97,7 @@ export function DecisionCard({ item, showTopic }: DecisionCardProps) {
                   key={opt}
                   type="button"
                   onClick={() => handleOptionClick(opt)}
-                  className="inline-block rounded-full bg-surface-2 border border-border px-2.5 py-1 text-[10px] text-muted-foreground hover:text-foreground hover:border-accent/30 hover:bg-accent/5 transition-colors"
+                  className="inline-block rounded-full bg-stone-100 border border-stone-200 px-2.5 py-1 text-[10px] text-stone-500 hover:text-stone-800 hover:border-orange-200 hover:bg-orange-100/60 transition-colors"
                 >
                   {opt}
                 </button>
@@ -110,7 +110,7 @@ export function DecisionCard({ item, showTopic }: DecisionCardProps) {
         <button
           type="button"
           onClick={handleThinkWithAi}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-[11px] font-medium text-accent-foreground hover:bg-accent/90 transition-colors"
+          className="inline-flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl px-4 py-2 shadow-md shadow-orange-500/20 transition-all font-bold text-[11px]"
         >
           <Sparkles className="h-3 w-3" />
           Think with AI

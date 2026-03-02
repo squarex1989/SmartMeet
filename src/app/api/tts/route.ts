@@ -73,7 +73,10 @@ async function requestElevenLabsAudio(
 export async function POST(req: Request) {
   const key = await readApiKey();
   if (!key) {
-    return NextResponse.json({ error: "Missing ElevenLabs API key" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing ElevenLabs API key (set ELEVENLABS_API_KEY)" },
+      { status: 400 }
+    );
   }
 
   const body = (await req.json().catch(() => null)) as { text?: string } | null;
@@ -82,7 +85,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing text" }, { status: 400 });
   }
 
-  const voiceId = process.env.ELEVENLABS_VOICE_ID || "21m00Tcm4TlvDq8ikWAM";
+  const voiceId = process.env.ELEVENLABS_VOICE_ID || "BqljjWyTnrioXPCNkCd4";
   const modelId = process.env.ELEVENLABS_MODEL_ID || "eleven_multilingual_v2";
   const fallbackModelId = "eleven_turbo_v2_5";
   const cacheKey = buildCacheKey(text, voiceId, modelId);

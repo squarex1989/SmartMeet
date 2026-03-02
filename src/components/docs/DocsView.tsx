@@ -36,20 +36,20 @@ function Sidebar() {
 
   return (
     <>
-      <div className="p-3 border-b border-border">
+      <div className="p-3 border-b border-stone-200">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-500" />
           <input
             type="text"
             placeholder="Search docs..."
             value={docSearchQuery}
             onChange={(e) => setDocSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-accent/20"
+            className="w-full pl-9 pr-3 py-2 text-sm rounded-full border-0 bg-stone-100 focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
         </div>
       </div>
-      <div className="p-3 border-b border-border">
-        <p className="text-xs font-medium text-muted-foreground mb-2">Type</p>
+      <div className="p-3 border-b border-stone-200">
+        <p className="text-xs font-medium text-stone-500 mb-2">Type</p>
         <div className="flex flex-wrap gap-1">
           {TYPE_FILTERS.map(({ value, label }) => (
             <button
@@ -59,8 +59,8 @@ function Sidebar() {
               className={cn(
                 "px-2 py-1 text-xs rounded-md",
                 docTypeFilter === value
-                  ? "bg-accent text-accent-foreground"
-                  : "bg-surface-2 text-muted-foreground hover:bg-surface-3"
+                  ? "bg-orange-500 text-white"
+                  : "bg-stone-100 text-stone-500 hover:bg-orange-100/60"
               )}
             >
               {label}
@@ -69,7 +69,7 @@ function Sidebar() {
         </div>
       </div>
       <div className="p-3 flex-1 overflow-auto">
-        <p className="text-xs font-medium text-muted-foreground mb-2">Topic</p>
+        <p className="text-xs font-medium text-stone-500 mb-2">Topic</p>
         <div className="space-y-1.5">
           {topics.map((topic) => (
             <label
@@ -80,7 +80,7 @@ function Sidebar() {
                 type="checkbox"
                 checked={docTopicFilter.includes(topic.id)}
                 onChange={() => toggleTopic(topic.id)}
-                className="rounded border-border"
+                className="rounded border-stone-300"
               />
               {topic.name}
             </label>
@@ -97,26 +97,26 @@ export function DocsView() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   return (
-    <div className="flex flex-1 min-w-0 overflow-hidden">
+    <div className="flex flex-1 min-w-0 overflow-hidden px-2 py-4 gap-2">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-[220px] shrink-0 border-r border-border bg-background flex-col overflow-hidden">
+      <aside className="hidden md:flex w-[240px] shrink-0 rounded-2xl border border-orange-100/50 bg-white shadow-sm flex-col overflow-hidden">
         <Sidebar />
       </aside>
 
       {/* Desktop main */}
-      <main className="hidden md:flex flex-1 min-w-0 overflow-auto bg-background">
+      <main className="hidden md:flex flex-1 min-w-0 overflow-auto">
         {openDocumentId === null ? <DocsList /> : <DocEditor />}
       </main>
 
       {/* Mobile: full-screen views */}
-      <div className="flex md:hidden flex-1 min-w-0 flex-col bg-background overflow-hidden">
+      <div className="flex md:hidden flex-1 min-w-0 flex-col rounded-2xl border border-orange-100/50 bg-white shadow-sm overflow-hidden">
         {openDocumentId !== null ? (
           <>
-            <div className="shrink-0 flex items-center gap-2 px-3 py-2 border-b border-border">
+            <div className="shrink-0 flex items-center gap-2 px-3 py-2 border-b border-stone-200">
               <button
                 type="button"
                 onClick={() => setOpenDocumentId(null)}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+                className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-800"
               >
                 <ArrowLeft className="h-4 w-4" />
                 返回文档
@@ -128,7 +128,7 @@ export function DocsView() {
           </>
         ) : (
           <>
-            <div className="shrink-0 flex items-center justify-between px-3 py-2 border-b border-border">
+            <div className="shrink-0 flex items-center justify-between px-3 py-2 border-b border-stone-200">
               <span className="text-sm font-medium">Documents</span>
               <button
                 type="button"
@@ -136,8 +136,8 @@ export function DocsView() {
                 className={cn(
                   "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs",
                   mobileFiltersOpen
-                    ? "bg-accent/15 text-accent"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "bg-orange-100 text-orange-600"
+                    : "text-stone-500 hover:text-stone-800"
                 )}
               >
                 <SlidersHorizontal className="h-3.5 w-3.5" />
@@ -145,7 +145,7 @@ export function DocsView() {
               </button>
             </div>
             {mobileFiltersOpen && (
-              <div className="shrink-0 border-b border-border bg-background max-h-[50vh] overflow-auto flex flex-col">
+              <div className="shrink-0 border-b border-stone-200 bg-white max-h-[50vh] overflow-auto flex flex-col">
                 <Sidebar />
               </div>
             )}

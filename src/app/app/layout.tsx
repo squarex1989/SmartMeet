@@ -13,7 +13,7 @@ export default function AppLayout({
   const demoDocked = useAppStore((s) => s.demoDocked);
 
   return (
-    <div className="flex h-screen flex-col bg-background">
+    <div className="flex h-screen flex-col bg-orange-50/50">
       <TopBar />
       <div className="flex flex-1 overflow-hidden">
         {children}

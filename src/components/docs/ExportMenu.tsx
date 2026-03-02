@@ -49,7 +49,7 @@ export function ExportMenu({ documentId, title }: ExportMenuProps) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium border border-border bg-background hover:bg-surface-2"
+        className="flex items-center gap-2 rounded-2xl px-3 py-2 text-sm font-bold border-0 bg-orange-500 text-white hover:bg-orange-600 shadow-md shadow-orange-500/20"
       >
         <Download className="h-4 w-4" />
         Export
@@ -61,11 +61,11 @@ export function ExportMenu({ documentId, title }: ExportMenuProps) {
             aria-hidden
             onClick={() => setOpen(false)}
           />
-          <div className="absolute right-0 top-full mt-1 z-50 w-56 rounded-md border border-border bg-background py-1">
+          <div className="absolute right-0 top-full mt-1 z-50 w-56 rounded-xl border border-stone-200 bg-white py-1 shadow-sm">
             <button
               type="button"
               onClick={handleGoogleDocs}
-              className="w-full flex items-center justify-between px-3 py-2 text-sm text-left hover:bg-surface-2"
+              className="w-full flex items-center justify-between px-3 py-2 text-sm text-left text-stone-700 hover:bg-orange-100/40"
             >
               Google Docs
               <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600">
@@ -75,14 +75,14 @@ export function ExportMenu({ documentId, title }: ExportMenuProps) {
             <button
               type="button"
               onClick={() => download("txt", "text/plain", "Word")}
-              className="w-full px-3 py-2 text-sm text-left hover:bg-surface-2"
+              className="w-full px-3 py-2 text-sm text-left text-stone-700 hover:bg-orange-100/40"
             >
               Word (.docx)
             </button>
             <button
               type="button"
               onClick={() => download("md", "text/markdown", "Markdown")}
-              className="w-full px-3 py-2 text-sm text-left hover:bg-surface-2"
+              className="w-full px-3 py-2 text-sm text-left text-stone-700 hover:bg-orange-100/40"
             >
               Markdown (.md)
             </button>
@@ -93,7 +93,7 @@ export function ExportMenu({ documentId, title }: ExportMenuProps) {
                 setOpen(false);
                 toast.success("Print dialog opened");
               }}
-              className="w-full px-3 py-2 text-sm text-left hover:bg-surface-2"
+              className="w-full px-3 py-2 text-sm text-left text-stone-700 hover:bg-orange-100/40"
             >
               PDF
             </button>

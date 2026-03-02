@@ -19,25 +19,27 @@ export function CalendarView() {
 
   const eventList = (
     <>
-      <div className="border-b border-border shrink-0">
+      <div className="shrink-0 rounded-2xl border border-orange-100/50 bg-stone-50 shadow-sm">
         <CalendarToolbar />
       </div>
-      <div className="flex-1 overflow-y-auto p-3 space-y-3">
-        {events.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-3 py-16 text-muted-foreground">
-            <CalendarX className="h-10 w-10 opacity-40" />
-            <p className="text-sm">当天没有日程</p>
-          </div>
-        ) : (
-          events.map((event) => (
-            <MeetingCard
-              key={event.id}
-              event={event}
-              isSelected={selectedEventId === event.id}
-              onClick={() => setSelectedEventId(event.id)}
-            />
-          ))
-        )}
+      <div className="flex-1 overflow-y-auto py-3 space-y-3">
+        <div className="space-y-3">
+          {events.length === 0 ? (
+            <div className="flex flex-col items-center justify-center gap-3 py-16 text-stone-500">
+              <CalendarX className="h-10 w-10 opacity-40" />
+              <p className="text-sm">当天没有日程</p>
+            </div>
+          ) : (
+            events.map((event) => (
+              <MeetingCard
+                key={event.id}
+                event={event}
+                isSelected={selectedEventId === event.id}
+                onClick={() => setSelectedEventId(event.id)}
+              />
+            ))
+          )}
+        </div>
       </div>
     </>
   );
@@ -45,30 +47,30 @@ export function CalendarView() {
   const detailPane = selectedEvent ? (
     <EventDetail event={selectedEvent} />
   ) : (
-    <div className="flex flex-col items-center justify-center h-full gap-3 text-muted-foreground">
+    <div className="flex flex-col items-center justify-center h-full gap-3 text-stone-500">
       <p className="text-sm">在左侧选择一个日程查看详情</p>
     </div>
   );
 
   return (
-    <div className="flex flex-1 min-w-0 h-full">
+    <div className="flex flex-1 min-w-0 h-full px-2 py-4 gap-2">
       {/* Desktop: side-by-side */}
-      <aside className="hidden md:flex shrink-0 w-[380px] flex-col border-r border-border bg-background overflow-hidden">
+      <aside className="hidden md:flex shrink-0 w-[380px] flex-col overflow-hidden">
         {eventList}
       </aside>
-      <div className="hidden md:flex flex-1 min-w-0 overflow-y-auto h-full">
+      <div className="hidden md:flex flex-1 min-w-0 overflow-y-auto h-full rounded-2xl border border-orange-100/50 bg-white shadow-sm">
         {detailPane}
       </div>
 
       {/* Mobile: master-detail switch */}
-      <div className="flex md:hidden flex-1 min-w-0 h-full flex-col bg-background overflow-hidden">
+      <div className="flex md:hidden flex-1 min-w-0 h-full flex-col rounded-2xl border border-orange-100/50 bg-white shadow-sm overflow-hidden">
         {selectedEvent ? (
           <>
-            <div className="shrink-0 flex items-center gap-2 px-3 py-2 border-b border-border">
+            <div className="shrink-0 flex items-center gap-2 px-3 py-2 border-b border-stone-200">
               <button
                 type="button"
                 onClick={() => setSelectedEventId(null)}
-                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+                className="flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-800"
               >
                 <ArrowLeft className="h-4 w-4" />
                 返回日程

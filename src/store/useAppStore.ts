@@ -33,8 +33,6 @@ interface AppState {
   // Chat
   chatInputValue: string;
   setChatInputValue: (v: string) => void;
-  collapsedSessions: Record<string, boolean>;
-  toggleSessionCollapse: (dateKey: string) => void;
 
   // Calendar
   calendarDate: string;
@@ -97,7 +95,6 @@ const defaultState = {
   sidebarCollapsed: false,
   workPanelOpen: true,
   chatInputValue: "",
-  collapsedSessions: {} as Record<string, boolean>,
   calendarDate: "2026-02-24",
   calendarRange: "day" as CalendarRange,
   selectedEventId: null as string | null,
@@ -134,14 +131,6 @@ export const useAppStore = create<AppState>((set) => ({
   setWorkPanelOpen: (v) => set({ workPanelOpen: v }),
 
   setChatInputValue: (v) => set({ chatInputValue: v }),
-
-  toggleSessionCollapse: (dateKey) =>
-    set((s) => ({
-      collapsedSessions: {
-        ...s.collapsedSessions,
-        [dateKey]: !s.collapsedSessions[dateKey],
-      },
-    })),
 
   setCalendarDate: (date) => set({ calendarDate: date, selectedEventId: null }),
   setCalendarRange: (range) => set({ calendarRange: range }),

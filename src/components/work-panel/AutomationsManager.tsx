@@ -32,23 +32,23 @@ function AutomationCard({ rule }: { rule: Automation }) {
     rule.scope !== "global" ? getTopicById(rule.scope as TopicId) : null;
   return (
     <div
-      className="rounded-xl border border-border bg-background hover:border-accent/20 transition-colors cursor-pointer"
+      className="bg-white shadow-sm border border-stone-200 rounded-2xl cursor-pointer"
       onClick={() => setExpanded(!expanded)}
     >
       <div className="flex items-start gap-3 p-4">
         <div className="flex-1 min-w-0">
           <p className="text-sm">{rule.description}</p>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs text-muted-foreground">
+            <span className="rounded-full bg-stone-100 px-2 py-0.5 text-xs text-stone-500">
               {rule.trigger}
             </span>
             {topic && (
-              <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="rounded-full bg-stone-100 px-2 py-0.5 text-xs text-stone-500">
                 {topic.name}
               </span>
             )}
             {rule.requiresReview && (
-              <span className="rounded-full bg-amber-50 px-2 py-0.5 text-xs text-amber-600">
+              <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs text-orange-700">
                 Review required
               </span>
             )}
@@ -56,17 +56,17 @@ function AutomationCard({ rule }: { rule: Automation }) {
         </div>
         {rule.ruleDetail && (
           expanded
-            ? <ChevronDown className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground" />
-            : <ChevronRight className="h-4 w-4 shrink-0 mt-0.5 text-muted-foreground" />
+            ? <ChevronDown className="h-4 w-4 shrink-0 mt-0.5 text-stone-400" />
+            : <ChevronRight className="h-4 w-4 shrink-0 mt-0.5 text-stone-400" />
         )}
       </div>
       {expanded && (
-        <div className="border-t border-border px-4 py-3 space-y-3">
+        <div className="border-t border-stone-200 px-4 py-3 space-y-3">
           {rule.ruleDetail && (
-            <p className="text-xs text-muted-foreground leading-relaxed">{rule.ruleDetail}</p>
+            <p className="text-xs text-stone-500 leading-relaxed">{rule.ruleDetail}</p>
           )}
           {rule.actions.length > 0 && (
-            <ul className="list-inside list-disc text-xs text-muted-foreground">
+            <ul className="list-inside list-disc text-xs text-stone-500">
               {rule.actions.map((a, i) => (
                 <li key={i}>{a}</li>
               ))}
@@ -81,7 +81,7 @@ function AutomationCard({ rule }: { rule: Automation }) {
                 )}
               />
               {rule.lastTriggered && (
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-[10px] text-stone-500">
                   Last: {formatTime(rule.lastTriggered)}
                 </span>
               )}
@@ -92,7 +92,7 @@ function AutomationCard({ rule }: { rule: Automation }) {
                 e.stopPropagation();
                 toast.success(`Editing: ${rule.description}`);
               }}
-              className="text-xs text-accent hover:underline"
+              className="text-xs text-orange-600 hover:underline"
             >
               Edit
             </button>
@@ -121,26 +121,25 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
   })();
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden bg-background">
+    <div className="flex h-full w-full flex-col overflow-hidden bg-transparent px-2 py-4">
       {!standalone && (
         <button
           onClick={() => setCommandRoomOverlay(null)}
-          className="interactive-base flex shrink-0 items-center gap-2 px-4 py-3 text-sm text-muted-foreground hover:text-foreground"
+          className="interactive-base flex shrink-0 items-center gap-2 px-4 py-3 text-sm text-stone-500 hover:text-stone-800"
         >
           <ArrowLeft className="h-4 w-4" />
           Back
         </button>
       )}
-      <div className="flex flex-1 flex-col overflow-hidden px-4 pb-6 pt-4">
-        <h2 className="text-lg font-semibold">Manage Playbook</h2>
-        <div className="mt-3 flex gap-1 border-b border-border">
+      <div className="flex flex-1 flex-col overflow-hidden px-4 pb-6 pt-2">
+        <div className="mt-1 flex gap-1 border-b border-stone-200">
           <button
             onClick={() => setTab("global")}
             className={cn(
               "interactive-subtle px-3 py-2 text-sm",
               tab === "global"
-                ? "border-b-2 border-accent font-medium text-accent"
-                : "text-muted-foreground hover:text-foreground"
+                ? "border-b-2 border-orange-500 font-medium text-orange-600"
+                : "text-stone-500 hover:text-stone-800"
             )}
           >
             Global Playbook
@@ -150,8 +149,8 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
             className={cn(
               "interactive-subtle px-3 py-2 text-sm",
               tab === "topic"
-                ? "border-b-2 border-accent font-medium text-accent"
-                : "text-muted-foreground hover:text-foreground"
+                ? "border-b-2 border-orange-500 font-medium text-orange-600"
+                : "text-stone-500 hover:text-stone-800"
             )}
           >
             Topic Playbook
@@ -172,7 +171,7 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
                 return (
                   <div key={topicId}>
                     {topic && (
-                      <h3 className="mb-2 text-sm font-medium text-muted-foreground">
+                      <h3 className="mb-2 text-sm font-medium text-stone-500">
                         {topic.name}
                       </h3>
                     )}
@@ -188,7 +187,7 @@ export function AutomationsManager({ standalone }: { standalone?: boolean } = {}
           )}
         </div>
         <button
-          className="mt-4 w-full rounded-xl border border-dashed border-border py-3 text-sm text-muted-foreground hover:bg-surface-2 hover:text-foreground hover:border-accent/30 transition-colors"
+          className="mt-4 w-full rounded-2xl border border-dashed border-stone-300 py-3 text-sm text-stone-500 hover:bg-orange-100/40 hover:text-stone-800 hover:border-orange-300 transition-colors"
           type="button"
         >
           + Add Playbook Rule

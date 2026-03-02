@@ -7,12 +7,12 @@ import { cn } from "@/lib/utils";
 import type { DocumentMeta } from "@/data/documents";
 
 const TYPE_COLORS: Record<string, string> = {
-  notes: "bg-blue-100 text-blue-800",
-  report: "bg-amber-100 text-amber-800",
-  slides: "bg-purple-100 text-purple-800",
-  proposal: "bg-emerald-100 text-emerald-800",
-  agenda: "bg-slate-100 text-slate-800",
-  strategy: "bg-rose-100 text-rose-800",
+  notes: "bg-orange-100 text-orange-700",
+  report: "bg-stone-100 text-stone-700",
+  slides: "bg-orange-100/70 text-orange-700",
+  proposal: "bg-stone-100 text-stone-700",
+  agenda: "bg-stone-100 text-stone-700",
+  strategy: "bg-orange-100 text-orange-700",
 };
 
 function formatRelativeTime(iso: string): string {
@@ -74,7 +74,7 @@ export function DocsList() {
         ))}
       </div>
       {filtered.length === 0 && (
-        <p className="text-sm text-muted-foreground py-8 text-center">
+        <p className="text-sm text-stone-500 py-8 text-center">
           No documents match your filters.
         </p>
       )}
@@ -97,27 +97,27 @@ function DocCard({
     <button
       type="button"
       onClick={onSelect}
-      className="w-full text-left p-4 rounded-xl border border-border bg-background hover:bg-surface-2 hover:border-accent/20"
+      className="w-full text-left p-4 bg-stone-50 shadow-sm border border-stone-200 rounded-2xl"
     >
-      <div className="font-semibold text-foreground mb-2">{doc.title}</div>
+      <div className="font-semibold text-stone-800 mb-2">{doc.title}</div>
       <div className="flex flex-wrap items-center gap-2 mb-2">
         <span
           className={cn(
             "text-xs px-2 py-0.5 rounded-full capitalize",
-            TYPE_COLORS[doc.type] ?? "bg-gray-100 text-gray-800"
+            TYPE_COLORS[doc.type] ?? "bg-stone-100 text-stone-700"
           )}
         >
           {doc.type}
         </span>
         {topic && (
-          <span className="text-xs text-muted-foreground">{topic.name}</span>
+          <span className="text-xs text-stone-500">{topic.name}</span>
         )}
-        <span className="text-xs text-muted-foreground">
+        <span className="text-xs text-stone-500">
           {formatRelativeTime(doc.updatedAt)}
         </span>
       </div>
       {summary && (
-        <p className="text-sm text-muted-foreground line-clamp-2">{summary}</p>
+        <p className="text-sm text-stone-500 line-clamp-2">{summary}</p>
       )}
     </button>
   );

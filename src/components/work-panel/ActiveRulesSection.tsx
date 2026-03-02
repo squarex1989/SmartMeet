@@ -27,21 +27,21 @@ function RuleRow({ rule }: { rule: Automation }) {
   const setMainView = useAppStore((s) => s.setMainView);
 
   return (
-    <div className="rounded-xl border border-border bg-background text-xs">
+    <div className="bg-white shadow-sm border border-stone-200 rounded-2xl text-xs">
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-start gap-2.5 p-3 text-left hover:bg-surface-2/50 transition-colors rounded-xl"
+        className="flex w-full items-start gap-2.5 p-4 text-left hover:bg-orange-100/40 transition-colors rounded-2xl"
       >
-        <Zap className="h-3.5 w-3.5 shrink-0 mt-0.5 text-accent" />
+        <Zap className="h-3.5 w-3.5 shrink-0 mt-0.5 text-orange-500" />
         <div className="min-w-0 flex-1">
-          <p className="text-muted-foreground leading-relaxed">{rule.description}</p>
+          <p className="text-stone-500 leading-relaxed">{rule.description}</p>
           <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-            <span className="rounded-full bg-surface-2 px-2 py-0.5 text-[10px]">
+            <span className="rounded-full bg-stone-100 px-2 py-0.5 text-[10px] text-stone-600">
               {rule.trigger}
             </span>
             {rule.lastTriggered && (
-              <span className="text-[10px] text-muted-foreground">
+              <span className="text-[10px] text-stone-500">
                 {formatTimeAgo(rule.lastTriggered)}
               </span>
             )}
@@ -49,20 +49,20 @@ function RuleRow({ rule }: { rule: Automation }) {
         </div>
         {rule.ruleDetail && (
           expanded
-            ? <ChevronDown className="h-3.5 w-3.5 shrink-0 mt-0.5 text-muted-foreground" />
-            : <ChevronRight className="h-3.5 w-3.5 shrink-0 mt-0.5 text-muted-foreground" />
+            ? <ChevronDown className="h-3.5 w-3.5 shrink-0 mt-0.5 text-stone-400" />
+            : <ChevronRight className="h-3.5 w-3.5 shrink-0 mt-0.5 text-stone-400" />
         )}
       </button>
       {expanded && rule.ruleDetail && (
-        <div className="border-t border-border px-3 py-3 space-y-2">
-          <p className={cn("text-[11px] text-muted-foreground leading-relaxed")}>{rule.ruleDetail}</p>
+        <div className="border-t border-stone-200 px-4 py-3 space-y-2">
+          <p className={cn("text-[11px] text-stone-500 leading-relaxed")}>{rule.ruleDetail}</p>
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               setMainView("automations");
             }}
-            className="text-[10px] text-accent hover:underline"
+            className="text-[10px] text-orange-600 hover:underline"
           >
             Edit in Playbook →
           </button>
@@ -91,7 +91,7 @@ export function ActiveRulesSection() {
       <button
         type="button"
         onClick={() => setMainView("automations")}
-        className="text-xs text-muted-foreground hover:text-accent transition-colors"
+        className="text-xs text-stone-500 hover:text-orange-600 transition-colors"
       >
         Manage Playbook →
       </button>

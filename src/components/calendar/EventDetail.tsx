@@ -37,23 +37,21 @@ function formatDate(dateStr: string): string {
 }
 
 const topicColorMap = {
-  client: "bg-topic-client/10 text-topic-client border-topic-client/20",
-  project: "bg-topic-project/10 text-topic-project border-topic-project/20",
-  goal: "bg-topic-goal/10 text-topic-goal border-topic-goal/20",
+  client: "bg-orange-100 text-orange-600 border-orange-200",
+  project: "bg-stone-100 text-stone-700 border-stone-200",
+  goal: "bg-orange-100/70 text-orange-700 border-orange-200",
 } as const;
 
 const statusStyles = {
-  past: "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300",
-  ongoing:
-    "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 animate-pulse",
-  upcoming: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+  past: "bg-stone-100 text-stone-700",
+  ongoing: "bg-green-100 text-green-700 animate-pulse",
+  upcoming: "bg-orange-100 text-orange-700",
 } as const;
 
 const taskStatusStyles = {
-  done: "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-  pending_review:
-    "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
-  in_progress: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+  done: "bg-green-100 text-green-700",
+  pending_review: "bg-orange-100 text-orange-700",
+  in_progress: "bg-stone-100 text-stone-700",
 } as const;
 
 interface EventDetailProps {
@@ -69,7 +67,7 @@ export function EventDetail({ event }: EventDetailProps) {
   const topicColor =
     topic && topic.type in topicColorMap
       ? topicColorMap[topic.type as keyof typeof topicColorMap]
-      : "bg-muted text-muted-foreground";
+      : "bg-stone-100 text-stone-500";
 
   const handleNotesClick = (docId: string) => {
     setMainView("docs");
@@ -82,10 +80,10 @@ export function EventDetail({ event }: EventDetailProps) {
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-2xl">
+    <div className="p-4 sm:p-6 max-w-2xl text-stone-800">
       <div className="flex flex-col gap-4 mb-8">
         <h1 className="text-2xl font-semibold">{event.title}</h1>
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-2 text-sm text-stone-500">
           <span>{formatTimeRange(event.start, event.end)}</span>
           <span>·</span>
           <span>{formatDate(event.start)}</span>
@@ -115,7 +113,7 @@ export function EventDetail({ event }: EventDetailProps) {
             <button
               type="button"
               onClick={() => toast("会议室功能即将上线")}
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium bg-accent text-accent-foreground hover:bg-accent/90"
+              className="inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-bold bg-orange-500 text-white hover:bg-orange-600 shadow-md shadow-orange-500/20"
             >
               <Video className="h-4 w-4" />
               加入会议
@@ -124,7 +122,7 @@ export function EventDetail({ event }: EventDetailProps) {
           {status === "past" && (
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium border border-border hover:bg-muted"
+              className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium border border-stone-200 text-stone-700 hover:bg-stone-50"
             >
               <VideoOff className="h-4 w-4" />
               View Recording
@@ -143,22 +141,22 @@ export function EventDetail({ event }: EventDetailProps) {
                 <button
                   type="button"
                   onClick={() => handleNotesClick(event.outcome!.summaryDocId!)}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background hover:bg-muted text-left w-full"
+                  className="flex items-center gap-3 p-3 rounded-2xl bg-white shadow-md border-0 transition-transform hover:-translate-y-1 text-left w-full"
                 >
-                  <FileText className="h-5 w-5 text-muted-foreground shrink-0" />
+                  <FileText className="h-5 w-5 text-stone-500 shrink-0" />
                   <span className="font-medium">{doc.title}</span>
                 </button>
               ) : null;
             })()}
             {event.outcome.crmUpdated && (
-              <div className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background">
-                <Database className="h-5 w-5 text-muted-foreground shrink-0" />
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-white shadow-md border-0">
+                <Database className="h-5 w-5 text-stone-500 shrink-0" />
                 <span className="text-sm font-medium">CRM Updated</span>
               </div>
             )}
             {event.outcome.emailSent && (
-              <div className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background">
-                <Mail className="h-5 w-5 text-muted-foreground shrink-0" />
+              <div className="flex items-center gap-3 p-3 rounded-2xl bg-white shadow-md border-0">
+                <Mail className="h-5 w-5 text-stone-500 shrink-0" />
                 <span className="text-sm">
                   Email sent to {event.outcome.emailSent.to}, subject:{" "}
                   {event.outcome.emailSent.subject}
@@ -167,7 +165,7 @@ export function EventDetail({ event }: EventDetailProps) {
             )}
             {event.outcome.followUpTasks.length > 0 && (
               <div className="space-y-2">
-                <h3 className="text-sm font-medium text-muted-foreground">
+                <h3 className="text-sm font-medium text-stone-500">
                   Follow-up tasks
                 </h3>
                 <ul className="flex flex-col gap-2">
@@ -195,13 +193,13 @@ export function EventDetail({ event }: EventDetailProps) {
                 <button
                   type="button"
                   onClick={() => handleAgendaClick(event.prep!.agendaDocId!)}
-                  className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background hover:bg-muted text-left w-full"
+                  className="flex items-center gap-3 p-3 rounded-2xl bg-white shadow-md border-0 transition-transform hover:-translate-y-1 text-left w-full"
                 >
                   <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
                   <span className="font-medium">Agenda: {doc.title}</span>
                 </button>
               ) : (
-                <div className="flex items-center gap-3 p-3 rounded-xl border border-border bg-background">
+                <div className="flex items-center gap-3 p-3 rounded-2xl bg-white shadow-md border-0">
                   <CheckCircle2 className="h-5 w-5 text-green-600 shrink-0" />
                   <span className="font-medium">Agenda</span>
                 </div>
@@ -209,7 +207,7 @@ export function EventDetail({ event }: EventDetailProps) {
             })()}
             {event.prep.clientSummary && (
               <div>
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">
+                <h3 className="text-sm font-medium text-stone-500 mb-2">
                   Client summary
                 </h3>
                 <p className="text-sm">{event.prep.clientSummary}</p>
@@ -217,7 +215,7 @@ export function EventDetail({ event }: EventDetailProps) {
             )}
             {event.prep.recommendedQuestions.length > 0 && (
               <div>
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">
+                <h3 className="text-sm font-medium text-stone-500 mb-2">
                   Recommended questions
                 </h3>
                 <ul className="space-y-2">
@@ -226,7 +224,7 @@ export function EventDetail({ event }: EventDetailProps) {
                       {q.reason ? (
                         <span>
                           {q.question}{" "}
-                          <span className="text-muted-foreground">
+                          <span className="text-stone-500">
                             ({q.reason})
                           </span>
                         </span>
@@ -240,7 +238,7 @@ export function EventDetail({ event }: EventDetailProps) {
             )}
             {event.prep.openingScript && (
               <div>
-                <h3 className="text-sm font-medium text-muted-foreground mb-2">
+                <h3 className="text-sm font-medium text-stone-500 mb-2">
                   Opening script
                 </h3>
                 <p className="text-sm">{event.prep.openingScript}</p>
@@ -269,7 +267,7 @@ function FollowUpTaskItem({
         : "Done";
 
   return (
-    <li className="flex items-center justify-between gap-3 py-2 px-3 rounded-xl border border-border bg-background">
+    <li className="flex items-center justify-between gap-3 py-2 px-3 rounded-xl border border-stone-200 bg-white">
       <div className="flex items-center gap-2 min-w-0">
         {doc ? (
           <button

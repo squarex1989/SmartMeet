@@ -113,14 +113,14 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     <div className={cn("flex w-full", isUser ? "justify-end" : "justify-start")}>
       <div className={cn("flex flex-col max-w-[85%]", isUser ? "items-end" : "items-start")}>
         {!isUser && (
-          <span className="text-xs font-medium text-muted-foreground mb-1.5 ml-1">Shadow</span>
+          <span className="text-xs font-medium text-stone-500 mb-1.5 ml-1">Shadow</span>
         )}
         <div
           className={cn(
-            "rounded-2xl px-4 py-3 space-y-2",
+            "px-4 py-3 space-y-2 shadow-sm",
             isUser
-              ? "bg-[#EDE9FE] text-foreground rounded-br-md"
-              : "bg-surface-2 text-foreground rounded-bl-md"
+              ? "bg-orange-100 text-stone-900 rounded-3xl rounded-tr-md"
+              : "bg-stone-50 text-stone-800 rounded-3xl rounded-tl-md"
           )}
         >
           {message.content.map((item, i) => (

@@ -66,7 +66,7 @@ function CommandRoomView() {
             onClick={() => setMobileSidebarOpen(false)}
             aria-hidden
           />
-          <div className="fixed inset-y-14 left-0 z-50 w-64 max-w-[85vw] flex flex-col bg-background border-r border-border shadow-xl md:hidden">
+          <div className="fixed inset-y-14 left-0 z-50 w-64 max-w-[85vw] flex flex-col bg-stone-50/95 shadow-xl md:hidden">
             <TopicNavigator />
           </div>
         </>
@@ -75,8 +75,10 @@ function CommandRoomView() {
       <div ref={containerRef} className="flex flex-1 min-w-0 h-full">
         {/* Desktop: resizable chat + work panel */}
         <div className="hidden lg:flex flex-1 min-w-0 h-full">
-          <div className="flex-1 min-w-0 h-full" style={{ minWidth: MIN_PANEL_PX }}>
-            {centerContent}
+          <div className="flex-1 min-w-0 h-full px-2 py-4" style={{ minWidth: MIN_PANEL_PX }}>
+            <div className="h-full bg-white rounded-2xl shadow-sm border border-orange-100/50 overflow-hidden">
+              {centerContent}
+            </div>
           </div>
 
           <div
@@ -86,8 +88,7 @@ function CommandRoomView() {
             role="separator"
             aria-orientation="vertical"
           >
-            <div className="absolute inset-y-0 -left-2 -right-2 group-hover:bg-accent/5 transition-colors" />
-            <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-px bg-border" />
+            <div className="absolute inset-y-0 -left-2 -right-2 group-hover:bg-orange-100/40 transition-colors" />
           </div>
 
           <div
@@ -99,8 +100,10 @@ function CommandRoomView() {
         </div>
 
         {/* Mobile/Tablet: chat only, work panel as overlay */}
-        <div className="flex lg:hidden flex-1 min-w-0 h-full">
-          {centerContent}
+        <div className="flex lg:hidden flex-1 min-w-0 h-full px-2 py-3">
+          <div className="h-full w-full bg-white rounded-2xl shadow-sm border border-orange-100/50 overflow-hidden">
+            {centerContent}
+          </div>
         </div>
       </div>
 
@@ -112,8 +115,8 @@ function CommandRoomView() {
             onClick={() => setMobileWorkPanelOpen(false)}
             aria-hidden
           />
-          <div className="absolute inset-x-0 bottom-0 top-14 bg-background border-t border-border shadow-xl flex flex-col animate-in slide-in-from-bottom duration-200">
-            <div className="flex items-center justify-between px-4 py-2 border-b border-border shrink-0">
+          <div className="absolute inset-x-0 bottom-0 top-14 bg-stone-50 border-t border-orange-100 shadow-xl flex flex-col animate-in slide-in-from-bottom duration-200">
+            <div className="flex items-center justify-between px-4 py-2 border-b border-orange-100 shrink-0">
               <span className="text-sm font-medium">Work Panel</span>
               <button
                 type="button"

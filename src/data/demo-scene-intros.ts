@@ -1,0 +1,39 @@
+import type { DemoScenario } from "@/store/useAppStore";
+
+/** 每个 demo 场景对应的介绍文案（与 demo_scene_intros.md 一致，用于 TTS 朗读） */
+const SCENE_INTROS: Record<NonNullable<DemoScenario>, string> = {
+  "pre-meeting":
+    "这个场景展示 Shadow 如何在会前自动识别当天日程并完成准备。在 Chat 中，你会看到 AI 先进入准备中状态，再逐条回报会议材料就绪，并给出会议列表与关键开场建议。在右侧面板里，Prepared for you 会出现会议纪要、CRM 更新等可直接 review 的成果，Your follow-ups 只保留需要你发起的后续动作。",
+  "custom-workflow":
+    "这个场景展示你如何通过自然语言给 AI 下工作规则。在 Chat 中，用户连续补充偏好与约束，AI 每次确认并生成 Playbook 更新卡片。在右侧面板里，重点体现规则已生效后的待 review 结果，并减少无关任务，强调这是规则驱动的执行场景。",
+  "task-identify":
+    "这个场景展示 AI 在会议结束后自动提取待办。在 Chat 中，AI 先汇报识别过程，再给出结构化任务列表，并附带引用片段支撑。在右侧面板里，Your follow-ups 会显著增多，Prepared for you 则保留自动生成的纪要、CRM 草稿，形成识别加执行准备的闭环。",
+  "risk-alert":
+    "这个场景突出 AI 的风险嗅觉和处置建议。在 Chat 中，AI 会先给风险分析，再给行动方案，并提供按钮触发后续 AI 回复。在右侧面板里，Need your attention 的决策项优先级最高，Your follow-ups 会出现紧急跟进动作，帮助用户快速收敛风险。",
+  "qa-task":
+    "这个场景展示通用问答到任务落地的连续链路。在 Chat 中，用户先提问总结，再做客户对比，随后被 AI 主动建议是否起草邮件，确认后生成邮件草稿。在右侧面板里，会同时出现可 review 的结果和可执行的 follow-ups，体现问答不是终点，任务会继续推进。",
+  "daily-brief":
+    "这个场景展示 AI 的定时信息收集能力。在 Chat 中，先是用户设定新闻源，再看到 AI 确认规则、执行抓取、最后输出当日简报。在右侧面板里，以 Prepared for you 为主，强调按 Playbook 自动产出内容；任务和决策项较少，突出轻负担消费。",
+  "goal-driven":
+    "这个场景强调目标导向的持续推进。在 Chat 中，AI 会先拆解目标，再每日回报候选对象与进展，并可直接生成 outreach 邮件。在右侧面板里，Your follow-ups 和 Need your attention 会围绕目标推进展开，帮助用户每天做最关键一步。",
+  "inbox-mgmt":
+    "这个场景展示邮件 triage 与回复草拟。在 Chat 中，AI 会连续呈现高优先级邮件摘要，并附回复草稿和操作按钮。在右侧面板里，更多体现待处理邮件任务和需要确认发送的草稿，减少泛化内容，突出收件箱效率提升。",
+  "smart-bookmark":
+    "这个场景展示持续喂内容、AI 主动关联洞察的价值。在 Chat 中，用户持续丢链接，AI 做收藏和分析，最后输出跨来源的整合观点与行动建议。在右侧面板里，决策与思考类内容占比更高，体现从信息收集走向洞察生成和策略建议。",
+};
+
+/** 当前场景的介绍全文，用于 TTS 请求 */
+export function getIntroForScenario(scenarioId: DemoScenario | null): string {
+  if (!scenarioId || !(scenarioId in SCENE_INTROS)) return "";
+  return SCENE_INTROS[scenarioId as keyof typeof SCENE_INTROS];
+}
+
+/** 按句/段拆成若干行，用于播放时字幕逐条展示 */
+export function getIntroLinesForScenario(scenarioId: DemoScenario | null): string[] {
+  const text = getIntroForScenario(scenarioId);
+  if (!text) return [];
+  return text
+    .split(/[。；.!?]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}

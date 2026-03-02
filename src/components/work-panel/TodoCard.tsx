@@ -52,21 +52,21 @@ export function TodoCard({ item, showTopic }: TodoCardProps) {
   };
 
   return (
-    <div className="rounded-xl border border-border bg-background p-3.5">
+    <div className="bg-white shadow-sm border border-stone-200 rounded-2xl p-4">
       <div className="flex items-start gap-3">
-        <CircleDot className="h-4 w-4 mt-0.5 shrink-0 text-muted-foreground" />
+        <CircleDot className="h-4 w-4 mt-0.5 shrink-0 text-stone-500" />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-sm">{item.title}</span>
             {topic && (
-              <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+              <span className="rounded-md bg-stone-100 px-1.5 py-0.5 text-[10px] text-stone-500">
                 {topic.name}
               </span>
             )}
           </div>
-          <p className="mt-1 truncate text-xs text-muted-foreground leading-relaxed">{item.summary}</p>
+          <p className="mt-1 truncate text-xs text-stone-500 leading-relaxed">{item.summary}</p>
           {item.dueDate && (
-            <p className="mt-1.5 text-[10px] text-muted-foreground">
+            <p className="mt-1.5 text-[10px] text-stone-500">
               Due: {new Date(item.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
             </p>
           )}
@@ -76,7 +76,7 @@ export function TodoCard({ item, showTopic }: TodoCardProps) {
         <button
           type="button"
           onClick={handleStartWithAi}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-[11px] font-medium text-accent-foreground hover:bg-accent/90 transition-colors"
+          className="inline-flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl px-4 py-2 shadow-md shadow-orange-500/20 transition-all font-bold text-[11px]"
         >
           <Sparkles className="h-3 w-3" />
           Start with AI

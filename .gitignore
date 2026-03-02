@@ -10,6 +10,9 @@
 /coverage
 /test-results
 
+# TTS cache
+.cache/
+
 # next.js
 /.next/
 /out/

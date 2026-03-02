@@ -49,15 +49,15 @@ export function ChatPanel() {
   );
 
   return (
-    <div className="flex flex-col h-full bg-background">
+    <div className="flex flex-col h-full bg-white">
       <header className="shrink-0 px-4 sm:px-6 py-4">
-        <h2 className="text-base font-semibold truncate">{contextName}</h2>
+        <h2 className="text-base font-semibold text-stone-800 truncate">{contextName}</h2>
       </header>
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-6 pb-4">
         <div className="max-w-3xl mx-auto space-y-6">
           {sessions.length === 0 ? (
-            <div className="rounded-xl border border-border bg-surface-2 p-4 text-sm text-muted-foreground">
+            <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 text-sm text-stone-500">
               暂无对话内容。点击右上角 Demo 入口，选择一个场景开始体验。
             </div>
           ) : (
@@ -74,10 +74,10 @@ export function ChatPanel() {
 
       <div className="shrink-0 px-6 pb-5 pt-2">
         <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-2 rounded-2xl border border-border bg-surface-2 px-4 py-2 focus-within:border-accent/30 focus-within:ring-2 focus-within:ring-accent/10 transition-all">
+          <div className="flex items-center gap-2 border-0 bg-stone-100 rounded-full px-4 py-2.5 focus-within:ring-2 focus-within:ring-orange-400 transition-all">
             <button
               type="button"
-              className="p-1 text-muted-foreground hover:text-foreground rounded-lg transition-colors"
+              className="p-1 text-stone-500 hover:text-stone-800 rounded-lg transition-colors"
               aria-label="Attach file"
             >
               <Paperclip className="h-4 w-4" />
@@ -87,12 +87,12 @@ export function ChatPanel() {
               value={chatInputValue}
               onChange={(e) => setChatInputValue(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent text-sm placeholder:text-muted-foreground focus:outline-none py-1"
+              className="flex-1 bg-transparent text-sm placeholder:text-stone-400 text-stone-800 focus:outline-none py-1"
             />
             <button
               type="button"
               onClick={handleSubmit}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-accent text-accent-foreground hover:bg-accent/90 transition-colors shrink-0"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white hover:bg-orange-600 shadow-md shadow-orange-500/20 transition-colors shrink-0"
             >
               <ArrowUp className="h-4 w-4" />
             </button>

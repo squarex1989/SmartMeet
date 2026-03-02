@@ -19,9 +19,9 @@ const statusLabel = {
 } as const;
 
 const statusColor = {
-  past: "text-muted-foreground",
-  ongoing: "text-green-600 dark:text-green-400",
-  upcoming: "text-blue-600 dark:text-blue-400",
+  past: "text-stone-500",
+  ongoing: "text-green-600",
+  upcoming: "text-orange-600",
 } as const;
 
 interface MeetingCardProps {
@@ -41,14 +41,14 @@ export function MeetingCard({ event, isSelected, onClick }: MeetingCardProps) {
       onClick={onClick}
       onKeyDown={(e) => e.key === "Enter" && onClick()}
       className={cn(
-        "rounded-xl border p-4 cursor-pointer",
+        "rounded-2xl p-4 cursor-pointer bg-stone-50 shadow-sm border border-stone-200",
         isSelected
-          ? "border-accent bg-accent/5"
-          : "border-border bg-background hover:bg-surface-2"
+          ? "ring-2 ring-orange-400/40"
+          : ""
       )}
     >
-      <h3 className="font-semibold text-sm">{event.title}</h3>
-      <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+      <h3 className="font-semibold text-sm text-stone-800">{event.title}</h3>
+      <div className="mt-1 flex items-center gap-2 text-xs text-stone-500">
         <span>{formatTimeRange(event.start, event.end)}</span>
         {status === "ongoing" && <span className="inline-block h-2 w-2 rounded-full bg-green-500 animate-pulse" />}
         <span className={cn("font-medium", statusColor[status])}>
@@ -56,7 +56,7 @@ export function MeetingCard({ event, isSelected, onClick }: MeetingCardProps) {
         </span>
       </div>
       {topic && (
-        <div className="mt-1.5 text-xs text-muted-foreground">
+        <div className="mt-1.5 text-xs text-stone-500">
           Organizer: {topic.name}
         </div>
       )}
@@ -64,7 +64,7 @@ export function MeetingCard({ event, isSelected, onClick }: MeetingCardProps) {
         {(status === "upcoming" || status === "ongoing") && (
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground hover:bg-accent/90"
+            className="inline-flex items-center gap-1.5 rounded-2xl bg-orange-500 hover:bg-orange-600 px-3 py-1.5 text-xs font-bold text-white shadow-md shadow-orange-500/20"
             onClick={(e) => {
               e.stopPropagation();
               toast("会议室功能即将上线");
@@ -76,7 +76,7 @@ export function MeetingCard({ event, isSelected, onClick }: MeetingCardProps) {
         {status === "past" && event.outcome && (
           <button
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium hover:bg-surface-2"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-stone-200 px-3 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50"
             onClick={(e) => e.stopPropagation()}
           >
             <Video className="h-3 w-3" />

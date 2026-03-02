@@ -39,29 +39,29 @@ export function ReviewCard({ item, showTopic }: ReviewCardProps) {
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleClick(); }}
-      className="cursor-pointer rounded-xl border border-border bg-background p-3.5 hover:border-accent/25 hover:bg-surface-2/50 transition-all"
+      className="cursor-pointer bg-white shadow-sm border border-stone-200 rounded-2xl p-4"
     >
       <div className="flex items-start gap-3">
-        <div className="mt-0.5 shrink-0 rounded-lg p-1.5 bg-surface-2">
-          <Icon className="h-4 w-4 text-muted-foreground" />
+        <div className="mt-0.5 shrink-0 rounded-xl p-1.5 bg-stone-100">
+          <Icon className="h-4 w-4 text-stone-500" />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-sm">{item.title}</span>
             {topic && (
-              <span className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+              <span className="rounded-md bg-stone-100 px-1.5 py-0.5 text-[10px] text-stone-500">
                 {topic.name}
               </span>
             )}
           </div>
-          <p className="mt-1 truncate text-xs text-muted-foreground leading-relaxed">
+          <p className="mt-1 truncate text-xs text-stone-500 leading-relaxed">
             {item.summary}
           </p>
         </div>
         {actionLabel && (
           <div className="flex items-center gap-0.5 shrink-0 self-center">
-            <span className="text-[11px] font-medium text-accent">{actionLabel}</span>
-            <ChevronRight className="h-3.5 w-3.5 text-accent" />
+            <span className="text-[11px] font-medium text-orange-600">{actionLabel}</span>
+            <ChevronRight className="h-3.5 w-3.5 text-orange-600" />
           </div>
         )}
       </div>
